@@ -76,7 +76,7 @@ class NativeTextInput extends StatefulWidget {
     this.placeholder,
     this.textContentType,
     this.keyboardType = KeyboardType.defaultType,
-    this.inputValueChanged,
+    this.onChanged,
     this.onSubmitted,
     this.focusNode,
     this.textAlign = TextAlign.start,
@@ -102,7 +102,7 @@ class NativeTextInput extends StatefulWidget {
 
   final KeyboardType keyboardType;
 
-  final ValueChanged<String> inputValueChanged;
+  final ValueChanged<String> onChanged;
 
   final ValueChanged<String> onSubmitted;
 
@@ -202,8 +202,8 @@ class _NativeTextInputState extends State<NativeTextInput> {
   }
 
   void _onTextFieldChanged(String text) {
-    if (text != null && widget?.inputValueChanged != null) {
-      widget.inputValueChanged(text);
+    if (text != null && widget?.onChanged != null) {
+      widget.onChanged(text);
     }
   }
 

@@ -1,13 +1,18 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_native_text_input/native_text_input.dart';
+import 'package:flutter_native_text_input/flutter_native_text_input.dart';
 import 'package:flutter_native_text_input_example/demo_item.dart';
 
 import 'more_page.dart';
 
 class HomePage extends StatelessWidget {
   final FocusNode _focusNode = FocusNode();
+
+  _onChangeText(value) => debugPrint("inputValueChanged: $value");
+  _onSubmittedText(value) => debugPrint("onSubmitted: $value");
 
   @override
   Widget build(BuildContext context) {
@@ -18,8 +23,11 @@ class HomePage extends StatelessWidget {
       body: ListView(
         children: <Widget>[
           DemoItem(
-            title: 'TextField (from Flutter)',
+            title: 'Flutter TextField Example Usage',
             child: TextField(
+              onChanged: _onChangeText,
+              onSubmitted: _onSubmittedText,
+              autocorrect: true,
               decoration: InputDecoration(
                 hintText: 'placeholder',
                 border: InputBorder.none,
@@ -27,24 +35,31 @@ class HomePage extends StatelessWidget {
             ),
           ),
           DemoItem(
-            title: 'CupertinoTextField (from Flutter)',
+            title: 'Flutter CupertinoTextField Example Usage',
             child: CupertinoTextField(
               placeholder: 'placeholder',
+              onChanged: _onChangeText,
+              onSubmitted: _onSubmittedText,
             ),
           ),
           DemoItem(
-            title: 'Our NativeTextInput',
-            child: NativeTextInput(
-                placeholder: "placeholder",
-                textContentType: TextContentType.password,
-                keyboardType: KeyboardType.defaultType,
-                inputValueChanged: (value) {
-                  debugPrint("inputValueChanged: $value");
-                },
-                onSubmitted: (value) {
-                  debugPrint("onSubmitted: $value");
-                },
-                focusNode: _focusNode),
+            title: 'NativeTextInput Example Usage',
+            child: Platform.isIOS
+                ? NativeTextInput(
+                    placeholder: "placeholder",
+                    textContentType: TextContentType.password,
+                    keyboardType: KeyboardType.defaultType,
+                    onChanged: _onChangeText,
+                    onSubmitted: _onSubmittedText,
+                    focusNode: _focusNode)
+                : TextField(
+                    onChanged: _onChangeText,
+                    onSubmitted: _onSubmittedText,
+                    decoration: InputDecoration(
+                      hintText: 'placeholder',
+                      border: InputBorder.none,
+                    ),
+                  ),
           ),
           Center(
             child: FlatButton(

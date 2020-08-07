@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_native_text_input/native_text_input.dart';
+import 'package:flutter_native_text_input/flutter_native_text_input.dart';
 import 'package:flutter_native_text_input_example/demo_item.dart';
 
 class MorePage extends StatefulWidget {
@@ -44,7 +44,7 @@ class _MorePageState extends State<MorePage> {
             ),
           ),
           DemoItem(
-              title: "Mutliline Text Input",
+              title: "Multiline Text Input",
               child: NativeTextInput(
                 height: 72,
                 maxLines: 0,
@@ -54,7 +54,7 @@ class _MorePageState extends State<MorePage> {
             child: Column(children: [
               NativeTextInput(
                 placeholder: "Type something here",
-                inputValueChanged: (value) {
+                onChanged: (value) {
                   setState(() {
                     _currentTextInput = value;
                   });
