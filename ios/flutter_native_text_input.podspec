@@ -3,10 +3,10 @@
 #
 Pod::Spec.new do |s|
   s.name             = 'flutter_native_text_input'
-  s.version          = '0.0.1'
-  s.summary          = 'A new flutter plugin project.'
+  s.version          = '0.0.2'
+  s.summary          = 'Native text input for Flutter'
   s.description      = <<-DESC
-A new flutter plugin project.
+  Native text input for Flutter
                        DESC
   s.homepage         = 'https://github.com/henryleunghk/flutter-native-text-input'
   s.license          = { :file => '../LICENSE' }
