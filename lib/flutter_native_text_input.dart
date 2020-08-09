@@ -129,6 +129,9 @@ class _NativeTextInputState extends State<NativeTextInput> {
   FocusNode get _effectiveFocusNode =>
       widget.focusNode ?? (_focusNode ??= FocusNode());
 
+  bool get _isMultiline => widget.maxLines > 1;
+  int _currentLineIndex = 1;
+
   @override
   void initState() {
     super.initState();
@@ -155,7 +158,7 @@ class _NativeTextInputState extends State<NativeTextInput> {
   Widget build(BuildContext context) {
     return ConstrainedBox(
       constraints:
-          BoxConstraints(minHeight: widget.height, maxHeight: widget.height),
+          BoxConstraints(minHeight: widget.height, maxHeight: widget.height * _currentLineIndex),
       child: UiKitView(
           viewType: "flutter_native_text_input",
           creationParamsCodec: const StandardMessageCodec(),
@@ -184,7 +187,8 @@ class _NativeTextInputState extends State<NativeTextInput> {
     switch (call.method) {
       case "inputValueChanged":
         final String text = call.arguments["text"];
-        _onTextFieldChanged(text);
+        final int lineIndex = call.arguments["currentLine"];
+        _onTextFieldChanged(text, lineIndex);
         return null;
 
       case "inputStarted":
@@ -201,9 +205,14 @@ class _NativeTextInputState extends State<NativeTextInput> {
         "UiTextField._onMethodCall: No handler for ${call.method}");
   }
 
-  void _onTextFieldChanged(String text) {
-    if (text != null && widget?.onChanged != null) {
-      widget.onChanged(text);
+  void _onTextFieldChanged(String text, int lineIndex) {
+    if (text != null) {
+      if(_isMultiline && _currentLineIndex != lineIndex && lineIndex <= widget.maxLines) setState(() {
+        _currentLineIndex = lineIndex;
+      });
+       
+      if(widget?.onChanged != null) widget.onChanged(text);
+      if(widget.controller != null) _effectiveController.text = text;
     }
   }
 
