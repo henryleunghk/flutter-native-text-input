@@ -184,7 +184,7 @@ class _NativeTextInputState extends State<NativeTextInput> {
     switch (call.method) {
       case "inputValueChanged":
         final String text = call.arguments["text"];
-        _onTextFieldChanged(text);
+        _inputValueChanged(text);
         return null;
 
       case "inputStarted":
@@ -198,17 +198,10 @@ class _NativeTextInputState extends State<NativeTextInput> {
     }
 
     throw MissingPluginException(
-        "UiTextField._onMethodCall: No handler for ${call.method}");
+        "NativeTextInput._onMethodCall: No handler for ${call.method}");
   }
 
-  void _onTextFieldChanged(String text) {
-    if (text != null && widget?.onChanged != null) {
-      widget.onChanged(text);
-    }
-  }
-
-  // UITextFieldDelegate methods
-
+  // input control methods
   void _inputStarted() {
     _scrollIntoView();
     Future.delayed(const Duration(milliseconds: 1000)).then((value) {
@@ -216,10 +209,15 @@ class _NativeTextInputState extends State<NativeTextInput> {
     });
   }
 
-  /// Editing stopped for the specified text field.
   void _inputFinished(String text) {
     if (widget?.onSubmitted != null) {
       widget.onSubmitted(text);
+    }
+  }
+
+  void _inputValueChanged(String text) {
+    if (text != null && widget?.onChanged != null) {
+      widget.onChanged(text);
     }
   }
 
