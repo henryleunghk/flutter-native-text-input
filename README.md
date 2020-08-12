@@ -26,7 +26,7 @@ Hope you find it useful! Enjoy coding 🎉🎉🎉
 
 | Name            | Type          | Description                    | Default                  |
 |:----------------|:--------------|:-------------------------------|:-------------------------|
-| `controller`      | TextEditingController  | Controlling the text being edited (https://api.flutter.dev/flutter/material/TextField/controller.html)  | null                   |
+| `controller`      | TextEditingController  | Controlling the text being edited (https://api.flutter.dev/flutter/material/TextField/controller.html) | null |
 | `placeholder`     | String                 | Placeholder text when text entry is empty (https://api.flutter.dev/flutter/cupertino/CupertinoTextField/placeholder.html) | null |
 | `textContentType` | TextContentType        | To identify the semantic meaning expected for a text-entry area (https://developer.apple.com/documentation/uikit/uitextcontenttype) | null |
 | `keyboardType`    | KeyboardType           | Type of keyboard to display for a given text-based view (https://developer.apple.com/documentation/uikit/uikeyboardtype) | KeyboardType.defaultType |
@@ -34,8 +34,8 @@ Hope you find it useful! Enjoy coding 🎉🎉🎉
 | `onSubmitted`     | ValueChanged\<String>  | Called when the user indicates that they are done editing the text in the field (https://api.flutter.dev/flutter/material/TextField/onSubmitted.html) | null |
 | `focusNode`       | FocusNode              | Defines the keyboard focus for this widget (https://api.flutter.dev/flutter/material/TextField/focusNode.html) | null |
 | `textAlign`       | TextAlign              | How the text should be aligned horizontally (https://api.flutter.dev/flutter/material/TextField/textAlign.html) | TextAlign.start |
+| `minLines`        | int                    | Minimum number of lines of text input widget | 1 |
 | `maxLines`        | int                    | Maximum number of lines of text input body, 0 for no limit | 1 |
-| `height`          | double                 | Height of this widget | 36.0 |
 
 ## More examples
 

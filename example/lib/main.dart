@@ -23,8 +23,8 @@ class _MyAppState extends State<MyApp> {
 class HomePage extends StatelessWidget {
   final FocusNode _focusNode = FocusNode();
 
-  _onChangeText(value) => debugPrint("inputValueChanged: $value");
-  _onSubmittedText(value) => debugPrint("onSubmitted: $value");
+  _onChangeText(value) => debugPrint("_onChangeText: $value");
+  _onSubmittedText(value) => debugPrint("_onSubmittedText: $value");
 
   @override
   Widget build(BuildContext context) {

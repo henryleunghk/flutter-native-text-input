@@ -46,7 +46,7 @@ class _MorePageState extends State<MorePage> {
           DemoItem(
               title: "Multiline Text Input",
               child: NativeTextInput(
-                height: 72,
+                minLines: 3,
                 maxLines: 0,
               )),
           DemoItem(
