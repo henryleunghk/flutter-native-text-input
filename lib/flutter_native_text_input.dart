@@ -122,12 +122,13 @@ class _NativeTextInputState extends State<NativeTextInput> {
   MethodChannel _channel;
 
   TextEditingController _controller;
-  TextEditingController get _effectiveController =>
-      widget.controller ?? (_controller ??= TextEditingController());
+  TextEditingController get _effectiveController => widget.controller ?? (_controller ??= TextEditingController());
 
   FocusNode _focusNode;
-  FocusNode get _effectiveFocusNode =>
-      widget.focusNode ?? (_focusNode ??= FocusNode());
+  FocusNode get _effectiveFocusNode => widget.focusNode ?? (_focusNode ??= FocusNode());
+
+  bool get _isMultiline => widget.maxLines > 1;
+  int _currentLineIndex = 1;
 
   @override
   void initState() {
@@ -145,8 +146,7 @@ class _NativeTextInputState extends State<NativeTextInput> {
 
     if (widget.controller != null) {
       widget.controller.addListener(() {
-        _channel
-            .invokeMethod("setText", {"text": widget.controller.text ?? ""});
+        _channel.invokeMethod("setText", {"text": widget.controller.text ?? ""});
       });
     }
   }
@@ -154,8 +154,7 @@ class _NativeTextInputState extends State<NativeTextInput> {
   @override
   Widget build(BuildContext context) {
     return ConstrainedBox(
-      constraints:
-          BoxConstraints(minHeight: widget.height, maxHeight: widget.height),
+      constraints: BoxConstraints(minHeight: widget.height, maxHeight: widget.height * _currentLineIndex),
       child: UiKitView(
           viewType: "flutter_native_text_input",
           creationParamsCodec: const StandardMessageCodec(),
@@ -165,8 +164,7 @@ class _NativeTextInputState extends State<NativeTextInput> {
   }
 
   void _createMethodChannel(int nativeViewId) {
-    _channel = MethodChannel("flutter_native_text_input$nativeViewId")
-      ..setMethodCallHandler(_onMethodCall);
+    _channel = MethodChannel("flutter_native_text_input$nativeViewId")..setMethodCallHandler(_onMethodCall);
   }
 
   Map<String, dynamic> _buildCreationParams() {
@@ -184,7 +182,8 @@ class _NativeTextInputState extends State<NativeTextInput> {
     switch (call.method) {
       case "inputValueChanged":
         final String text = call.arguments["text"];
-        _inputValueChanged(text);
+        final int lineIndex = call.arguments["currentLine"];
+        _inputValueChanged(text, lineIndex);
         return null;
 
       case "inputStarted":
@@ -197,8 +196,7 @@ class _NativeTextInputState extends State<NativeTextInput> {
         return null;
     }
 
-    throw MissingPluginException(
-        "NativeTextInput._onMethodCall: No handler for ${call.method}");
+    throw MissingPluginException("NativeTextInput._onMethodCall: No handler for ${call.method}");
   }
 
   // input control methods
@@ -215,9 +213,15 @@ class _NativeTextInputState extends State<NativeTextInput> {
     }
   }
 
-  void _inputValueChanged(String text) {
-    if (text != null && widget?.onChanged != null) {
-      widget.onChanged(text);
+  void _inputValueChanged(String text, int lineIndex) {
+    if (text != null) {
+      if (_isMultiline && _currentLineIndex != lineIndex && lineIndex <= widget.maxLines)
+        setState(() {
+          _currentLineIndex = lineIndex;
+        });
+
+      if (widget?.onChanged != null) widget.onChanged(text);
+      if (widget.controller != null) _effectiveController.text = text;
     }
   }
 
