@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_text_input/flutter_native_text_input.dart';
 import 'package:flutter_native_text_input_example/demo_item.dart';
-import 'package:flutter_native_text_input_example/more_page.dart';
+import 'package:flutter_native_text_input_example/more_use_case_listing_page.dart';
 
 void main() => runApp(MyApp());
 
@@ -59,7 +59,6 @@ class HomePage extends StatelessWidget {
             child: Platform.isIOS
                 ? NativeTextInput(
                     placeholder: "placeholder",
-                    textContentType: TextContentType.password,
                     keyboardType: KeyboardType.defaultType,
                     onChanged: _onChangeText,
                     onSubmitted: _onSubmittedText,
@@ -79,8 +78,8 @@ class HomePage extends StatelessWidget {
                 colorBrightness: Brightness.dark,
                 child: Text("View More Use Cases"),
                 onPressed: () {
-                  Navigator.of(context)
-                      .push(MaterialPageRoute(builder: (_) => MorePage()));
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (_) => MoreUseCaseListingPage()));
                 }),
           ),
         ],

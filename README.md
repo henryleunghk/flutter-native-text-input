@@ -41,7 +41,7 @@ Hope you find it useful! Enjoy coding 🎉🎉🎉
 
 You may find some example usages below:
 
-https://github.com/henryleunghk/flutter-native-text-input/blob/master/example/lib/more_page.dart
+https://github.com/henryleunghk/flutter-native-text-input/blob/master/example/lib/more_use_case_listing_page.dart
 
 ![](demo/more-examples.gif)
 

@@ -15,7 +15,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
-  flutter_native_text_input: 10d9e348e752337f2027d073e719d1b9ba56f76e
+  flutter_native_text_input: 349eb4c09599d2cbbf3c755fde7520874b1d17d1
 
 PODFILE CHECKSUM: aff02bfeed411c636180d6812254b2daeea14d09
 
