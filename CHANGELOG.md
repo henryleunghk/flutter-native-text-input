@@ -1,3 +1,7 @@
+## 0.1.1
+
+* update examples
+
 ## 0.1.0
 
 * support dynamic widget height with plugin documentation added
