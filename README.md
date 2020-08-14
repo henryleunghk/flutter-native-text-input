@@ -1,26 +1,23 @@
 # Native Text Input for Flutter
 
-A text input widget built with the use of `UITextView` for supporting native text view features. This package supports iOS only for now.
+A text input widget built using the native `UITextView` on iOS (this package only supports iOS for now).
 
 ## Installation
 
-https://pub.dev/packages/flutter_native_text_input/install
+Follow the instructions from https://pub.dev/packages/flutter_native_text_input/install
 
-## Why using this?
+## Why you should use this
 
-**Autocorrect tooltips don't appear on iOS**
-(https://github.com/flutter/flutter/issues/12920)
-
-Many iOS users have established a habit for using convenience features of native `UITextView`. No doubt that Flutter provides a lot of useful widgets. However, most Flutter developers should notice that `TextField` or `CupertinoTextField` provided by Flutter are not using native UI components and hence text input experience becomes different.
-
-Regarding this, this package aims to simply provide the interface to other developers to use native `UITextView` directly in your Flutter app.
+Many iOS users are used to the subtle features provided by the native `UITextView` throughout iOS. Even though Flutter provides a lot of useful widgets, many Flutter developers will notice that `TextField` or `CupertinoTextField` provided by Flutter are [not on par with their native counterpart][1].
 
 ![](demo/flutter-textfield.gif)
 ![](demo/native-textview.gif)
 
-The above is just showing one of missing features comparing Flutter `TextField` from native `UITextView`, there are some others your app users may find text inputs in your Flutter apps are different from others apps. Those features would be important if you are developing apps which involve composing a text message, messaging app for example.
+The above shows just one of the missing text editing features in Flutter's `TextField`, when comparing to the native `UITextView`. Features like these are especially important if you're building an app that involves a lot of text composition (messaging, editing document, and so on).
 
-Hope you find it useful! Enjoy coding 🎉🎉🎉
+To address this, this package simply wraps the native `UITextView` as a Flutter widget.
+
+Hope you find it useful and happy coding! 🎉🎉🎉
 
 ## Plugin API
 
@@ -39,12 +36,13 @@ Hope you find it useful! Enjoy coding 🎉🎉🎉
 
 ## More examples
 
-You may find some example usages below:
-
-https://github.com/henryleunghk/flutter-native-text-input/blob/master/example/lib/more_use_case_listing_page.dart
+You may find more usage examples [here][2].
 
 ![](demo/more-examples.gif)
 
 ## License
 
-This project is licenced under the [MIT License](https://opensource.org/licenses/mit-license.html).
+This project is licensed under the [MIT License](https://opensource.org/licenses/mit-license.html).
+
+[1]: https://github.com/flutter/flutter/issues/12920
+[2]: https://github.com/henryleunghk/flutter-native-text-input/blob/master/example/lib/more_use_case_listing_page.dart
