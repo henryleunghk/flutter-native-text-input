@@ -235,10 +235,13 @@ class _NativeTextInputState extends State<NativeTextInput> {
     if (text != null) {
       if (_isMultiline &&
           _currentLineIndex != lineIndex &&
-          lineIndex <= widget.maxLines)
+          lineIndex <= widget.maxLines) {
         setState(() {
           _currentLineIndex = lineIndex;
         });
+      } else {
+        _currentLineIndex = 0;
+      }
 
       if (widget?.onChanged != null) widget.onChanged(text);
       if (widget.controller != null) _effectiveController.text = text;

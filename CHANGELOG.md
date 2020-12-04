@@ -1,3 +1,7 @@
+## 0.1.2
+
+* fix input height not returning default on clearing multi-line text
+
 ## 0.1.1
 
 * update examples
