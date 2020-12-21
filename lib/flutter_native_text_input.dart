@@ -69,10 +69,31 @@ enum KeyboardType {
   asciiCapableNumberPad
 }
 
+class NativeTextInputController {
+  _NativeTextInputState _nativeTextInputState;
+
+  void _addState(_NativeTextInputState nativeTextInputState) {
+    this._nativeTextInputState = nativeTextInputState;
+  }
+
+  /// Determine if the CustomWidgetController is attached to an instance
+  /// of the CustomWidget (this property must return true before any other
+  /// functions can be used)
+  bool get isAttached => _nativeTextInputState != null;
+
+  /// Here is the method you are exposing
+  void emptyText() {
+    assert(isAttached,
+        "NativeTextInputController must be attached to a NativeTextInputState");
+    _nativeTextInputState.emptyText();
+  }
+}
+
 class NativeTextInput extends StatefulWidget {
   const NativeTextInput({
     Key key,
     this.controller,
+    this.nativeTextInputController,
     this.placeholder,
     this.textContentType,
     this.keyboardType = KeyboardType.defaultType,
@@ -88,6 +109,8 @@ class NativeTextInput extends StatefulWidget {
   ///
   /// If null, this widget will create its own [TextEditingController].
   final TextEditingController controller;
+
+  final NativeTextInputController nativeTextInputController;
 
   /// A lighter colored placeholder hint that appears on the first line of the
   /// text field when the text entry is empty.
@@ -146,6 +169,10 @@ class _NativeTextInputState extends State<NativeTextInput> {
       });
     }
 
+    if (widget.nativeTextInputController != null) {
+      widget.nativeTextInputController._addState(this);
+    }
+
     if (widget.controller != null) {
       widget.controller.addListener(() {
         _channel
@@ -165,6 +192,10 @@ class _NativeTextInputState extends State<NativeTextInput> {
           creationParams: _buildCreationParams(),
           onPlatformViewCreated: _createMethodChannel),
     );
+  }
+
+  emptyText() {
+    _channel.invokeMethod("setText", {"text": ""});
   }
 
   void _createMethodChannel(int nativeViewId) {

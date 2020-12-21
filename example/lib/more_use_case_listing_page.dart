@@ -10,6 +10,8 @@ class MoreUseCaseListingPage extends StatefulWidget {
 class _MoreUseCaseListingPageState extends State<MoreUseCaseListingPage> {
   final FocusNode _focusNode = FocusNode();
   final TextEditingController _changeTextController = TextEditingController();
+  final NativeTextInputController _nativeTextInputController =
+      NativeTextInputController();
 
   String _currentTextInput = '';
 
@@ -125,6 +127,24 @@ class _MoreUseCaseListingPageState extends State<MoreUseCaseListingPage> {
                         controller: _changeTextController,
                         onChanged: _onChangeText,
                         onSubmitted: _onSubmittedText,
+                      )
+                    ],
+                  )),
+              DemoItem(
+                  title: "Empty Text Programmatically",
+                  child: Column(
+                    children: [
+                      FlatButton(
+                        color: Colors.blue,
+                        colorBrightness: Brightness.dark,
+                        child: Text("Tap Me!"),
+                        onPressed: () => _nativeTextInputController.emptyText(),
+                      ),
+                      NativeTextInput(
+                        textAlign: TextAlign.right,
+                        minLines: 1,
+                        maxLines: 5,
+                        nativeTextInputController: _nativeTextInputController,
                       )
                     ],
                   )),
