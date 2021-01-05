@@ -18,6 +18,14 @@ class _MoreUseCaseListingPageState extends State<MoreUseCaseListingPage> {
   _onChangeText(value) => debugPrint("_onChangeText: $value");
   _onSubmittedText(value) => debugPrint("_onSubmittedText: $value");
 
+  void _onChangeTextWithLines(String text, int linesCount) {
+    debugPrint("_onChangeTextWithLines: $text, $linesCount");
+  }
+
+  void _onSubmittedTextWithLines(String text, int linesCount) {
+    debugPrint("_onSubmittedTextWithLines: $text, $linesCount");
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -143,8 +151,10 @@ class _MoreUseCaseListingPageState extends State<MoreUseCaseListingPage> {
                       NativeTextInput(
                         textAlign: TextAlign.right,
                         minLines: 1,
-                        maxLines: 5,
+                        maxLines: 0,
                         nativeTextInputController: _nativeTextInputController,
+                        onChangedWithLines: _onChangeTextWithLines,
+                        onSubmittedWithLines: _onSubmittedTextWithLines,
                       )
                     ],
                   )),

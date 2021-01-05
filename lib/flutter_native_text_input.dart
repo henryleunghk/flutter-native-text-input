@@ -2,6 +2,8 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 
+typedef NativeTextValueChanged = void Function(String text, int linesCount);
+
 enum TextContentType {
   name,
   namePrefix,
@@ -98,7 +100,9 @@ class NativeTextInput extends StatefulWidget {
     this.textContentType,
     this.keyboardType = KeyboardType.defaultType,
     this.onChanged,
+    this.onChangedWithLines,
     this.onSubmitted,
+    this.onSubmittedWithLines,
     this.focusNode,
     this.textAlign = TextAlign.start,
     this.minLines = 1,
@@ -126,8 +130,10 @@ class NativeTextInput extends StatefulWidget {
   final KeyboardType keyboardType;
 
   final ValueChanged<String> onChanged;
+  final NativeTextValueChanged onChangedWithLines;
 
   final ValueChanged<String> onSubmitted;
+  final NativeTextValueChanged onSubmittedWithLines;
 
   final FocusNode focusNode;
 
@@ -260,6 +266,9 @@ class _NativeTextInputState extends State<NativeTextInput> {
     if (widget?.onSubmitted != null) {
       widget.onSubmitted(text);
     }
+    if (widget?.onSubmittedWithLines != null) {
+      widget.onSubmittedWithLines(text, _currentLineIndex);
+    }
   }
 
   void _inputValueChanged(String text, int lineIndex) {
@@ -275,6 +284,8 @@ class _NativeTextInputState extends State<NativeTextInput> {
       }
 
       if (widget?.onChanged != null) widget.onChanged(text);
+      if (widget?.onChangedWithLines != null)
+        widget.onChangedWithLines(text, lineIndex);
       if (widget.controller != null) _effectiveController.text = text;
     }
   }
