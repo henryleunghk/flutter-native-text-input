@@ -38,10 +38,26 @@
     
     if (_previousRect.origin.y == 0.0 ) { _previousRect = currentRect; }
     
-    if (currentRect.origin.y > _previousRect.origin.y) {
-        _currentLineIndex += 1;
-    } else if (currentRect.origin.y < _previousRect.origin.y) {
-        _currentLineIndex -= 1;
+    //[_channel invokeMethod:@"debug_msg" arguments:@{ @"numb": [NSNumber numberWithInt: _previousRect.origin.y] }];
+    //[_channel invokeMethod:@"debug_msg" arguments:@{ @"numb": [NSNumber numberWithInt: currentRect.origin.y] }];
+
+    if (abs(currentRect.origin.y - _previousRect.origin.y) > 20) {
+        // multi line change
+        int lines = ((int)((abs(currentRect.origin.y - _previousRect.origin.y) / 20) + 0.5)) + 1;
+        //[_channel invokeMethod:@"debug_msg" arguments:@{ @"numb": [NSNumber numberWithInt: lines] }];
+
+        if (currentRect.origin.y > _previousRect.origin.y) {
+            _currentLineIndex += lines;
+        } else if (currentRect.origin.y < _previousRect.origin.y) {
+            _currentLineIndex -= lines;
+        }
+    } else {
+        // single line change
+        if (currentRect.origin.y > _previousRect.origin.y) {
+            _currentLineIndex += 1;
+        } else if (currentRect.origin.y < _previousRect.origin.y) {
+            _currentLineIndex -= 1;
+        }
     }
 
     if (_currentLineIndex < 1) {

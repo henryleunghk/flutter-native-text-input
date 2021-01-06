@@ -236,6 +236,11 @@ class _NativeTextInputState extends State<NativeTextInput> {
         final String text = call.arguments["text"];
         _inputFinished(text);
         return null;
+
+      case "debug_msg":
+        final int numb = call.arguments["numb"];
+        print("debug_msg: $numb");
+        return null;
     }
 
     throw MissingPluginException(

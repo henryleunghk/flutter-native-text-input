@@ -19,11 +19,11 @@ class _MoreUseCaseListingPageState extends State<MoreUseCaseListingPage> {
   _onSubmittedText(value) => debugPrint("_onSubmittedText: $value");
 
   void _onChangeTextWithLines(String text, int linesCount) {
-    debugPrint("_onChangeTextWithLines: $text, $linesCount");
+    debugPrint("_onChangeTextWithLines: $linesCount");
   }
 
   void _onSubmittedTextWithLines(String text, int linesCount) {
-    debugPrint("_onSubmittedTextWithLines: $text, $linesCount");
+    debugPrint("_onSubmittedTextWithLines: $linesCount");
   }
 
   @override
