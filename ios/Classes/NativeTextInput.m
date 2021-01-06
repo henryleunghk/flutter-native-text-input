@@ -58,6 +58,8 @@
         [self onFocus:call result:result];
     } else if ([[call method] isEqualToString:@"setText"]) {
         [self onSetText:call result:result];
+    } else if ([[call method] isEqualToString:@"emptyText"]) {
+        [self onEmptyText:call result:result];
     } else {
         result(FlutterMethodNotImplemented);
     }
@@ -75,6 +77,12 @@
 
 - (void)onSetText:(FlutterMethodCall*)call result:(FlutterResult)result {
     _textView.text = call.arguments[@"text"];
+    result(nil);
+}
+
+- (void)onEmptyText:(FlutterMethodCall*)call result:(FlutterResult)result {
+    _textView.text = @"";
+    [_delegate resetLineIndex];
     result(nil);
 }
 

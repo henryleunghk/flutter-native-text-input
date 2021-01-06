@@ -6,6 +6,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface NativeTextInputDelegate : NSObject <UITextViewDelegate>
 
 - (instancetype)initWithChannel:(FlutterMethodChannel*)channel arguments:(id _Nullable)args;
+- (void)resetLineIndex;
 
 @end
 

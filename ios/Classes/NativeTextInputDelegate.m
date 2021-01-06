@@ -18,6 +18,11 @@
     return self;
 }
 
+- (void)resetLineIndex {
+    _previousRect = CGRectZero;
+    _currentLineIndex = 1;
+}
+
 - (void)textViewDidBeginEditing:(UITextView *)textView {
     if ([textView.text isEqualToString:_args[@"placeholder"]]) {
         textView.text = @"";

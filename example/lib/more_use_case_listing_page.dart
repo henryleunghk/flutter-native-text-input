@@ -146,7 +146,10 @@ class _MoreUseCaseListingPageState extends State<MoreUseCaseListingPage> {
                         color: Colors.blue,
                         colorBrightness: Brightness.dark,
                         child: Text("Tap Me!"),
-                        onPressed: () => _nativeTextInputController.emptyText(),
+                        onPressed: () {
+                          print('_nativeTextInputController.emptyText !!');
+                          _nativeTextInputController.emptyText();
+                        },
                       ),
                       NativeTextInput(
                         textAlign: TextAlign.right,
