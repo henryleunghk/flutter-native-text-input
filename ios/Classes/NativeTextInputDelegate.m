@@ -43,6 +43,10 @@
     } else if (currentRect.origin.y < _previousRect.origin.y) {
         _currentLineIndex -= 1;
     }
+
+    if (_currentLineIndex < 1) {
+        _currentLineIndex = 1;
+    }
     
     _previousRect = currentRect;
     
