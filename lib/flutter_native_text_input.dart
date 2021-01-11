@@ -205,6 +205,10 @@ class _NativeTextInputState extends State<NativeTextInput> {
 
   emptyText() {
     _channel.invokeMethod("emptyText");
+
+    setState(() {
+      _currentLineIndex = 1;
+    });
   }
 
   void _createMethodChannel(int nativeViewId) {
