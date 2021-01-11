@@ -153,6 +153,7 @@ class _MoreUseCaseListingPageState extends State<MoreUseCaseListingPage> {
                       ),
                       NativeTextInput(
                         textAlign: TextAlign.right,
+                        autoHeightMaxLines: 5,
                         minLines: 1,
                         maxLines: 0,
                         nativeTextInputController: _nativeTextInputController,

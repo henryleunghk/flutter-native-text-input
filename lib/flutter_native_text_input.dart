@@ -107,6 +107,7 @@ class NativeTextInput extends StatefulWidget {
     this.textAlign = TextAlign.start,
     this.minLines = 1,
     this.maxLines = 1,
+    this.autoHeightMaxLines = 1,
   }) : super(key: key);
 
   /// Controls the text being edited.
@@ -142,6 +143,8 @@ class NativeTextInput extends StatefulWidget {
   final int maxLines;
 
   final int minLines;
+
+  final int autoHeightMaxLines;
 
   @override
   State<StatefulWidget> createState() => _NativeTextInputState();
@@ -252,11 +255,19 @@ class _NativeTextInputState extends State<NativeTextInput> {
   }
 
   double _maxHeight() {
-    return _isMultiline
-        ? (22.0 * _currentLineIndex > _minHeight()
-            ? 22.0 * _currentLineIndex
-            : _minHeight())
-        : 36.0;
+    if (_isMultiline) {
+      if (22.0 * _currentLineIndex > _minHeight()) {
+        if (_currentLineIndex <= widget.autoHeightMaxLines ||
+            widget.autoHeightMaxLines == 0) {
+          return 22.0 * _currentLineIndex;
+        } else {
+          return 22.0 * widget.autoHeightMaxLines;
+        }
+      } else {
+        return _minHeight();
+      }
+    }
+    return 36.0;
   }
 
   // input control methods
@@ -280,7 +291,7 @@ class _NativeTextInputState extends State<NativeTextInput> {
     if (text != null) {
       if (_isMultiline &&
           _currentLineIndex != lineIndex &&
-          lineIndex <= widget.maxLines) {
+          (lineIndex <= widget.maxLines || widget.maxLines == 0)) {
         setState(() {
           _currentLineIndex = lineIndex;
         });
