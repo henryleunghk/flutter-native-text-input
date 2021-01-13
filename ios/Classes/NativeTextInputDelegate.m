@@ -39,7 +39,7 @@
     if (_previousRect.origin.y == 0.0 ) { _previousRect = currentRect; }
     
     //[_channel invokeMethod:@"debug_msg" arguments:@{ @"numb": [NSNumber numberWithInt: _previousRect.origin.y] }];
-    //[_channel invokeMethod:@"debug_msg" arguments:@{ @"numb": [NSNumber numberWithInt: currentRect.origin.y] }];
+    // [_channel invokeMethod:@"debug_msg" arguments:@{ @"numb": [NSNumber numberWithInt: currentRect.origin.y] }];
 
     if (abs(currentRect.origin.y - _previousRect.origin.y) > 20) {
         // multi line change
@@ -68,7 +68,7 @@
     
     textView.textColor = textView.text == 0 ? UIColor.lightTextColor : UIColor.blackColor;
     
-    [_channel invokeMethod:@"inputValueChanged" arguments:@{ @"text": textView.text, @"currentLine": [NSNumber numberWithInt: _currentLineIndex] }];
+    [_channel invokeMethod:@"inputValueChanged" arguments:@{ @"text": textView.text, @"currentLine": [NSNumber numberWithInt: _currentLineIndex], @"height": [NSNumber numberWithInt: currentRect.origin.y] }];
 }
 
 - (void)textViewDidEndEditing:(UITextView *)textView {

@@ -108,6 +108,7 @@ class NativeTextInput extends StatefulWidget {
     this.minLines = 1,
     this.maxLines = 1,
     this.autoHeightMaxLines = 1,
+    this.autoHeightMaxHeight = 0,
   }) : super(key: key);
 
   /// Controls the text being edited.
@@ -145,6 +146,7 @@ class NativeTextInput extends StatefulWidget {
   final int minLines;
 
   final int autoHeightMaxLines;
+  final int autoHeightMaxHeight;
 
   @override
   State<StatefulWidget> createState() => _NativeTextInputState();
@@ -163,6 +165,7 @@ class _NativeTextInputState extends State<NativeTextInput> {
 
   bool get _isMultiline => widget.maxLines == 0 || widget.maxLines > 1;
   int _currentLineIndex = 1;
+  int _currentHeight = 1;
 
   @override
   void initState() {
@@ -208,6 +211,7 @@ class _NativeTextInputState extends State<NativeTextInput> {
 
     setState(() {
       _currentLineIndex = 1;
+      _currentHeight = 1;
     });
   }
 
@@ -232,7 +236,8 @@ class _NativeTextInputState extends State<NativeTextInput> {
       case "inputValueChanged":
         final String text = call.arguments["text"];
         final int lineIndex = call.arguments["currentLine"];
-        _inputValueChanged(text, lineIndex);
+        final int height = call.arguments["height"];
+        _inputValueChanged(text, lineIndex, height);
         return null;
 
       case "inputStarted":
@@ -260,16 +265,30 @@ class _NativeTextInputState extends State<NativeTextInput> {
 
   double _maxHeight() {
     if (_isMultiline) {
-      if (22.0 * _currentLineIndex > _minHeight()) {
-        if (_currentLineIndex <= widget.autoHeightMaxLines ||
-            widget.autoHeightMaxLines == 0) {
-          return 22.0 * _currentLineIndex;
-        } else {
-          return 22.0 * widget.autoHeightMaxLines;
+      double res = _minHeight();
+
+      // calculate based on height
+      if (widget.autoHeightMaxHeight > 0) {
+        if (_currentHeight > res) {
+          if (_currentHeight < widget.autoHeightMaxHeight) {
+            res = _currentHeight * 1.0;
+          } else {
+            res = widget.autoHeightMaxHeight * 1.0;
+          }
         }
+        // calculate based on lines
       } else {
-        return _minHeight();
+        if (22.0 * _currentLineIndex > res) {
+          if (_currentLineIndex <= widget.autoHeightMaxLines ||
+              widget.autoHeightMaxLines == 0) {
+            res = 22.0 * _currentLineIndex;
+          } else {
+            res = 22.0 * widget.autoHeightMaxLines;
+          }
+        }
       }
+
+      return res;
     }
     return 36.0;
   }
@@ -291,8 +310,15 @@ class _NativeTextInputState extends State<NativeTextInput> {
     }
   }
 
-  void _inputValueChanged(String text, int lineIndex) {
+  void _inputValueChanged(String text, int lineIndex, int height) {
     if (text != null) {
+      if (_isMultiline &&
+          _currentHeight != height &&
+          widget.autoHeightMaxHeight > 0) {
+        setState(() {
+          _currentHeight = height;
+        });
+      }
       if (_isMultiline &&
           _currentLineIndex != lineIndex &&
           (lineIndex <= widget.maxLines || widget.maxLines == 0)) {

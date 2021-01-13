@@ -10,21 +10,11 @@ class MoreUseCaseListingPage extends StatefulWidget {
 class _MoreUseCaseListingPageState extends State<MoreUseCaseListingPage> {
   final FocusNode _focusNode = FocusNode();
   final TextEditingController _changeTextController = TextEditingController();
-  final NativeTextInputController _nativeTextInputController =
-      NativeTextInputController();
 
   String _currentTextInput = '';
 
   _onChangeText(value) => debugPrint("_onChangeText: $value");
   _onSubmittedText(value) => debugPrint("_onSubmittedText: $value");
-
-  void _onChangeTextWithLines(String text, int linesCount) {
-    debugPrint("_onChangeTextWithLines: $linesCount");
-  }
-
-  void _onSubmittedTextWithLines(String text, int linesCount) {
-    debugPrint("_onSubmittedTextWithLines: $linesCount");
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -135,30 +125,6 @@ class _MoreUseCaseListingPageState extends State<MoreUseCaseListingPage> {
                         controller: _changeTextController,
                         onChanged: _onChangeText,
                         onSubmitted: _onSubmittedText,
-                      )
-                    ],
-                  )),
-              DemoItem(
-                  title: "Empty Text Programmatically",
-                  child: Column(
-                    children: [
-                      FlatButton(
-                        color: Colors.blue,
-                        colorBrightness: Brightness.dark,
-                        child: Text("Tap Me!"),
-                        onPressed: () {
-                          print('_nativeTextInputController.emptyText !!');
-                          _nativeTextInputController.emptyText();
-                        },
-                      ),
-                      NativeTextInput(
-                        textAlign: TextAlign.right,
-                        autoHeightMaxLines: 5,
-                        minLines: 1,
-                        maxLines: 0,
-                        nativeTextInputController: _nativeTextInputController,
-                        onChangedWithLines: _onChangeTextWithLines,
-                        onSubmittedWithLines: _onSubmittedTextWithLines,
                       )
                     ],
                   )),

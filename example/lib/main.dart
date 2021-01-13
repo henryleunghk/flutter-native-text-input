@@ -23,8 +23,19 @@ class _MyAppState extends State<MyApp> {
 class HomePage extends StatelessWidget {
   final FocusNode _focusNode = FocusNode();
 
+  final NativeTextInputController _nativeTextInputController =
+      NativeTextInputController();
+
   _onChangeText(value) => debugPrint("_onChangeText: $value");
   _onSubmittedText(value) => debugPrint("_onSubmittedText: $value");
+
+  void _onChangeTextWithLines(String text, int linesCount) {
+    debugPrint("_onChangeTextWithLines: $linesCount");
+  }
+
+  void _onSubmittedTextWithLines(String text, int linesCount) {
+    debugPrint("_onSubmittedTextWithLines: $linesCount");
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,6 +45,31 @@ class HomePage extends StatelessWidget {
       ),
       body: ListView(
         children: <Widget>[
+          DemoItem(
+              title: "Empty Text Programmatically",
+              child: Column(
+                children: [
+                  FlatButton(
+                    color: Colors.blue,
+                    colorBrightness: Brightness.dark,
+                    child: Text("Tap Me!"),
+                    onPressed: () {
+                      print('_nativeTextInputController.emptyText !!');
+                      _nativeTextInputController.emptyText();
+                    },
+                  ),
+                  NativeTextInput(
+                    // textAlign: TextAlign.right,
+                    autoHeightMaxLines: 5,
+                    // autoHeightMaxHeight: 150,
+                    minLines: 1,
+                    maxLines: 0,
+                    nativeTextInputController: _nativeTextInputController,
+                    onChangedWithLines: _onChangeTextWithLines,
+                    onSubmittedWithLines: _onSubmittedTextWithLines,
+                  )
+                ],
+              )),
           DemoItem(
             title: 'Flutter TextField Example Usage',
             child: TextField(
