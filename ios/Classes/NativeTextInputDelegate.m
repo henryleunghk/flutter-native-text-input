@@ -13,14 +13,14 @@
         _channel = channel;
         _args = args;
         _previousRect = CGRectZero;
-        _currentLineIndex = 1;
+        _currentLineIndex = 0;
     }
     return self;
 }
 
 - (void)resetLineIndex {
     _previousRect = CGRectZero;
-    _currentLineIndex = 1;
+    _currentLineIndex = 0;
 }
 
 - (void)textViewDidBeginEditing:(UITextView *)textView {
@@ -36,15 +36,15 @@
     UITextPosition *position = [textView endOfDocument];
     CGRect currentRect = [textView caretRectForPosition:position];
     
-    if (_previousRect.origin.y == 0.0 ) { _previousRect = currentRect; }
+    // if (_previousRect.origin.y == 0.0 ) { _previousRect = currentRect; }
     
-    //[_channel invokeMethod:@"debug_msg" arguments:@{ @"numb": [NSNumber numberWithInt: _previousRect.origin.y] }];
+    // [_channel invokeMethod:@"debug_msg" arguments:@{ @"numb": [NSNumber numberWithInt: _previousRect.origin.y] }];
     // [_channel invokeMethod:@"debug_msg" arguments:@{ @"numb": [NSNumber numberWithInt: currentRect.origin.y] }];
 
-    if (abs(currentRect.origin.y - _previousRect.origin.y) > 20) {
+    if (abs(currentRect.origin.y - _previousRect.origin.y) > 22) {
         // multi line change
-        int lines = ((int)((abs(currentRect.origin.y - _previousRect.origin.y) / 20) + 0.5)) + 1;
-        //[_channel invokeMethod:@"debug_msg" arguments:@{ @"numb": [NSNumber numberWithInt: lines] }];
+        int lines = ((int)((abs(currentRect.origin.y - _previousRect.origin.y) / 22) + 0.5)) + 1;
+        // [_channel invokeMethod:@"debug_msg" arguments:@{ @"numb": [NSNumber numberWithInt: lines] }];
 
         if (currentRect.origin.y > _previousRect.origin.y) {
             _currentLineIndex += lines;
