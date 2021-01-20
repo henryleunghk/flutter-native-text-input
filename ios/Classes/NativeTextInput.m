@@ -81,8 +81,10 @@
 }
 
 - (void)onEmptyText:(FlutterMethodCall*)call result:(FlutterResult)result {
-    _textView.text = @"";
-    [_delegate resetLineIndex];
+    if (_textView.text.length > 0) {
+        _textView.text = @"";
+        [_delegate resetLineIndex];
+    }
     result(nil);
 }
 
