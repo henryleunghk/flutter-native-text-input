@@ -89,6 +89,12 @@ class NativeTextInputController {
         "NativeTextInputController must be attached to a NativeTextInputState");
     _nativeTextInputState.emptyText();
   }
+
+  void setText(String text) {
+    assert(isAttached,
+        "NativeTextInputController must be attached to a NativeTextInputState");
+    _nativeTextInputState.setText(text);
+  }
 }
 
 class NativeTextInput extends StatefulWidget {
@@ -213,6 +219,11 @@ class _NativeTextInputState extends State<NativeTextInput> {
       _currentLineIndex = 1;
       _currentHeight = 1;
     });
+  }
+
+  setText(String text) {
+    emptyText();
+    _channel.invokeMethod("setText", {"text": text ?? ""});
   }
 
   void _createMethodChannel(int nativeViewId) {

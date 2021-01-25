@@ -76,7 +76,8 @@
 }
 
 - (void)onSetText:(FlutterMethodCall*)call result:(FlutterResult)result {
-    _textView.text = call.arguments[@"text"];
+    //_textView.text = call.arguments[@"text"];
+    [_textView insertText:call.arguments[@"text"]];
     result(nil);
 }
 

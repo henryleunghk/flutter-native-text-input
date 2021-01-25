@@ -52,10 +52,29 @@ class HomePage extends StatelessWidget {
                   FlatButton(
                     color: Colors.blue,
                     colorBrightness: Brightness.dark,
-                    child: Text("Tap Me!"),
+                    child: Text("emptyText"),
                     onPressed: () {
                       print('_nativeTextInputController.emptyText !!');
                       _nativeTextInputController.emptyText();
+                    },
+                  ),
+                  FlatButton(
+                    color: Colors.blue,
+                    colorBrightness: Brightness.dark,
+                    child: Text("setText single"),
+                    onPressed: () {
+                      print('_nativeTextInputController.setText !!');
+                      _nativeTextInputController.setText("shay dadosh");
+                    },
+                  ),
+                  FlatButton(
+                    color: Colors.blue,
+                    colorBrightness: Brightness.dark,
+                    child: Text("setText multi"),
+                    onPressed: () {
+                      print('_nativeTextInputController.setText !!');
+                      _nativeTextInputController
+                          .setText("shay dadosh 1\nhello world 2\nline 3");
                     },
                   ),
                   NativeTextInput(
