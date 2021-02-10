@@ -5,15 +5,19 @@
     id _Nullable _args;
     CGRect _previousRect;
     int _currentLineIndex;
+    NSTextAlignment _taTextAlign;
+    NSTextAlignment _taPlaceholderTextAlign;
 }
 
-- (instancetype)initWithChannel:(FlutterMethodChannel*)channel arguments:(id _Nullable)args {
+- (instancetype)initWithChannel:(FlutterMethodChannel*)channel arguments:(id _Nullable)args paramTextAlign:(NSTextAlignment)taTextAlign paramPlaceholderTextAlign:(NSTextAlignment)taPlaceholderTextAlign {
     self = [super init];
     if (self) {
         _channel = channel;
         _args = args;
         _previousRect = CGRectZero;
         _currentLineIndex = 0;
+        _taTextAlign = taTextAlign;
+        _taPlaceholderTextAlign = taPlaceholderTextAlign;
     }
     return self;
 }
@@ -27,6 +31,7 @@
     if ([textView.text isEqualToString:_args[@"placeholder"]]) {
         textView.text = @"";
         textView.textColor = UIColor.blackColor;
+        textView.textAlignment = _taTextAlign;
     }
     [_channel invokeMethod:@"inputStarted"
                  arguments:nil];
@@ -75,6 +80,7 @@
     if (textView.text.length == 0) {
         textView.text = _args[@"placeholder"];
         textView.textColor = UIColor.lightGrayColor;
+        textView.textAlignment = _taPlaceholderTextAlign;
     }
     [_channel invokeMethod:@"inputFinished"
                  arguments:@{ @"text": textView.text }];

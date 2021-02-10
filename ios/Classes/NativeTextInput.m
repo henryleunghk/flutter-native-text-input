@@ -34,13 +34,22 @@
             _textView.text = args[@"text"];
             _textView.textColor = UIColor.blackColor;
         }
-        
+
+        NSTextAlignment taTextAlign = _textView.textAlignment;
+        NSTextAlignment taPlaceholderTextAlign = _textView.textAlignment;
+
+        if (![args[@"textAlign"] isEqualToString:args[@"placeholderTextAlign"]]) {
+            if (![args[@"placeholder"] isEqualToString:@""]) {
+               _textView.textAlignment = [self textAlignmentFromString:args[@"placeholderTextAlign"]];
+               taPlaceholderTextAlign = _textView.textAlignment;
+            }
+        }
         
         if (@available(iOS 10.0, *)) {
             _textView.textContentType = [self textContentTypeFromString:args[@"textContentType"]];
         }
         
-        _delegate = [[NativeTextInputDelegate alloc] initWithChannel:_channel arguments:args];
+        _delegate = [[NativeTextInputDelegate alloc] initWithChannel:_channel arguments:args paramTextAlign:taTextAlign paramPlaceholderTextAlign:taPlaceholderTextAlign];
         _textView.delegate = _delegate;
         
         __weak __typeof__(self) weakSelf = self;

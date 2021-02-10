@@ -5,7 +5,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface NativeTextInputDelegate : NSObject <UITextViewDelegate>
 
-- (instancetype)initWithChannel:(FlutterMethodChannel*)channel arguments:(id _Nullable)args;
+- (instancetype)initWithChannel:(FlutterMethodChannel*)channel arguments:(id _Nullable)args paramTextAlign:(NSTextAlignment)taTextAlign paramPlaceholderTextAlign:(NSTextAlignment)taPlaceholderTextAlign;
 - (void)resetLineIndex;
 
 @end

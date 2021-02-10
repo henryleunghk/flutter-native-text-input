@@ -77,12 +77,32 @@ class HomePage extends StatelessWidget {
                           .setText("shay dadosh 1\nhello world 2\nline 3");
                     },
                   ),
+                  FlatButton(
+                    color: Colors.blue,
+                    colorBrightness: Brightness.dark,
+                    child: Text("setText empty"),
+                    onPressed: () {
+                      print('_nativeTextInputController.setText !!');
+                      _nativeTextInputController.setText("");
+                    },
+                  ),
+                  FlatButton(
+                    color: Colors.blue,
+                    colorBrightness: Brightness.dark,
+                    child: Text("setText null"),
+                    onPressed: () {
+                      print('_nativeTextInputController.setText !!');
+                      _nativeTextInputController.setText(null);
+                    },
+                  ),
                   NativeTextInput(
                     // textAlign: TextAlign.right,
                     autoHeightMaxLines: 5,
                     // autoHeightMaxHeight: 150,
                     minLines: 1,
                     maxLines: 0,
+                    placeholder: "type..",
+                    placeholderTextAlign: TextAlign.left,
                     nativeTextInputController: _nativeTextInputController,
                     onChangedWithLines: _onChangeTextWithLines,
                     onSubmittedWithLines: _onSubmittedTextWithLines,

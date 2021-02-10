@@ -111,6 +111,7 @@ class NativeTextInput extends StatefulWidget {
     this.onSubmittedWithLines,
     this.focusNode,
     this.textAlign = TextAlign.start,
+    this.placeholderTextAlign = TextAlign.start,
     this.minLines = 1,
     this.maxLines = 1,
     this.autoHeightMaxLines = 1,
@@ -145,6 +146,7 @@ class NativeTextInput extends StatefulWidget {
 
   final FocusNode focusNode;
 
+  final TextAlign placeholderTextAlign;
   final TextAlign textAlign;
 
   final int maxLines;
@@ -235,6 +237,7 @@ class _NativeTextInputState extends State<NativeTextInput> {
     return {
       "text": _effectiveController.text ?? "",
       "placeholder": widget.placeholder ?? "",
+      "placeholderTextAlign": widget.placeholderTextAlign.toString(),
       "textContentType": widget.textContentType?.toString(),
       "keyboardType": widget.keyboardType?.toString(),
       "textAlign": widget.textAlign.toString(),
