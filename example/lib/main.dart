@@ -101,6 +101,7 @@ class HomePage extends StatelessWidget {
                     // autoHeightMaxHeight: 150,
                     minLines: 1,
                     maxLines: 0,
+                    startText: 'hello',
                     placeholder: "type..",
                     placeholderTextAlign: TextAlign.left,
                     nativeTextInputController: _nativeTextInputController,

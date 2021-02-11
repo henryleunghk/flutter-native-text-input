@@ -102,6 +102,7 @@ class NativeTextInput extends StatefulWidget {
     Key key,
     this.controller,
     this.nativeTextInputController,
+    this.startText,
     this.placeholder,
     this.textContentType,
     this.keyboardType = KeyboardType.defaultType,
@@ -124,6 +125,8 @@ class NativeTextInput extends StatefulWidget {
   final TextEditingController controller;
 
   final NativeTextInputController nativeTextInputController;
+
+  final String startText;
 
   /// A lighter colored placeholder hint that appears on the first line of the
   /// text field when the text entry is empty.
@@ -235,7 +238,7 @@ class _NativeTextInputState extends State<NativeTextInput> {
 
   Map<String, dynamic> _buildCreationParams() {
     return {
-      "text": _effectiveController.text ?? "",
+      "text": widget.startText ?? _effectiveController.text ?? "",
       "placeholder": widget.placeholder ?? "",
       "placeholderTextAlign": widget.placeholderTextAlign.toString(),
       "textContentType": widget.textContentType?.toString(),
