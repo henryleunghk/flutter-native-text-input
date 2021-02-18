@@ -41,6 +41,8 @@
     UITextPosition *position = [textView endOfDocument];
     CGRect currentRect = [textView caretRectForPosition:position];
     
+    // https://github.com/KennethTsang/GrowingTextView
+
     // if (_previousRect.origin.y == 0.0 ) { _previousRect = currentRect; }
     
     // [_channel invokeMethod:@"debug_msg" arguments:@{ @"numb": [NSNumber numberWithInt: _previousRect.origin.y] }];

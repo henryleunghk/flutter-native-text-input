@@ -23,13 +23,16 @@
         _textView = [[UITextView alloc] initWithFrame:frame];
         _textView.text = args[@"placeholder"];
         _textView.textColor = UIColor.lightGrayColor;
-        _textView.font = [UIFont systemFontOfSize:16];
         _textView.backgroundColor = UIColor.clearColor;
         _textView.keyboardType = [self keyboardTypeFromString:args[@"keyboardType"]];
         _textView.textAlignment = [self textAlignmentFromString:args[@"textAlign"]];
         _textView.textContainer.maximumNumberOfLines = [args[@"maxLines"] intValue];
         _textView.textContainer.lineBreakMode = NSLineBreakByCharWrapping;
         
+        //_textView.font = [UIFont systemFontOfSize:16];
+        _textView.adjustsFontForContentSizeCategory = true;
+        _textView.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
+
         if (![args[@"text"] isEqualToString:@""]) {
             _textView.text = args[@"text"];
             _textView.textColor = UIColor.blackColor;
