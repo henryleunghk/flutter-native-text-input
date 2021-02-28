@@ -104,13 +104,18 @@
 }
 
 - (void)onColorText:(FlutterMethodCall*)call result:(FlutterResult)result {
-    NSString * text = call.arguments[@"text"];
-
+    NSError *error = NULL;
+    NSString * pattern = call.arguments[@"pattern"];
+    NSRegularExpression *coloredTextRegex = [NSRegularExpression regularExpressionWithPattern: pattern
+                                                                                options:0
+                                                                                error:&error];
+                                                                                
     NSMutableAttributedString * string = [[NSMutableAttributedString alloc]initWithString:_textView.text];
     NSArray *words=[_textView.text componentsSeparatedByString:@" "];
 
-    for (NSString *word in words) {        
-        if ([word isEqualToString:text]) {
+    for (NSString *word in words) {
+            NSUInteger numberOfMatches = [coloredTextRegex numberOfMatchesInString:word options:(0) range:NSMakeRange(0, [word length])];      
+        if (numberOfMatches > 0) {
             NSRange range=[_textView.text rangeOfString:word];
             [string addAttribute:NSForegroundColorAttributeName value:[UIColor redColor] range:range];           
         }
