@@ -72,6 +72,8 @@
         [self onSetText:call result:result];
     } else if ([[call method] isEqualToString:@"emptyText"]) {
         [self onEmptyText:call result:result];
+    } else if ([[call method] isEqualToString:@"colorText"]) {
+        [self onColorText:call result:result];
     } else {
         result(FlutterMethodNotImplemented);
     }
@@ -98,6 +100,23 @@
         _textView.text = @"";
         [_delegate resetLineIndex];
     }
+    result(nil);
+}
+
+- (void)onColorText:(FlutterMethodCall*)call result:(FlutterResult)result {
+    NSString * text = call.arguments[@"text"];
+
+    NSMutableAttributedString * string = [[NSMutableAttributedString alloc]initWithString:_textView.text];
+    NSArray *words=[_textView.text componentsSeparatedByString:@" "];
+
+    for (NSString *word in words) {        
+        if ([word isEqualToString:text]) {
+            NSRange range=[_textView.text rangeOfString:word];
+            [string addAttribute:NSForegroundColorAttributeName value:[UIColor redColor] range:range];           
+        }
+    }
+    [_textView setAttributedText:string];
+
     result(nil);
 }
 

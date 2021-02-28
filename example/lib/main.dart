@@ -52,6 +52,15 @@ class HomePage extends StatelessWidget {
                   FlatButton(
                     color: Colors.blue,
                     colorBrightness: Brightness.dark,
+                    child: Text("colorText"),
+                    onPressed: () {
+                      print('_nativeTextInputController.colorText !!');
+                      _nativeTextInputController.colorText("@shay");
+                    },
+                  ),
+                  FlatButton(
+                    color: Colors.blue,
+                    colorBrightness: Brightness.dark,
                     child: Text("emptyText"),
                     onPressed: () {
                       print('_nativeTextInputController.emptyText !!');
