@@ -85,21 +85,18 @@ class NativeTextInputController {
 
   /// Here is the method you are exposing
   void emptyText() {
-    assert(isAttached,
-        "NativeTextInputController must be attached to a NativeTextInputState");
+    assert(isAttached, "NativeTextInputController must be attached to a NativeTextInputState");
     _nativeTextInputState.emptyText();
   }
 
   void setText(String text) {
-    assert(isAttached,
-        "NativeTextInputController must be attached to a NativeTextInputState");
+    assert(isAttached, "NativeTextInputController must be attached to a NativeTextInputState");
     _nativeTextInputState.setText(text);
   }
 
-  void colorText(String text) {
-    assert(isAttached,
-        "NativeTextInputController must be attached to a NativeTextInputState");
-    _nativeTextInputState.colorText(text);
+  void colorText(String pattern) {
+    assert(isAttached, "NativeTextInputController must be attached to a NativeTextInputState");
+    _nativeTextInputState.colorText(pattern);
   }
 }
 
@@ -173,12 +170,10 @@ class _NativeTextInputState extends State<NativeTextInput> {
   MethodChannel _channel;
 
   TextEditingController _controller;
-  TextEditingController get _effectiveController =>
-      widget.controller ?? (_controller ??= TextEditingController());
+  TextEditingController get _effectiveController => widget.controller ?? (_controller ??= TextEditingController());
 
   FocusNode _focusNode;
-  FocusNode get _effectiveFocusNode =>
-      widget.focusNode ?? (_focusNode ??= FocusNode());
+  FocusNode get _effectiveFocusNode => widget.focusNode ?? (_focusNode ??= FocusNode());
 
   bool get _isMultiline => widget.maxLines == 0 || widget.maxLines > 1;
   int _currentLineIndex = 1;
@@ -204,8 +199,7 @@ class _NativeTextInputState extends State<NativeTextInput> {
 
     if (widget.controller != null) {
       widget.controller.addListener(() {
-        _channel
-            .invokeMethod("setText", {"text": widget.controller.text ?? ""});
+        _channel.invokeMethod("setText", {"text": widget.controller.text ?? ""});
       });
     }
   }
@@ -213,8 +207,7 @@ class _NativeTextInputState extends State<NativeTextInput> {
   @override
   Widget build(BuildContext context) {
     return ConstrainedBox(
-      constraints:
-          BoxConstraints(minHeight: _minHeight(), maxHeight: _maxHeight()),
+      constraints: BoxConstraints(minHeight: _minHeight(), maxHeight: _maxHeight()),
       child: UiKitView(
           viewType: "flutter_native_text_input",
           creationParamsCodec: const StandardMessageCodec(),
@@ -237,15 +230,14 @@ class _NativeTextInputState extends State<NativeTextInput> {
     _channel.invokeMethod("setText", {"text": text ?? ""});
   }
 
-  colorText(String text) {
-    if (text.isNotEmpty) {
-      _channel.invokeMethod("colorText", {"text": text});
+  colorText(String pattern) {
+    if (pattern.isNotEmpty) {
+      _channel.invokeMethod("colorText", {"pattern": pattern});
     }
   }
 
   void _createMethodChannel(int nativeViewId) {
-    _channel = MethodChannel("flutter_native_text_input$nativeViewId")
-      ..setMethodCallHandler(_onMethodCall);
+    _channel = MethodChannel("flutter_native_text_input$nativeViewId")..setMethodCallHandler(_onMethodCall);
   }
 
   Map<String, dynamic> _buildCreationParams() {
@@ -284,8 +276,7 @@ class _NativeTextInputState extends State<NativeTextInput> {
         return null;
     }
 
-    throw MissingPluginException(
-        "NativeTextInput._onMethodCall: No handler for ${call.method}");
+    throw MissingPluginException("NativeTextInput._onMethodCall: No handler for ${call.method}");
   }
 
   double _minHeight() {
@@ -308,8 +299,7 @@ class _NativeTextInputState extends State<NativeTextInput> {
         // calculate based on lines
       } else {
         if (22.0 * _currentLineIndex > res) {
-          if (_currentLineIndex <= widget.autoHeightMaxLines ||
-              widget.autoHeightMaxLines == 0) {
+          if (_currentLineIndex <= widget.autoHeightMaxLines || widget.autoHeightMaxLines == 0) {
             res = 22.0 * _currentLineIndex;
           } else {
             res = 22.0 * widget.autoHeightMaxLines;
@@ -341,16 +331,12 @@ class _NativeTextInputState extends State<NativeTextInput> {
 
   void _inputValueChanged(String text, int lineIndex, int height) {
     if (text != null) {
-      if (_isMultiline &&
-          _currentHeight != height &&
-          widget.autoHeightMaxHeight > 0) {
+      if (_isMultiline && _currentHeight != height && widget.autoHeightMaxHeight > 0) {
         setState(() {
           _currentHeight = height;
         });
       }
-      if (_isMultiline &&
-          _currentLineIndex != lineIndex &&
-          (lineIndex <= widget.maxLines || widget.maxLines == 0)) {
+      if (_isMultiline && _currentLineIndex != lineIndex && (lineIndex <= widget.maxLines || widget.maxLines == 0)) {
         setState(() {
           _currentLineIndex = lineIndex;
         });
@@ -359,8 +345,7 @@ class _NativeTextInputState extends State<NativeTextInput> {
       }
 
       if (widget?.onChanged != null) widget.onChanged(text);
-      if (widget?.onChangedWithLines != null)
-        widget.onChangedWithLines(text, lineIndex);
+      if (widget?.onChangedWithLines != null) widget.onChangedWithLines(text, lineIndex);
       if (widget.controller != null) _effectiveController.text = text;
     }
   }
