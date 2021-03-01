@@ -120,6 +120,9 @@ class NativeTextInput extends StatefulWidget {
     this.maxLines = 1,
     this.autoHeightMaxLines = 1,
     this.autoHeightMaxHeight = 0,
+    this.textColor,
+    this.placeholderTextColor,
+    this.backgroundColor,
   }) : super(key: key);
 
   /// Controls the text being edited.
@@ -161,6 +164,10 @@ class NativeTextInput extends StatefulWidget {
 
   final int autoHeightMaxLines;
   final int autoHeightMaxHeight;
+
+  final String textColor;
+  final String placeholderTextColor;
+  final String backgroundColor;
 
   @override
   State<StatefulWidget> createState() => _NativeTextInputState();
@@ -240,6 +247,14 @@ class _NativeTextInputState extends State<NativeTextInput> {
     _channel = MethodChannel("flutter_native_text_input$nativeViewId")..setMethodCallHandler(_onMethodCall);
   }
 
+  bool isNullOrEmpty(String str) {
+    return null == str || str.isEmpty || str.trim() == "";
+  }
+
+  String getStringOrDefault(String str, String def) {
+    return !isNullOrEmpty(str) ? str : def;
+  }
+
   Map<String, dynamic> _buildCreationParams() {
     return {
       "text": widget.startText ?? _effectiveController.text ?? "",
@@ -249,6 +264,9 @@ class _NativeTextInputState extends State<NativeTextInput> {
       "keyboardType": widget.keyboardType?.toString(),
       "textAlign": widget.textAlign.toString(),
       "maxLines": widget.maxLines,
+      "textColor": getStringOrDefault(widget.textColor, "blackColor"),
+      "placeholderTextColor": getStringOrDefault(widget.placeholderTextColor, "lightGrayColor"),
+      "backgroundColor": getStringOrDefault(widget.backgroundColor, "clearColor"),
     };
   }
 

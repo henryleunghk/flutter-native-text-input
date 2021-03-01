@@ -27,10 +27,16 @@
     _currentLineIndex = 0;
 }
 
+-(UIColor *)colorfromString:(NSString *)colorname {
+    SEL labelColor = NSSelectorFromString(colorname);
+    UIColor *color = [UIColor performSelector:labelColor];
+    return color;
+}
+
 - (void)textViewDidBeginEditing:(UITextView *)textView {
     if ([textView.text isEqualToString:_args[@"placeholder"]]) {
         textView.text = @"";
-        textView.textColor = UIColor.blackColor;
+        textView.textColor = [self colorfromString:_args[@"textColor"]];
         textView.textAlignment = _taTextAlign;
     }
     [_channel invokeMethod:@"inputStarted"
@@ -73,7 +79,11 @@
     
     _previousRect = currentRect;
     
-    textView.textColor = textView.text == 0 ? UIColor.lightTextColor : UIColor.blackColor;
+    if (textView.text == 0) {
+        textView.textColor = [self colorfromString:_args[@"placeholderTextColor"]];
+    } else {
+        textView.textColor = [self colorfromString:_args[@"textColor"]];
+    }
     
     [_channel invokeMethod:@"inputValueChanged" arguments:@{ @"text": textView.text, @"currentLine": [NSNumber numberWithInt: _currentLineIndex], @"height": [NSNumber numberWithInt: currentRect.origin.y] }];
 }
@@ -81,7 +91,7 @@
 - (void)textViewDidEndEditing:(UITextView *)textView {
     if (textView.text.length == 0) {
         textView.text = _args[@"placeholder"];
-        textView.textColor = UIColor.lightGrayColor;
+        textView.textColor = [self colorfromString:_args[@"placeholderTextColor"]];
         textView.textAlignment = _taPlaceholderTextAlign;
     }
     [_channel invokeMethod:@"inputFinished"

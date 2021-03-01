@@ -22,8 +22,8 @@
         
         _textView = [[UITextView alloc] initWithFrame:frame];
         _textView.text = args[@"placeholder"];
-        _textView.textColor = UIColor.lightGrayColor;
-        _textView.backgroundColor = UIColor.clearColor;
+        _textView.textColor = [self colorfromString:args[@"placeholderTextColor"]]; // UIColor.lightGrayColor
+        _textView.backgroundColor = [self colorfromString:args[@"backgroundColor"]]; // UIColor.clearColor
         _textView.keyboardType = [self keyboardTypeFromString:args[@"keyboardType"]];
         _textView.textAlignment = [self textAlignmentFromString:args[@"textAlign"]];
         _textView.textContainer.maximumNumberOfLines = [args[@"maxLines"] intValue];
@@ -35,7 +35,7 @@
 
         if (![args[@"text"] isEqualToString:@""]) {
             _textView.text = args[@"text"];
-            _textView.textColor = UIColor.blackColor;
+            _textView.textColor = [self colorfromString:args[@"textColor"]]; // UIColor.blackColor
         }
 
         NSTextAlignment taTextAlign = _textView.textAlignment;
@@ -127,6 +127,13 @@
 
 - (UIView*)view {
     return _textView;
+}
+
+// https://stackoverflow.com/questions/15456299/using-a-nsstring-to-set-a-color-for-a-label
+-(UIColor *)colorfromString:(NSString *)colorname {
+    SEL labelColor = NSSelectorFromString(colorname);
+    UIColor *color = [UIColor performSelector:labelColor];
+    return color;
 }
 
 - (UIKeyboardType)keyboardTypeFromString:(NSString*)keyboardType {

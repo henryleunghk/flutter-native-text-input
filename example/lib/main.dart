@@ -114,6 +114,9 @@ class HomePage extends StatelessWidget {
                     nativeTextInputController: _nativeTextInputController,
                     onChangedWithLines: _onChangeTextWithLines,
                     onSubmittedWithLines: _onSubmittedTextWithLines,
+                    textColor: "redColor",
+                    placeholderTextColor: "",
+                    backgroundColor: "",
                   )
                 ],
               )),
