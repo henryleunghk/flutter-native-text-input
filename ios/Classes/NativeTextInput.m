@@ -110,14 +110,14 @@
                                                                                 options:0
                                                                                 error:&error];
                                                                                 
-    NSMutableAttributedString * string = [[NSMutableAttributedString alloc]initWithString:_textView.text];
+    NSMutableAttributedString * string = _textView.attributedText.mutableCopy;
     NSArray *words=[_textView.text componentsSeparatedByString:@" "];
 
     for (NSString *word in words) {
             NSUInteger numberOfMatches = [coloredTextRegex numberOfMatchesInString:word options:(0) range:NSMakeRange(0, [word length])];      
         if (numberOfMatches > 0) {
             NSRange range=[_textView.text rangeOfString:word];
-            [string addAttribute:NSForegroundColorAttributeName value:[UIColor redColor] range:range];           
+            [string addAttribute:NSForegroundColorAttributeName value:[UIColor blueColor] range:range];           
         }
     }
     [_textView setAttributedText:string];
