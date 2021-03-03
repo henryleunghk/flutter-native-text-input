@@ -6,6 +6,7 @@
     int64_t _viewId;
     FlutterMethodChannel* _channel;
     NativeTextInputDelegate* _delegate;
+    id _Nullable _args;
 }
 
 
@@ -19,6 +20,7 @@
         _channel = [FlutterMethodChannel methodChannelWithName:channelName binaryMessenger:messenger];
         
         _viewId = viewId;
+        _args = args;
         
         _textView = [[UITextView alloc] initWithFrame:frame];
         _textView.text = args[@"placeholder"];
@@ -117,7 +119,8 @@
             NSUInteger numberOfMatches = [coloredTextRegex numberOfMatchesInString:word options:(0) range:NSMakeRange(0, [word length])];      
         if (numberOfMatches > 0) {
             NSRange range=[_textView.text rangeOfString:word];
-            [string addAttribute:NSForegroundColorAttributeName value:[UIColor blueColor] range:range];           
+            UIColor *color = [self colorfromString:_args[@"mentionTextColor"]]; // UIColor.blueColor
+            [string addAttribute:NSForegroundColorAttributeName value:color range:range];           
         }
     }
     [_textView setAttributedText:string];

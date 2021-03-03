@@ -117,6 +117,7 @@ class HomePage extends StatelessWidget {
                     textColor: "redColor",
                     placeholderTextColor: "",
                     backgroundColor: "",
+                    mentionTextColor: "greenColor",
                   )
                 ],
               )),

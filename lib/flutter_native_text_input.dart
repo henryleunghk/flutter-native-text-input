@@ -123,6 +123,7 @@ class NativeTextInput extends StatefulWidget {
     this.textColor,
     this.placeholderTextColor,
     this.backgroundColor,
+    this.mentionTextColor,
   }) : super(key: key);
 
   /// Controls the text being edited.
@@ -168,6 +169,7 @@ class NativeTextInput extends StatefulWidget {
   final String textColor;
   final String placeholderTextColor;
   final String backgroundColor;
+  final String mentionTextColor;
 
   @override
   State<StatefulWidget> createState() => _NativeTextInputState();
@@ -267,6 +269,7 @@ class _NativeTextInputState extends State<NativeTextInput> {
       "textColor": getStringOrDefault(widget.textColor, "blackColor"),
       "placeholderTextColor": getStringOrDefault(widget.placeholderTextColor, "lightGrayColor"),
       "backgroundColor": getStringOrDefault(widget.backgroundColor, "clearColor"),
+      "mentionTextColor": getStringOrDefault(widget.mentionTextColor, "blueColor"),
     };
   }
 
