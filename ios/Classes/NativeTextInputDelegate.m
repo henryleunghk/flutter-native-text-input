@@ -7,9 +7,10 @@
     int _currentLineIndex;
     NSTextAlignment _taTextAlign;
     NSTextAlignment _taPlaceholderTextAlign;
+    double _textViewHeight;
 }
 
-- (instancetype)initWithChannel:(FlutterMethodChannel*)channel arguments:(id _Nullable)args paramTextAlign:(NSTextAlignment)taTextAlign paramPlaceholderTextAlign:(NSTextAlignment)taPlaceholderTextAlign {
+- (instancetype)initWithChannel:(FlutterMethodChannel*)channel arguments:(id _Nullable)args paramTextAlign:(NSTextAlignment)taTextAlign paramPlaceholderTextAlign:(NSTextAlignment)taPlaceholderTextAlign paramTextViewHeight:(double)textViewHeight {
     self = [super init];
     if (self) {
         _channel = channel;
@@ -18,6 +19,7 @@
         _currentLineIndex = 0;
         _taTextAlign = taTextAlign;
         _taPlaceholderTextAlign = taPlaceholderTextAlign;
+        _textViewHeight = textViewHeight;
     }
     return self;
 }
@@ -54,9 +56,9 @@
     // [_channel invokeMethod:@"debug_msg" arguments:@{ @"numb": [NSNumber numberWithInt: _previousRect.origin.y] }];
     // [_channel invokeMethod:@"debug_msg" arguments:@{ @"numb": [NSNumber numberWithInt: currentRect.origin.y] }];
 
-    if (abs(currentRect.origin.y - _previousRect.origin.y) > 22) {
+    if (abs(currentRect.origin.y - _previousRect.origin.y) > _textViewHeight) {
         // multi line change
-        int lines = ((int)((abs(currentRect.origin.y - _previousRect.origin.y) / 22) + 0.5)) + 1;
+        int lines = ((int)((abs(currentRect.origin.y - _previousRect.origin.y) / _textViewHeight) + 0.5)) + 1;
         // [_channel invokeMethod:@"debug_msg" arguments:@{ @"numb": [NSNumber numberWithInt: lines] }];
 
         if (currentRect.origin.y > _previousRect.origin.y) {
@@ -85,7 +87,7 @@
         textView.textColor = [self colorfromString:_args[@"textColor"]];
     }
     
-    [_channel invokeMethod:@"inputValueChanged" arguments:@{ @"text": textView.text, @"currentLine": [NSNumber numberWithInt: _currentLineIndex], @"height": [NSNumber numberWithInt: currentRect.origin.y] }];
+    [_channel invokeMethod:@"inputValueChanged" arguments:@{ @"text": textView.text, @"currentLine": [NSNumber numberWithInt: _currentLineIndex], @"height": [NSNumber numberWithInt: currentRect.origin.y], @"defaultHeight": [NSNumber numberWithDouble: _textViewHeight] }];
 }
 
 - (void)textViewDidEndEditing:(UITextView *)textView {

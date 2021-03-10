@@ -54,7 +54,7 @@
             _textView.textContentType = [self textContentTypeFromString:args[@"textContentType"]];
         }
         
-        _delegate = [[NativeTextInputDelegate alloc] initWithChannel:_channel arguments:args paramTextAlign:taTextAlign paramPlaceholderTextAlign:taPlaceholderTextAlign];
+        _delegate = [[NativeTextInputDelegate alloc] initWithChannel:_channel arguments:args paramTextAlign:taTextAlign paramPlaceholderTextAlign:taPlaceholderTextAlign paramTextViewHeight:_textView.contentSize.height-15.0];
         _textView.delegate = _delegate;
         
         __weak __typeof__(self) weakSelf = self;

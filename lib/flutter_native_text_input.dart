@@ -187,6 +187,7 @@ class _NativeTextInputState extends State<NativeTextInput> {
   bool get _isMultiline => widget.maxLines == 0 || widget.maxLines > 1;
   int _currentLineIndex = 1;
   int _currentHeight = 1;
+  double _defaultHeight = 22.0;
 
   @override
   void initState() {
@@ -279,6 +280,11 @@ class _NativeTextInputState extends State<NativeTextInput> {
         final String text = call.arguments["text"];
         final int lineIndex = call.arguments["currentLine"];
         final int height = call.arguments["height"];
+        if (call.arguments["defaultHeight"] != _defaultHeight) {
+          setState(() {
+            _defaultHeight = call.arguments["defaultHeight"];
+          });
+        }
         _inputValueChanged(text, lineIndex, height);
         return null;
 
@@ -301,7 +307,7 @@ class _NativeTextInputState extends State<NativeTextInput> {
   }
 
   double _minHeight() {
-    return widget.minLines * 22.0 > 36.0 ? widget.minLines * 22.0 : 36.0;
+    return widget.minLines * _defaultHeight > 36.0 ? widget.minLines * _defaultHeight : 36.0;
   }
 
   double _maxHeight() {
@@ -319,11 +325,11 @@ class _NativeTextInputState extends State<NativeTextInput> {
         }
         // calculate based on lines
       } else {
-        if (22.0 * _currentLineIndex > res) {
+        if (_defaultHeight * _currentLineIndex > res) {
           if (_currentLineIndex <= widget.autoHeightMaxLines || widget.autoHeightMaxLines == 0) {
-            res = 22.0 * _currentLineIndex;
+            res = _defaultHeight * _currentLineIndex;
           } else {
-            res = 22.0 * widget.autoHeightMaxLines;
+            res = _defaultHeight * widget.autoHeightMaxLines;
           }
         }
       }
