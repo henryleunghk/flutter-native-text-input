@@ -1,3 +1,7 @@
+## 0.1.3
+
+* fix Chinese typing issue
+
 ## 0.1.2
 
 * fix input height not returning default on clearing multi-line text

@@ -244,7 +244,6 @@ class _NativeTextInputState extends State<NativeTextInput> {
       }
 
       if (widget?.onChanged != null) widget.onChanged(text);
-      if (widget.controller != null) _effectiveController.text = text;
     }
   }
 
