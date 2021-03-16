@@ -85,17 +85,20 @@ class NativeTextInputController {
 
   /// Here is the method you are exposing
   void emptyText() {
-    assert(isAttached, "NativeTextInputController must be attached to a NativeTextInputState");
+    assert(isAttached,
+        "NativeTextInputController must be attached to a NativeTextInputState");
     _nativeTextInputState.emptyText();
   }
 
   void setText(String text) {
-    assert(isAttached, "NativeTextInputController must be attached to a NativeTextInputState");
+    assert(isAttached,
+        "NativeTextInputController must be attached to a NativeTextInputState");
     _nativeTextInputState.setText(text);
   }
 
   void colorText(String pattern) {
-    assert(isAttached, "NativeTextInputController must be attached to a NativeTextInputState");
+    assert(isAttached,
+        "NativeTextInputController must be attached to a NativeTextInputState");
     _nativeTextInputState.colorText(pattern);
   }
 }
@@ -111,6 +114,7 @@ class NativeTextInput extends StatefulWidget {
     this.keyboardType = KeyboardType.defaultType,
     this.onChanged,
     this.onChangedWithLines,
+    this.onSelectionChanged,
     this.onSubmitted,
     this.onSubmittedWithLines,
     this.focusNode,
@@ -150,6 +154,7 @@ class NativeTextInput extends StatefulWidget {
 
   final ValueChanged<String> onChanged;
   final NativeTextValueChanged onChangedWithLines;
+  final ValueChanged<int> onSelectionChanged;
 
   final ValueChanged<String> onSubmitted;
   final NativeTextValueChanged onSubmittedWithLines;
@@ -179,10 +184,12 @@ class _NativeTextInputState extends State<NativeTextInput> {
   MethodChannel _channel;
 
   TextEditingController _controller;
-  TextEditingController get _effectiveController => widget.controller ?? (_controller ??= TextEditingController());
+  TextEditingController get _effectiveController =>
+      widget.controller ?? (_controller ??= TextEditingController());
 
   FocusNode _focusNode;
-  FocusNode get _effectiveFocusNode => widget.focusNode ?? (_focusNode ??= FocusNode());
+  FocusNode get _effectiveFocusNode =>
+      widget.focusNode ?? (_focusNode ??= FocusNode());
 
   bool get _isMultiline => widget.maxLines == 0 || widget.maxLines > 1;
   int _currentLineIndex = 1;
@@ -209,7 +216,8 @@ class _NativeTextInputState extends State<NativeTextInput> {
 
     if (widget.controller != null) {
       widget.controller.addListener(() {
-        _channel.invokeMethod("setText", {"text": widget.controller.text ?? ""});
+        _channel
+            .invokeMethod("setText", {"text": widget.controller.text ?? ""});
       });
     }
   }
@@ -217,7 +225,8 @@ class _NativeTextInputState extends State<NativeTextInput> {
   @override
   Widget build(BuildContext context) {
     return ConstrainedBox(
-      constraints: BoxConstraints(minHeight: _minHeight(), maxHeight: _maxHeight()),
+      constraints:
+          BoxConstraints(minHeight: _minHeight(), maxHeight: _maxHeight()),
       child: UiKitView(
           viewType: "flutter_native_text_input",
           creationParamsCodec: const StandardMessageCodec(),
@@ -247,7 +256,8 @@ class _NativeTextInputState extends State<NativeTextInput> {
   }
 
   void _createMethodChannel(int nativeViewId) {
-    _channel = MethodChannel("flutter_native_text_input$nativeViewId")..setMethodCallHandler(_onMethodCall);
+    _channel = MethodChannel("flutter_native_text_input$nativeViewId")
+      ..setMethodCallHandler(_onMethodCall);
   }
 
   bool isNullOrEmpty(String str) {
@@ -268,9 +278,12 @@ class _NativeTextInputState extends State<NativeTextInput> {
       "textAlign": widget.textAlign.toString(),
       "maxLines": widget.maxLines,
       "textColor": getStringOrDefault(widget.textColor, "blackColor"),
-      "placeholderTextColor": getStringOrDefault(widget.placeholderTextColor, "lightGrayColor"),
-      "backgroundColor": getStringOrDefault(widget.backgroundColor, "clearColor"),
-      "mentionTextColor": getStringOrDefault(widget.mentionTextColor, "blueColor"),
+      "placeholderTextColor":
+          getStringOrDefault(widget.placeholderTextColor, "lightGrayColor"),
+      "backgroundColor":
+          getStringOrDefault(widget.backgroundColor, "clearColor"),
+      "mentionTextColor":
+          getStringOrDefault(widget.mentionTextColor, "blueColor"),
     };
   }
 
@@ -297,17 +310,25 @@ class _NativeTextInputState extends State<NativeTextInput> {
         _inputFinished(text);
         return null;
 
+      case "inputSelectionChanged":
+        final int position = call.arguments["position"];
+        _inputSelectionChanged(position);
+        return null;
+
       case "debug_msg":
         final int numb = call.arguments["numb"];
         print("debug_msg: $numb");
         return null;
     }
 
-    throw MissingPluginException("NativeTextInput._onMethodCall: No handler for ${call.method}");
+    throw MissingPluginException(
+        "NativeTextInput._onMethodCall: No handler for ${call.method}");
   }
 
   double _minHeight() {
-    return widget.minLines * _defaultHeight > 36.0 ? widget.minLines * _defaultHeight : 36.0;
+    return widget.minLines * _defaultHeight > 36.0
+        ? widget.minLines * _defaultHeight
+        : 36.0;
   }
 
   double _maxHeight() {
@@ -326,7 +347,8 @@ class _NativeTextInputState extends State<NativeTextInput> {
         // calculate based on lines
       } else {
         if (_defaultHeight * _currentLineIndex > res) {
-          if (_currentLineIndex <= widget.autoHeightMaxLines || widget.autoHeightMaxLines == 0) {
+          if (_currentLineIndex <= widget.autoHeightMaxLines ||
+              widget.autoHeightMaxLines == 0) {
             res = _defaultHeight * _currentLineIndex;
           } else {
             res = _defaultHeight * widget.autoHeightMaxLines;
@@ -356,14 +378,24 @@ class _NativeTextInputState extends State<NativeTextInput> {
     }
   }
 
+  void _inputSelectionChanged(int position) {
+    if (widget?.onSelectionChanged != null) {
+      widget.onSelectionChanged(position);
+    }
+  }
+
   void _inputValueChanged(String text, int lineIndex, int height) {
     if (text != null) {
-      if (_isMultiline && _currentHeight != height && widget.autoHeightMaxHeight > 0) {
+      if (_isMultiline &&
+          _currentHeight != height &&
+          widget.autoHeightMaxHeight > 0) {
         setState(() {
           _currentHeight = height;
         });
       }
-      if (_isMultiline && _currentLineIndex != lineIndex && (lineIndex <= widget.maxLines || widget.maxLines == 0)) {
+      if (_isMultiline &&
+          _currentLineIndex != lineIndex &&
+          (lineIndex <= widget.maxLines || widget.maxLines == 0)) {
         setState(() {
           _currentLineIndex = lineIndex;
         });
@@ -372,7 +404,8 @@ class _NativeTextInputState extends State<NativeTextInput> {
       }
 
       if (widget?.onChanged != null) widget.onChanged(text);
-      if (widget?.onChangedWithLines != null) widget.onChangedWithLines(text, lineIndex);
+      if (widget?.onChangedWithLines != null)
+        widget.onChangedWithLines(text, lineIndex);
       if (widget.controller != null) _effectiveController.text = text;
     }
   }

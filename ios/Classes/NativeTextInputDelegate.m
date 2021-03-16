@@ -41,13 +41,16 @@
         textView.textColor = [self colorfromString:_args[@"textColor"]];
         textView.textAlignment = _taTextAlign;
     }
-    [_channel invokeMethod:@"inputStarted"
-                 arguments:nil];
+    [_channel invokeMethod:@"inputStarted" arguments:nil];
+
+    //[_channel invokeMethod:@"debug_msg" arguments:@{ @"numb": [NSNumber numberWithInt: 222] }];
 }
 
 - (void)textViewDidChange:(UITextView *)textView {
     UITextPosition *position = [textView endOfDocument];
     CGRect currentRect = [textView caretRectForPosition:position];
+
+    //[_channel invokeMethod:@"debug_msg" arguments:@{ @"numb": [NSNumber numberWithInt: 111] }];
     
     // https://github.com/KennethTsang/GrowingTextView
 
@@ -96,8 +99,16 @@
         textView.textColor = [self colorfromString:_args[@"placeholderTextColor"]];
         textView.textAlignment = _taPlaceholderTextAlign;
     }
-    [_channel invokeMethod:@"inputFinished"
-                 arguments:@{ @"text": textView.text }];
+    [_channel invokeMethod:@"inputFinished" arguments:@{ @"text": textView.text }];
+
+    //[_channel invokeMethod:@"debug_msg" arguments:@{ @"numb": [NSNumber numberWithInt: 333] }];
+}
+
+- (void)textViewDidChangeSelection:(UITextView *)textView {
+    //[_channel invokeMethod:@"debug_msg" arguments:@{ @"numb": [NSNumber numberWithInt: 444] }];
+
+    NSRange cursorPosition = [textView selectedRange];
+    [_channel invokeMethod:@"inputSelectionChanged" arguments:@{ @"position": [NSNumber numberWithInt: cursorPosition.location] }];
 }
 
  - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {

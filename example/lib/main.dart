@@ -23,13 +23,18 @@ class _MyAppState extends State<MyApp> {
 class HomePage extends StatelessWidget {
   final FocusNode _focusNode = FocusNode();
 
-  final NativeTextInputController _nativeTextInputController = NativeTextInputController();
+  final NativeTextInputController _nativeTextInputController =
+      NativeTextInputController();
 
   _onChangeText(value) => debugPrint("_onChangeText: $value");
   _onSubmittedText(value) => debugPrint("_onSubmittedText: $value");
 
   void _onChangeTextWithLines(String text, int linesCount) {
     debugPrint("_onChangeTextWithLines: $linesCount");
+  }
+
+  void _onSelectionChanged(int position) {
+    debugPrint("_onSelectionChanged: $position");
   }
 
   void _onSubmittedTextWithLines(String text, int linesCount) {
@@ -54,7 +59,8 @@ class HomePage extends StatelessWidget {
                     child: Text("colorText"),
                     onPressed: () {
                       print('_nativeTextInputController.colorText !!');
-                      _nativeTextInputController.colorText("@shay|@amit|@yaniv|@tomer");
+                      _nativeTextInputController
+                          .colorText("@shay|@amit|@yaniv|@tomer");
                     },
                   ),
                   FlatButton(
@@ -81,7 +87,8 @@ class HomePage extends StatelessWidget {
                     child: Text("setText multi"),
                     onPressed: () {
                       print('_nativeTextInputController.setText !!');
-                      _nativeTextInputController.setText("shay dadosh 1\nhello world 2\nline 3");
+                      _nativeTextInputController
+                          .setText("shay dadosh 1\nhello world 2\nline 3");
                     },
                   ),
                   FlatButton(
@@ -114,10 +121,12 @@ class HomePage extends StatelessWidget {
                     nativeTextInputController: _nativeTextInputController,
                     onChangedWithLines: _onChangeTextWithLines,
                     onSubmittedWithLines: _onSubmittedTextWithLines,
+                    onSelectionChanged: _onSelectionChanged,
                     textColor: "redColor",
                     placeholderTextColor: "",
                     backgroundColor: "",
                     mentionTextColor: "greenColor",
+                    // keyboardType: KeyboardType.asciiCapable,
                   )
                 ],
               )),
@@ -165,7 +174,8 @@ class HomePage extends StatelessWidget {
                 colorBrightness: Brightness.dark,
                 child: Text("View More Use Cases"),
                 onPressed: () {
-                  Navigator.of(context).push(MaterialPageRoute(builder: (_) => MoreUseCaseListingPage()));
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (_) => MoreUseCaseListingPage()));
                 }),
           ),
         ],
