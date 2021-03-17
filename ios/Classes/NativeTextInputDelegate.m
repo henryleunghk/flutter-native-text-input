@@ -108,7 +108,7 @@
     //[_channel invokeMethod:@"debug_msg" arguments:@{ @"numb": [NSNumber numberWithInt: 444] }];
 
     NSRange cursorPosition = [textView selectedRange];
-    [_channel invokeMethod:@"inputSelectionChanged" arguments:@{ @"position": [NSNumber numberWithInt: cursorPosition.location] }];
+    [_channel invokeMethod:@"inputSelectionChanged" arguments:@{ @"position": [NSNumber numberWithInt: cursorPosition.location], @"text": textView.text }];
 }
 
  - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {

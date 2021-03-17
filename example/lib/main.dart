@@ -33,8 +33,8 @@ class HomePage extends StatelessWidget {
     debugPrint("_onChangeTextWithLines: $linesCount");
   }
 
-  void _onSelectionChanged(int position) {
-    debugPrint("_onSelectionChanged: $position");
+  void _onSelectionChanged(String text, int position) {
+    debugPrint("_onSelectionChanged: $text ; $position");
   }
 
   void _onSubmittedTextWithLines(String text, int linesCount) {

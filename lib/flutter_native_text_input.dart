@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 
 typedef NativeTextValueChanged = void Function(String text, int linesCount);
+typedef NativeTextSelectionChanged = void Function(String text, int position);
 
 enum TextContentType {
   name,
@@ -154,7 +155,7 @@ class NativeTextInput extends StatefulWidget {
 
   final ValueChanged<String> onChanged;
   final NativeTextValueChanged onChangedWithLines;
-  final ValueChanged<int> onSelectionChanged;
+  final NativeTextSelectionChanged onSelectionChanged;
 
   final ValueChanged<String> onSubmitted;
   final NativeTextValueChanged onSubmittedWithLines;
@@ -312,7 +313,8 @@ class _NativeTextInputState extends State<NativeTextInput> {
 
       case "inputSelectionChanged":
         final int position = call.arguments["position"];
-        _inputSelectionChanged(position);
+        final String text = call.arguments["text"];
+        _inputSelectionChanged(position, text);
         return null;
 
       case "debug_msg":
@@ -378,9 +380,9 @@ class _NativeTextInputState extends State<NativeTextInput> {
     }
   }
 
-  void _inputSelectionChanged(int position) {
+  void _inputSelectionChanged(int position, String text) {
     if (widget?.onSelectionChanged != null) {
-      widget.onSelectionChanged(position);
+      widget.onSelectionChanged(text, position);
     }
   }
 
