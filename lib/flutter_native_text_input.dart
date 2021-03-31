@@ -226,8 +226,9 @@ class _NativeTextInputState extends State<NativeTextInput> {
   @override
   Widget build(BuildContext context) {
     return ConstrainedBox(
-      constraints:
-          BoxConstraints(minHeight: _minHeight(), maxHeight: _maxHeight()),
+      constraints: BoxConstraints.tightFor(height: _maxHeight()),
+      //  BoxConstraints(minHeight: _minHeight(), maxHeight: _maxHeight()),
+
       child: UiKitView(
           viewType: "flutter_native_text_input",
           creationParamsCodec: const StandardMessageCodec(),
