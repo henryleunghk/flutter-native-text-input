@@ -113,7 +113,7 @@
                                                                                 error:&error];
                                                                                 
     NSMutableAttributedString * string = _textView.attributedText.mutableCopy;
-    NSArray *words=[_textView.text componentsSeparatedByString:@" "];
+    NSArray *words=[_textView.text componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
 
     for (NSString *word in words) {
             NSUInteger numberOfMatches = [coloredTextRegex numberOfMatchesInString:word options:(0) range:NSMakeRange(0, [word length])];      
