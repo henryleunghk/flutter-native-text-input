@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_native_text_input/flutter_native_text_input.dart';
-import 'package:flutter_native_text_input_example/demo_item.dart';
+import 'demo_item.dart';
 
 class MoreUseCaseListingPage extends StatefulWidget {
   @override

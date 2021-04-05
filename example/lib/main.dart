@@ -3,8 +3,8 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_text_input/flutter_native_text_input.dart';
-import 'package:flutter_native_text_input_example/demo_item.dart';
-import 'package:flutter_native_text_input_example/more_use_case_listing_page.dart';
+import 'demo_item.dart';
+import 'more_use_case_listing_page.dart';
 
 void main() => runApp(MyApp());
 
@@ -29,15 +29,15 @@ class HomePage extends StatelessWidget {
   _onChangeText(value) => debugPrint("_onChangeText: $value");
   _onSubmittedText(value) => debugPrint("_onSubmittedText: $value");
 
-  void _onChangeTextWithLines(String text, int linesCount) {
+  void _onChangeTextWithLines(String? text, int? linesCount) {
     debugPrint("_onChangeTextWithLines: $linesCount");
   }
 
-  void _onSelectionChanged(String text, int position) {
+  void _onSelectionChanged(String? text, int? position) {
     debugPrint("_onSelectionChanged: $text ; $position");
   }
 
-  void _onSubmittedTextWithLines(String text, int linesCount) {
+  void _onSubmittedTextWithLines(String? text, int? linesCount) {
     debugPrint("_onSubmittedTextWithLines: $linesCount");
   }
 

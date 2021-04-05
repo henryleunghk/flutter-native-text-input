@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 class DemoItem extends StatelessWidget {
-  final String title;
-  final Widget child;
+  final String? title;
+  final Widget? child;
 
   DemoItem({
     this.title,
@@ -21,7 +21,7 @@ class DemoItem extends StatelessWidget {
                 child: Row(children: [
                   Padding(
                     padding: EdgeInsets.all(8),
-                    child: Text(title),
+                    child: Text(title!),
                   )
                 ])),
             Padding(padding: EdgeInsets.all(8), child: child),
