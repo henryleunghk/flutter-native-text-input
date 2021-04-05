@@ -1,3 +1,7 @@
+## 1.0.0
+
+* Null safety support.
+
 ## 0.1.2
 
 * fix input height not returning default on clearing multi-line text

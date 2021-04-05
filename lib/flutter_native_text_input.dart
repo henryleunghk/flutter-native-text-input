@@ -2,8 +2,8 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 
-typedef NativeTextValueChanged = void Function(String text, int linesCount);
-typedef NativeTextSelectionChanged = void Function(String text, int position);
+typedef NativeTextValueChanged = void Function(String? text, int? linesCount);
+typedef NativeTextSelectionChanged = void Function(String? text, int? position);
 
 enum TextContentType {
   name,
@@ -73,7 +73,7 @@ enum KeyboardType {
 }
 
 class NativeTextInputController {
-  _NativeTextInputState _nativeTextInputState;
+  _NativeTextInputState? _nativeTextInputState;
 
   void _addState(_NativeTextInputState nativeTextInputState) {
     this._nativeTextInputState = nativeTextInputState;
@@ -88,25 +88,25 @@ class NativeTextInputController {
   void emptyText() {
     assert(isAttached,
         "NativeTextInputController must be attached to a NativeTextInputState");
-    _nativeTextInputState.emptyText();
+    _nativeTextInputState!.emptyText();
   }
 
-  void setText(String text) {
+  void setText(String? text) {
     assert(isAttached,
         "NativeTextInputController must be attached to a NativeTextInputState");
-    _nativeTextInputState.setText(text);
+    _nativeTextInputState!.setText(text);
   }
 
   void colorText(String pattern) {
     assert(isAttached,
         "NativeTextInputController must be attached to a NativeTextInputState");
-    _nativeTextInputState.colorText(pattern);
+    _nativeTextInputState!.colorText(pattern);
   }
 }
 
 class NativeTextInput extends StatefulWidget {
   const NativeTextInput({
-    Key key,
+    Key? key,
     this.controller,
     this.nativeTextInputController,
     this.startText,
@@ -134,11 +134,11 @@ class NativeTextInput extends StatefulWidget {
   /// Controls the text being edited.
   ///
   /// If null, this widget will create its own [TextEditingController].
-  final TextEditingController controller;
+  final TextEditingController? controller;
 
-  final NativeTextInputController nativeTextInputController;
+  final NativeTextInputController? nativeTextInputController;
 
-  final String startText;
+  final String? startText;
 
   /// A lighter colored placeholder hint that appears on the first line of the
   /// text field when the text entry is empty.
@@ -147,20 +147,20 @@ class NativeTextInput extends StatefulWidget {
   ///
   /// The text style of the placeholder text matches that of the text field's
   /// main text entry except a lighter font weight and a grey font color.
-  final String placeholder;
+  final String? placeholder;
 
-  final TextContentType textContentType;
+  final TextContentType? textContentType;
 
   final KeyboardType keyboardType;
 
-  final ValueChanged<String> onChanged;
-  final NativeTextValueChanged onChangedWithLines;
-  final NativeTextSelectionChanged onSelectionChanged;
+  final ValueChanged<String>? onChanged;
+  final NativeTextValueChanged? onChangedWithLines;
+  final NativeTextSelectionChanged? onSelectionChanged;
 
-  final ValueChanged<String> onSubmitted;
-  final NativeTextValueChanged onSubmittedWithLines;
+  final ValueChanged<String?>? onSubmitted;
+  final NativeTextValueChanged? onSubmittedWithLines;
 
-  final FocusNode focusNode;
+  final FocusNode? focusNode;
 
   final TextAlign placeholderTextAlign;
   final TextAlign textAlign;
@@ -172,53 +172,51 @@ class NativeTextInput extends StatefulWidget {
   final int autoHeightMaxLines;
   final int autoHeightMaxHeight;
 
-  final String textColor;
-  final String placeholderTextColor;
-  final String backgroundColor;
-  final String mentionTextColor;
+  final String? textColor;
+  final String? placeholderTextColor;
+  final String? backgroundColor;
+  final String? mentionTextColor;
 
   @override
   State<StatefulWidget> createState() => _NativeTextInputState();
 }
 
 class _NativeTextInputState extends State<NativeTextInput> {
-  MethodChannel _channel;
+  late MethodChannel _channel;
 
-  TextEditingController _controller;
+  TextEditingController? _controller;
   TextEditingController get _effectiveController =>
       widget.controller ?? (_controller ??= TextEditingController());
 
-  FocusNode _focusNode;
+  FocusNode? _focusNode;
   FocusNode get _effectiveFocusNode =>
       widget.focusNode ?? (_focusNode ??= FocusNode());
 
   bool get _isMultiline => widget.maxLines == 0 || widget.maxLines > 1;
-  int _currentLineIndex = 1;
-  int _currentHeight = 1;
-  double _defaultHeight = 22.0;
+  int? _currentLineIndex = 1;
+  int? _currentHeight = 1;
+  double? _defaultHeight = 22.0;
 
   @override
   void initState() {
     super.initState();
 
-    if (_effectiveFocusNode != null) {
-      _effectiveFocusNode.addListener(() {
-        if (_effectiveFocusNode.hasFocus) {
-          _channel.invokeMethod("focus");
-        } else {
-          _channel.invokeMethod("unfocus");
-        }
-      });
-    }
+    _effectiveFocusNode.addListener(() {
+      if (_effectiveFocusNode.hasFocus) {
+        _channel.invokeMethod("focus");
+      } else {
+        _channel.invokeMethod("unfocus");
+      }
+    });
 
     if (widget.nativeTextInputController != null) {
-      widget.nativeTextInputController._addState(this);
+      widget.nativeTextInputController!._addState(this);
     }
 
     if (widget.controller != null) {
-      widget.controller.addListener(() {
+      widget.controller!.addListener(() {
         _channel
-            .invokeMethod("setText", {"text": widget.controller.text ?? ""});
+            .invokeMethod("setText", {"text": widget.controller!.text});
       });
     }
   }
@@ -246,7 +244,7 @@ class _NativeTextInputState extends State<NativeTextInput> {
     });
   }
 
-  setText(String text) {
+  setText(String? text) {
     emptyText();
     _channel.invokeMethod("setText", {"text": text ?? ""});
   }
@@ -262,21 +260,21 @@ class _NativeTextInputState extends State<NativeTextInput> {
       ..setMethodCallHandler(_onMethodCall);
   }
 
-  bool isNullOrEmpty(String str) {
+  bool isNullOrEmpty(String? str) {
     return null == str || str.isEmpty || str.trim() == "";
   }
 
-  String getStringOrDefault(String str, String def) {
+  String? getStringOrDefault(String? str, String def) {
     return !isNullOrEmpty(str) ? str : def;
   }
 
   Map<String, dynamic> _buildCreationParams() {
     return {
-      "text": widget.startText ?? _effectiveController.text ?? "",
+      "text": widget.startText ?? _effectiveController.text,
       "placeholder": widget.placeholder ?? "",
       "placeholderTextAlign": widget.placeholderTextAlign.toString(),
       "textContentType": widget.textContentType?.toString(),
-      "keyboardType": widget.keyboardType?.toString(),
+      "keyboardType": widget.keyboardType.toString(),
       "textAlign": widget.textAlign.toString(),
       "maxLines": widget.maxLines,
       "textColor": getStringOrDefault(widget.textColor, "blackColor"),
@@ -289,12 +287,12 @@ class _NativeTextInputState extends State<NativeTextInput> {
     };
   }
 
-  Future<bool> _onMethodCall(MethodCall call) async {
+  Future<bool?> _onMethodCall(MethodCall call) async {
     switch (call.method) {
       case "inputValueChanged":
-        final String text = call.arguments["text"];
-        final int lineIndex = call.arguments["currentLine"];
-        final int height = call.arguments["height"];
+        final String? text = call.arguments["text"];
+        final int? lineIndex = call.arguments["currentLine"];
+        final int? height = call.arguments["height"];
         if (call.arguments["defaultHeight"] != _defaultHeight) {
           setState(() {
             _defaultHeight = call.arguments["defaultHeight"];
@@ -308,18 +306,18 @@ class _NativeTextInputState extends State<NativeTextInput> {
         return null;
 
       case "inputFinished":
-        final String text = call.arguments["text"];
+        final String? text = call.arguments["text"];
         _inputFinished(text);
         return null;
 
       case "inputSelectionChanged":
-        final int position = call.arguments["position"];
-        final String text = call.arguments["text"];
+        final int? position = call.arguments["position"];
+        final String? text = call.arguments["text"];
         _inputSelectionChanged(position, text);
         return null;
 
       case "debug_msg":
-        final int numb = call.arguments["numb"];
+        final int? numb = call.arguments["numb"];
         print("debug_msg: $numb");
         return null;
     }
@@ -329,8 +327,8 @@ class _NativeTextInputState extends State<NativeTextInput> {
   }
 
   double _minHeight() {
-    return widget.minLines * _defaultHeight > 36.0
-        ? widget.minLines * _defaultHeight
+    return widget.minLines * _defaultHeight! > 36.0
+        ? widget.minLines * _defaultHeight!
         : 36.0;
   }
 
@@ -340,21 +338,21 @@ class _NativeTextInputState extends State<NativeTextInput> {
 
       // calculate based on height
       if (widget.autoHeightMaxHeight > 0) {
-        if (_currentHeight > res) {
-          if (_currentHeight < widget.autoHeightMaxHeight) {
-            res = _currentHeight * 1.0;
+        if (_currentHeight! > res) {
+          if (_currentHeight! < widget.autoHeightMaxHeight) {
+            res = _currentHeight! * 1.0;
           } else {
             res = widget.autoHeightMaxHeight * 1.0;
           }
         }
         // calculate based on lines
       } else {
-        if (_defaultHeight * _currentLineIndex > res) {
-          if (_currentLineIndex <= widget.autoHeightMaxLines ||
+        if (_defaultHeight! * _currentLineIndex! > res) {
+          if (_currentLineIndex! <= widget.autoHeightMaxLines ||
               widget.autoHeightMaxLines == 0) {
-            res = _defaultHeight * _currentLineIndex;
+            res = _defaultHeight! * _currentLineIndex!;
           } else {
-            res = _defaultHeight * widget.autoHeightMaxLines;
+            res = _defaultHeight! * widget.autoHeightMaxLines;
           }
         }
       }
@@ -372,22 +370,22 @@ class _NativeTextInputState extends State<NativeTextInput> {
     });
   }
 
-  void _inputFinished(String text) {
-    if (widget?.onSubmitted != null) {
-      widget.onSubmitted(text);
+  void _inputFinished(String? text) {
+    if (widget.onSubmitted != null) {
+      widget.onSubmitted!(text);
     }
-    if (widget?.onSubmittedWithLines != null) {
-      widget.onSubmittedWithLines(text, _currentLineIndex);
-    }
-  }
-
-  void _inputSelectionChanged(int position, String text) {
-    if (widget?.onSelectionChanged != null) {
-      widget.onSelectionChanged(text, position);
+    if (widget.onSubmittedWithLines != null) {
+      widget.onSubmittedWithLines!(text, _currentLineIndex);
     }
   }
 
-  void _inputValueChanged(String text, int lineIndex, int height) {
+  void _inputSelectionChanged(int? position, String? text) {
+    if (widget.onSelectionChanged != null) {
+      widget.onSelectionChanged!(text, position);
+    }
+  }
+
+  void _inputValueChanged(String? text, int? lineIndex, int? height) {
     if (text != null) {
       if (_isMultiline &&
           _currentHeight != height &&
@@ -398,7 +396,7 @@ class _NativeTextInputState extends State<NativeTextInput> {
       }
       if (_isMultiline &&
           _currentLineIndex != lineIndex &&
-          (lineIndex <= widget.maxLines || widget.maxLines == 0)) {
+          (lineIndex! <= widget.maxLines || widget.maxLines == 0)) {
         setState(() {
           _currentLineIndex = lineIndex;
         });
@@ -406,9 +404,9 @@ class _NativeTextInputState extends State<NativeTextInput> {
         _currentLineIndex = 0;
       }
 
-      if (widget?.onChanged != null) widget.onChanged(text);
-      if (widget?.onChangedWithLines != null)
-        widget.onChangedWithLines(text, lineIndex);
+      if (widget.onChanged != null) widget.onChanged!(text);
+      if (widget.onChangedWithLines != null)
+        widget.onChangedWithLines!(text, lineIndex);
       if (widget.controller != null) _effectiveController.text = text;
     }
   }
@@ -417,8 +415,8 @@ class _NativeTextInputState extends State<NativeTextInput> {
   static const Curve _caretAnimationCurve = Curves.fastOutSlowIn;
 
   void _scrollIntoView() {
-    SchedulerBinding.instance.addPostFrameCallback((_) {
-      context.findRenderObject().showOnScreen(
+    SchedulerBinding.instance!.addPostFrameCallback((_) {
+      context.findRenderObject()!.showOnScreen(
             duration: _caretAnimationDuration,
             curve: _caretAnimationCurve,
           );
