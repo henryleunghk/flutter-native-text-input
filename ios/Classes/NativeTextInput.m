@@ -25,6 +25,7 @@
         _textView.textColor = UIColor.lightGrayColor;
         _textView.font = [UIFont systemFontOfSize:16];
         _textView.backgroundColor = UIColor.clearColor;
+        _textView.keyboardAppearance = [self keyboardAppearanceFromString:args[@"keyboardAppearance"]];
         _textView.keyboardType = [self keyboardTypeFromString:args[@"keyboardType"]];
         _textView.textAlignment = [self textAlignmentFromString:args[@"textAlign"]];
         _textView.textContainer.maximumNumberOfLines = [args[@"maxLines"] intValue];
@@ -80,6 +81,19 @@
 
 - (UIView*)view {
     return _textView;
+}
+
+- (UIKeyboardAppearance)keyboardAppearanceFromString:(NSString*)keyboardAppearance {
+    if (!keyboardAppearance || [keyboardAppearance isKindOfClass:[NSNull class]]) {
+        return UIKeyboardAppearanceDefault;
+    }
+    if ([keyboardAppearance isEqualToString:@"Brightness.dark"]) {
+        return UIKeyboardAppearanceDark;
+    } else if ([keyboardAppearance isEqualToString:@"Brightness.light"]) {
+        return UIKeyboardAppearanceLight;
+    }
+
+    return UIKeyboardAppearanceDefault;
 }
 
 - (UIKeyboardType)keyboardTypeFromString:(NSString*)keyboardType {
