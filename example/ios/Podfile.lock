@@ -1,22 +1,22 @@
 PODS:
   - Flutter (1.0.0)
-  - flutter_native_text_input (0.1.3):
+  - flutter_native_text_input (1.0.0):
     - Flutter
 
 DEPENDENCIES:
-  - Flutter (from `.symlinks/flutter/ios`)
+  - Flutter (from `Flutter`)
   - flutter_native_text_input (from `.symlinks/plugins/flutter_native_text_input/ios`)
 
 EXTERNAL SOURCES:
   Flutter:
-    :path: ".symlinks/flutter/ios"
+    :path: Flutter
   flutter_native_text_input:
     :path: ".symlinks/plugins/flutter_native_text_input/ios"
 
 SPEC CHECKSUMS:
-  Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
-  flutter_native_text_input: f15eaeb5c7428dc4047694d2f8a8bcb23f8bf41f
+  Flutter: 50d75fe2f02b26cc09d224853bb45737f8b3214a
+  flutter_native_text_input: 43306ad878f964a10fceb4703f59128fe2c3e627
 
-PODFILE CHECKSUM: aff02bfeed411c636180d6812254b2daeea14d09
+PODFILE CHECKSUM: 8e679eca47255a8ca8067c4c67aab20e64cb974d
 
-COCOAPODS: 1.9.3
+COCOAPODS: 1.10.1

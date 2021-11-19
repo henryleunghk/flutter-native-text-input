@@ -71,7 +71,7 @@ enum KeyboardType {
 
 class NativeTextInput extends StatefulWidget {
   const NativeTextInput({
-    Key key,
+    Key? key,
     this.controller,
     this.placeholder,
     this.textContentType,
@@ -87,7 +87,7 @@ class NativeTextInput extends StatefulWidget {
   /// Controls the text being edited.
   ///
   /// If null, this widget will create its own [TextEditingController].
-  final TextEditingController controller;
+  final TextEditingController? controller;
 
   /// A lighter colored placeholder hint that appears on the first line of the
   /// text field when the text entry is empty.
@@ -96,17 +96,17 @@ class NativeTextInput extends StatefulWidget {
   ///
   /// The text style of the placeholder text matches that of the text field's
   /// main text entry except a lighter font weight and a grey font color.
-  final String placeholder;
+  final String? placeholder;
 
-  final TextContentType textContentType;
+  final TextContentType? textContentType;
 
   final KeyboardType keyboardType;
 
-  final ValueChanged<String> onChanged;
+  final ValueChanged<String>? onChanged;
 
-  final ValueChanged<String> onSubmitted;
+  final ValueChanged<String?>? onSubmitted;
 
-  final FocusNode focusNode;
+  final FocusNode? focusNode;
 
   final TextAlign textAlign;
 
@@ -119,37 +119,35 @@ class NativeTextInput extends StatefulWidget {
 }
 
 class _NativeTextInputState extends State<NativeTextInput> {
-  MethodChannel _channel;
+  late MethodChannel _channel;
 
-  TextEditingController _controller;
+  TextEditingController? _controller;
   TextEditingController get _effectiveController =>
       widget.controller ?? (_controller ??= TextEditingController());
 
-  FocusNode _focusNode;
+  FocusNode? _focusNode;
   FocusNode get _effectiveFocusNode =>
       widget.focusNode ?? (_focusNode ??= FocusNode());
 
   bool get _isMultiline => widget.maxLines == 0 || widget.maxLines > 1;
-  int _currentLineIndex = 1;
+  int? _currentLineIndex = 1;
 
   @override
   void initState() {
     super.initState();
 
-    if (_effectiveFocusNode != null) {
-      _effectiveFocusNode.addListener(() {
-        if (_effectiveFocusNode.hasFocus) {
-          _channel.invokeMethod("focus");
-        } else {
-          _channel.invokeMethod("unfocus");
-        }
-      });
-    }
+    _effectiveFocusNode.addListener(() {
+      if (_effectiveFocusNode.hasFocus) {
+        _channel.invokeMethod("focus");
+      } else {
+        _channel.invokeMethod("unfocus");
+      }
+    });
 
     if (widget.controller != null) {
-      widget.controller.addListener(() {
+      widget.controller!.addListener(() {
         _channel
-            .invokeMethod("setText", {"text": widget.controller.text ?? ""});
+            .invokeMethod("setText", {"text": widget.controller?.text ?? ''});
       });
     }
   }
@@ -174,20 +172,20 @@ class _NativeTextInputState extends State<NativeTextInput> {
 
   Map<String, dynamic> _buildCreationParams() {
     return {
-      "text": _effectiveController.text ?? "",
+      "text": _effectiveController.text,
       "placeholder": widget.placeholder ?? "",
       "textContentType": widget.textContentType?.toString(),
-      "keyboardType": widget.keyboardType?.toString(),
+      "keyboardType": widget.keyboardType.toString(),
       "textAlign": widget.textAlign.toString(),
       "maxLines": widget.maxLines,
     };
   }
 
-  Future<bool> _onMethodCall(MethodCall call) async {
+  Future<bool?> _onMethodCall(MethodCall call) async {
     switch (call.method) {
       case "inputValueChanged":
-        final String text = call.arguments["text"];
-        final int lineIndex = call.arguments["currentLine"];
+        final String? text = call.arguments["text"];
+        final int? lineIndex = call.arguments["currentLine"];
         _inputValueChanged(text, lineIndex);
         return null;
 
@@ -196,7 +194,7 @@ class _NativeTextInputState extends State<NativeTextInput> {
         return null;
 
       case "inputFinished":
-        final String text = call.arguments["text"];
+        final String? text = call.arguments["text"];
         _inputFinished(text);
         return null;
     }
@@ -211,8 +209,8 @@ class _NativeTextInputState extends State<NativeTextInput> {
 
   double _maxHeight() {
     return _isMultiline
-        ? (22.0 * _currentLineIndex > _minHeight()
-            ? 22.0 * _currentLineIndex
+        ? (22.0 * _currentLineIndex! > _minHeight()
+            ? 22.0 * _currentLineIndex!
             : _minHeight())
         : 36.0;
   }
@@ -225,17 +223,17 @@ class _NativeTextInputState extends State<NativeTextInput> {
     });
   }
 
-  void _inputFinished(String text) {
-    if (widget?.onSubmitted != null) {
-      widget.onSubmitted(text);
+  void _inputFinished(String? text) {
+    if (widget.onSubmitted != null) {
+      widget.onSubmitted!(text);
     }
   }
 
-  void _inputValueChanged(String text, int lineIndex) {
+  void _inputValueChanged(String? text, int? lineIndex) {
     if (text != null) {
       if (_isMultiline &&
           _currentLineIndex != lineIndex &&
-          lineIndex <= widget.maxLines) {
+          lineIndex! <= widget.maxLines) {
         setState(() {
           _currentLineIndex = lineIndex;
         });
@@ -243,7 +241,7 @@ class _NativeTextInputState extends State<NativeTextInput> {
         _currentLineIndex = 0;
       }
 
-      if (widget?.onChanged != null) widget.onChanged(text);
+      if (widget.onChanged != null) widget.onChanged!(text);
     }
   }
 
@@ -251,8 +249,8 @@ class _NativeTextInputState extends State<NativeTextInput> {
   static const Curve _caretAnimationCurve = Curves.fastOutSlowIn;
 
   void _scrollIntoView() {
-    SchedulerBinding.instance.addPostFrameCallback((_) {
-      context.findRenderObject().showOnScreen(
+    SchedulerBinding.instance!.addPostFrameCallback((_) {
+      context.findRenderObject()!.showOnScreen(
             duration: _caretAnimationDuration,
             curve: _caretAnimationCurve,
           );

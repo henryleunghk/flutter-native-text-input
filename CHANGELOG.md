@@ -1,3 +1,7 @@
+## 1.0.0
+
+* support null-safety
+
 ## 0.1.3
 
 * fix Chinese typing issue
