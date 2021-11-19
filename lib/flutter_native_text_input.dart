@@ -75,6 +75,7 @@ class NativeTextInput extends StatefulWidget {
     this.controller,
     this.placeholder,
     this.textContentType,
+    this.keyboardAppearance,
     this.keyboardType = KeyboardType.defaultType,
     this.onChanged,
     this.onSubmitted,
@@ -99,6 +100,8 @@ class NativeTextInput extends StatefulWidget {
   final String? placeholder;
 
   final TextContentType? textContentType;
+
+  final Brightness? keyboardAppearance;
 
   final KeyboardType keyboardType;
 
@@ -175,6 +178,7 @@ class _NativeTextInputState extends State<NativeTextInput> {
       "text": _effectiveController.text,
       "placeholder": widget.placeholder ?? "",
       "textContentType": widget.textContentType?.toString(),
+      "keyboardAppearance": widget.keyboardAppearance.toString(),
       "keyboardType": widget.keyboardType.toString(),
       "textAlign": widget.textAlign.toString(),
       "maxLines": widget.maxLines,

@@ -59,10 +59,12 @@ class HomePage extends StatelessWidget {
             child: Platform.isIOS
                 ? NativeTextInput(
                     placeholder: "placeholder",
+                    keyboardAppearance: Brightness.dark,
                     keyboardType: KeyboardType.defaultType,
                     onChanged: _onChangeText,
                     onSubmitted: _onSubmittedText,
-                    focusNode: _focusNode)
+                    focusNode: _focusNode,
+                  )
                 : TextField(
                     onChanged: _onChangeText,
                     onSubmitted: _onSubmittedText,
