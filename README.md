@@ -41,6 +41,21 @@ You may find more usage examples [here][2].
 
 ![](demo/more-examples.gif)
 
+## Contributing
+
+### Found a bug?
+Please do not hestitate to report that. This cuuld help improve this package.
+
+### Feature request?
+Please feel free to create an issue.
+
+### Pull request?
+Contributors are welcome. Just create a PR and it would be reviewed and merged ASAP.
+
+If you enjoy using this package or it helps you or your team, you could also buy me a cup of coffee to show support :)
+
+https://PayPal.Me/hkhenryleung
+
 ## License
 
 This project is licensed under the [MIT License](https://opensource.org/licenses/mit-license.html).
