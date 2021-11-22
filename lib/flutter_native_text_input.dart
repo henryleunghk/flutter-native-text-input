@@ -207,6 +207,13 @@ class _NativeTextInputState extends State<NativeTextInput> {
       };
     }
 
+    if (widget.style != null && widget.style?.fontWeight != null) {
+      params = {
+        ...params,
+        "fontWeight": widget.style?.fontWeight.toString(),
+      };
+    }
+
     if (widget.style != null && widget.style?.color != null) {
       params = {
         ...params,
@@ -224,6 +231,14 @@ class _NativeTextInputState extends State<NativeTextInput> {
       params = {
         ...params,
         "placeholderFontSize": widget.placeholderStyle?.fontSize,
+      };
+    }
+
+    if (widget.placeholderStyle != null &&
+        widget.placeholderStyle?.fontWeight != null) {
+      params = {
+        ...params,
+        "placeholderFontWeight": widget.placeholderStyle?.fontWeight.toString(),
       };
     }
 

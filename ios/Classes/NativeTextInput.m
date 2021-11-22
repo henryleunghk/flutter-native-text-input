@@ -22,7 +22,6 @@
         _viewId = viewId;
         
         _textView = [[UITextView alloc] initWithFrame:frame];
-        _textView.text = args[@"placeholder"];
         _textView.backgroundColor = UIColor.clearColor;
         _textView.keyboardAppearance = [self keyboardAppearanceFromString:args[@"keyboardAppearance"]];
         _textView.keyboardType = [self keyboardTypeFromString:args[@"keyboardType"]];
@@ -37,13 +36,14 @@
         _delegate = [[NativeTextInputDelegate alloc] initWithChannel:_channel arguments:args ];
         _textView.delegate = _delegate;
         
-        _textView.font = [UIFont systemFontOfSize: _delegate.placeholderFontSize];
+        _textView.text = args[@"placeholder"];
         _textView.textColor = _delegate.placeholderFontColor;
+        _textView.font = _delegate.placeholderFont;
         
         if (![args[@"text"] isEqualToString:@""]) {
             _textView.text = args[@"text"];
-            _textView.font = [UIFont systemFontOfSize: _delegate.fontSize];
             _textView.textColor = _delegate.fontColor;
+            _textView.font = _delegate.font;
         }
         
         __weak __typeof__(self) weakSelf = self;

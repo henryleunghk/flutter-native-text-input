@@ -6,10 +6,10 @@ NS_ASSUME_NONNULL_BEGIN
 @interface NativeTextInputDelegate : NSObject <UITextViewDelegate>
 
 - (instancetype)initWithChannel:(FlutterMethodChannel*)channel arguments:(id _Nullable)args;
-- (float)fontSize;
 - (UIColor *)fontColor;
-- (float)placeholderFontSize;
+- (UIFont *)font;
 - (UIColor *)placeholderFontColor;
+- (UIFont *)placeholderFont;
 
 @end
 

@@ -55,6 +55,7 @@ class HomePage extends StatelessWidget {
               ),
               placeholderStyle: TextStyle(
                 fontSize: 14,
+                fontWeight: FontWeight.bold,
                 color: Colors.black12,
               ),
               placeholder: 'placeholder',
@@ -72,6 +73,7 @@ class HomePage extends StatelessWidget {
                     ),
                     placeholderStyle: TextStyle(
                       fontSize: 14,
+                      fontWeight: FontWeight.bold,
                       color: Colors.black12,
                     ),
                     placeholder: "placeholder",
