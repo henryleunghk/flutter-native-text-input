@@ -49,6 +49,9 @@ class HomePage extends StatelessWidget {
           DemoItem(
             title: 'Flutter CupertinoTextField Example Usage',
             child: CupertinoTextField(
+              style: TextStyle(
+                fontSize: 16,
+              ),
               placeholder: 'placeholder',
               onChanged: _onChangeText,
               onSubmitted: _onSubmittedText,
@@ -58,6 +61,9 @@ class HomePage extends StatelessWidget {
             title: 'NativeTextInput Example Usage',
             child: Platform.isIOS
                 ? NativeTextInput(
+                    style: TextStyle(
+                      fontSize: 16,
+                    ),
                     placeholder: "placeholder",
                     keyboardAppearance: Brightness.dark,
                     keyboardType: KeyboardType.defaultType,

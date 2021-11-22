@@ -23,7 +23,11 @@
         _textView = [[UITextView alloc] initWithFrame:frame];
         _textView.text = args[@"placeholder"];
         _textView.textColor = UIColor.lightGrayColor;
-        _textView.font = [UIFont systemFontOfSize:16];
+        _textView.font = [UIFont systemFontOfSize: 16];
+        if (args[@"fontSize"] && ![args[@"fontSize"] isKindOfClass:[NSNull class]]) {
+            NSNumber* fontSize = args[@"fontSize"];
+            _textView.font = [UIFont systemFontOfSize: [fontSize floatValue]];
+        }
         _textView.backgroundColor = UIColor.clearColor;
         _textView.keyboardAppearance = [self keyboardAppearanceFromString:args[@"keyboardAppearance"]];
         _textView.keyboardType = [self keyboardTypeFromString:args[@"keyboardType"]];
@@ -53,7 +57,9 @@
 }
 
 - (void)onMethodCall:(FlutterMethodCall*)call result:(FlutterResult)result {
-    if ([[call method] isEqualToString:@"unfocus"]) {
+    if ([[call method] isEqualToString:@"getLineHeight"]) {
+        result([NSNumber numberWithFloat: _textView.font.lineHeight]);
+    } else if ([[call method] isEqualToString:@"unfocus"]) {
         [self onUnFocus:call result:result];
     } else if ([[call method] isEqualToString:@"focus"]) {
         [self onFocus:call result:result];
