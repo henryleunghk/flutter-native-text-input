@@ -3,6 +3,7 @@
 
 @implementation NativeInputField {
     UITextView* _textView;
+    
     int64_t _viewId;
     FlutterMethodChannel* _channel;
     NativeTextInputDelegate* _delegate;
@@ -21,9 +22,6 @@
         _viewId = viewId;
         
         _textView = [[UITextView alloc] initWithFrame:frame];
-        _textView.text = args[@"placeholder"];
-        _textView.textColor = UIColor.lightGrayColor;
-        _textView.font = [UIFont systemFontOfSize:16];
         _textView.backgroundColor = UIColor.clearColor;
         _textView.keyboardAppearance = [self keyboardAppearanceFromString:args[@"keyboardAppearance"]];
         _textView.keyboardType = [self keyboardTypeFromString:args[@"keyboardType"]];
@@ -31,18 +29,22 @@
         _textView.textContainer.maximumNumberOfLines = [args[@"maxLines"] intValue];
         _textView.textContainer.lineBreakMode = NSLineBreakByCharWrapping;
         
-        if (![args[@"text"] isEqualToString:@""]) {
-            _textView.text = args[@"text"];
-            _textView.textColor = UIColor.blackColor;
-        }
-        
-        
         if (@available(iOS 10.0, *)) {
             _textView.textContentType = [self textContentTypeFromString:args[@"textContentType"]];
         }
         
-        _delegate = [[NativeTextInputDelegate alloc] initWithChannel:_channel arguments:args];
+        _delegate = [[NativeTextInputDelegate alloc] initWithChannel:_channel arguments:args ];
         _textView.delegate = _delegate;
+        
+        _textView.text = args[@"placeholder"];
+        _textView.textColor = _delegate.placeholderFontColor;
+        _textView.font = _delegate.placeholderFont;
+        
+        if (![args[@"text"] isEqualToString:@""]) {
+            _textView.text = args[@"text"];
+            _textView.textColor = _delegate.fontColor;
+            _textView.font = _delegate.font;
+        }
         
         __weak __typeof__(self) weakSelf = self;
         [_channel setMethodCallHandler:^(FlutterMethodCall* call, FlutterResult result) {
@@ -53,7 +55,9 @@
 }
 
 - (void)onMethodCall:(FlutterMethodCall*)call result:(FlutterResult)result {
-    if ([[call method] isEqualToString:@"unfocus"]) {
+    if ([[call method] isEqualToString:@"getLineHeight"]) {
+        result([NSNumber numberWithFloat: _textView.font.lineHeight]);
+    } else if ([[call method] isEqualToString:@"unfocus"]) {
         [self onUnFocus:call result:result];
     } else if ([[call method] isEqualToString:@"focus"]) {
         [self onFocus:call result:result];
