@@ -3,6 +3,7 @@
 
 @implementation NativeInputField {
     UITextView* _textView;
+    
     int64_t _viewId;
     FlutterMethodChannel* _channel;
     NativeTextInputDelegate* _delegate;
@@ -22,12 +23,6 @@
         
         _textView = [[UITextView alloc] initWithFrame:frame];
         _textView.text = args[@"placeholder"];
-        _textView.textColor = UIColor.lightGrayColor;
-        _textView.font = [UIFont systemFontOfSize: 16];
-        if (args[@"fontSize"] && ![args[@"fontSize"] isKindOfClass:[NSNull class]]) {
-            NSNumber* fontSize = args[@"fontSize"];
-            _textView.font = [UIFont systemFontOfSize: [fontSize floatValue]];
-        }
         _textView.backgroundColor = UIColor.clearColor;
         _textView.keyboardAppearance = [self keyboardAppearanceFromString:args[@"keyboardAppearance"]];
         _textView.keyboardType = [self keyboardTypeFromString:args[@"keyboardType"]];
@@ -35,18 +30,21 @@
         _textView.textContainer.maximumNumberOfLines = [args[@"maxLines"] intValue];
         _textView.textContainer.lineBreakMode = NSLineBreakByCharWrapping;
         
-        if (![args[@"text"] isEqualToString:@""]) {
-            _textView.text = args[@"text"];
-            _textView.textColor = UIColor.blackColor;
-        }
-        
-        
         if (@available(iOS 10.0, *)) {
             _textView.textContentType = [self textContentTypeFromString:args[@"textContentType"]];
         }
         
-        _delegate = [[NativeTextInputDelegate alloc] initWithChannel:_channel arguments:args];
+        _delegate = [[NativeTextInputDelegate alloc] initWithChannel:_channel arguments:args ];
         _textView.delegate = _delegate;
+        
+        _textView.font = [UIFont systemFontOfSize: _delegate.placeholderFontSize];
+        _textView.textColor = _delegate.placeholderFontColor;
+        
+        if (![args[@"text"] isEqualToString:@""]) {
+            _textView.text = args[@"text"];
+            _textView.font = [UIFont systemFontOfSize: _delegate.fontSize];
+            _textView.textColor = _delegate.fontColor;
+        }
         
         __weak __typeof__(self) weakSelf = self;
         [_channel setMethodCallHandler:^(FlutterMethodCall* call, FlutterResult result) {

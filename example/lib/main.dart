@@ -51,6 +51,11 @@ class HomePage extends StatelessWidget {
             child: CupertinoTextField(
               style: TextStyle(
                 fontSize: 16,
+                color: Colors.black54,
+              ),
+              placeholderStyle: TextStyle(
+                fontSize: 14,
+                color: Colors.black12,
               ),
               placeholder: 'placeholder',
               onChanged: _onChangeText,
@@ -63,6 +68,11 @@ class HomePage extends StatelessWidget {
                 ? NativeTextInput(
                     style: TextStyle(
                       fontSize: 16,
+                      color: Colors.black54,
+                    ),
+                    placeholderStyle: TextStyle(
+                      fontSize: 14,
+                      color: Colors.black12,
                     ),
                     placeholder: "placeholder",
                     keyboardAppearance: Brightness.dark,

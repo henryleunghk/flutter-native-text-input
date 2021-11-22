@@ -74,6 +74,7 @@ class NativeTextInput extends StatefulWidget {
     Key? key,
     this.controller,
     this.style,
+    this.placeholderStyle,
     this.placeholder,
     this.textContentType,
     this.keyboardAppearance,
@@ -92,6 +93,8 @@ class NativeTextInput extends StatefulWidget {
   final TextEditingController? controller;
 
   final TextStyle? style;
+
+  final TextStyle? placeholderStyle;
 
   /// A lighter colored placeholder hint that appears on the first line of the
   /// text field when the text entry is empty.
@@ -162,8 +165,10 @@ class _NativeTextInputState extends State<NativeTextInput> {
   @override
   Widget build(BuildContext context) {
     return ConstrainedBox(
-      constraints:
-          BoxConstraints(minHeight: _minHeight(), maxHeight: _maxHeight()),
+      constraints: BoxConstraints(
+        minHeight: _minHeight(),
+        maxHeight: _maxHeight(),
+      ),
       child: UiKitView(
         viewType: "flutter_native_text_input",
         creationParamsCodec: const StandardMessageCodec(),
@@ -178,8 +183,8 @@ class _NativeTextInputState extends State<NativeTextInput> {
       ..setMethodCallHandler(_onMethodCall);
     _channel.invokeMethod("getLineHeight").then((value) {
       if (value != null) {
-        debugPrint('lineHeight:$value');
         _lineHeight = value;
+        setState(() {});
       }
     });
   }
@@ -199,6 +204,39 @@ class _NativeTextInputState extends State<NativeTextInput> {
       params = {
         ...params,
         "fontSize": widget.style?.fontSize,
+      };
+    }
+
+    if (widget.style != null && widget.style?.color != null) {
+      params = {
+        ...params,
+        "fontColor": {
+          "red": widget.style?.color?.red,
+          "green": widget.style?.color?.green,
+          "blue": widget.style?.color?.blue,
+          "alpha": widget.style?.color?.alpha,
+        }
+      };
+    }
+
+    if (widget.placeholderStyle != null &&
+        widget.placeholderStyle?.fontSize != null) {
+      params = {
+        ...params,
+        "placeholderFontSize": widget.placeholderStyle?.fontSize,
+      };
+    }
+
+    if (widget.placeholderStyle != null &&
+        widget.placeholderStyle?.color != null) {
+      params = {
+        ...params,
+        "placeholderFontColor": {
+          "red": widget.placeholderStyle?.color?.red,
+          "green": widget.placeholderStyle?.color?.green,
+          "blue": widget.placeholderStyle?.color?.blue,
+          "alpha": widget.placeholderStyle?.color?.alpha,
+        },
       };
     }
 
@@ -228,7 +266,8 @@ class _NativeTextInputState extends State<NativeTextInput> {
   }
 
   double _minHeight() {
-    return widget.minLines * _lineHeight + 16;
+    double height = widget.minLines * _lineHeight + 16;
+    return height > 36 ? height : 36;
   }
 
   double _maxHeight() {
