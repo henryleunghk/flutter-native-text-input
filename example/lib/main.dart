@@ -49,6 +49,12 @@ class HomePage extends StatelessWidget {
           DemoItem(
             title: 'Flutter CupertinoTextField Example Usage',
             child: CupertinoTextField(
+              decoration: BoxDecoration(
+                border: Border.all(
+                  color: Colors.black87,
+                  width: 2,
+                ),
+              ),
               style: TextStyle(
                 fontSize: 16,
                 color: Colors.black54,
@@ -67,6 +73,12 @@ class HomePage extends StatelessWidget {
             title: 'NativeTextInput Example Usage',
             child: Platform.isIOS
                 ? NativeTextInput(
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: Colors.black87,
+                        width: 2,
+                      ),
+                    ),
                     style: TextStyle(
                       fontSize: 16,
                       color: Colors.black54,

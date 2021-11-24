@@ -73,6 +73,7 @@ class NativeTextInput extends StatefulWidget {
   const NativeTextInput({
     Key? key,
     this.controller,
+    this.decoration,
     this.style,
     this.placeholderStyle,
     this.placeholder,
@@ -91,6 +92,8 @@ class NativeTextInput extends StatefulWidget {
   ///
   /// If null, this widget will create its own [TextEditingController].
   final TextEditingController? controller;
+
+  final BoxDecoration? decoration;
 
   final TextStyle? style;
 
@@ -169,11 +172,14 @@ class _NativeTextInputState extends State<NativeTextInput> {
         minHeight: _minHeight(),
         maxHeight: _maxHeight(),
       ),
-      child: UiKitView(
-        viewType: "flutter_native_text_input",
-        creationParamsCodec: const StandardMessageCodec(),
-        creationParams: _buildCreationParams(),
-        onPlatformViewCreated: _createMethodChannel,
+      child: Container(
+        decoration: widget.decoration,
+        child: UiKitView(
+          viewType: "flutter_native_text_input",
+          creationParamsCodec: const StandardMessageCodec(),
+          creationParams: _buildCreationParams(),
+          onPlatformViewCreated: _createMethodChannel,
+        ),
       ),
     );
   }
