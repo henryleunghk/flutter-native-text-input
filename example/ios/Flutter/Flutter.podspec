@@ -5,7 +5,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'Flutter'
-  s.version          = '1.0.0'
+  s.version          = '1.1.0'
   s.summary          = 'High-performance, high-fidelity mobile apps.'
   s.homepage         = 'https://flutter.io'
   s.license          = { :type => 'MIT' }

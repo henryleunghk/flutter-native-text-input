@@ -1,3 +1,7 @@
+## 1.1.0
+
+* support customizations
+
 ## 1.0.0
 
 * support null-safety

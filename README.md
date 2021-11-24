@@ -24,8 +24,9 @@ Hope you find it useful and happy coding! 🎉🎉🎉
 | Name            | Type          | Description                    | Default                  |
 |:----------------|:--------------|:-------------------------------|:-------------------------|
 | `controller`      | TextEditingController  | Controlling the text being edited (https://api.flutter.dev/flutter/material/TextField/controller.html) | null |
-| `style`           | TextStyle              | The style to use for the text being edited [Only `fontSize`, `fontWeight`, `color` are supported] (https://api.flutter.dev/flutter/painting/TextStyle-class.html) | null |
-| `placeholderStyle` | TextStyle             | The style to use for the placeholder text. [Only `fontSize`, `fontWeight`, `color` are supported] (https://api.flutter.dev/flutter/painting/TextStyle-class.html) | null |
+| `decoration`      | BoxDecoration          | Controls the BoxDecoration of the box behind the text input. (https://api.flutter.dev/flutter/cupertino/CupertinoTextField/decoration.html) | null |
+| `style`           | TextStyle              | The style to use for the text being edited [Only `fontSize`, `fontWeight`, `color` are supported] (https://api.flutter.dev/flutter/material/TextField/style.html) | null |
+| `placeholderStyle`| TextStyle              | The style to use for the placeholder text. [Only `fontSize`, `fontWeight`, `color` are supported] (https://api.flutter.dev/flutter/cupertino/CupertinoTextField/placeholderStyle.html) | null |
 | `placeholder`     | String                 | Placeholder text when text entry is empty (https://api.flutter.dev/flutter/cupertino/CupertinoTextField/placeholder.html) | null |
 | `textContentType` | TextContentType        | To identify the semantic meaning expected for a text-entry area (https://developer.apple.com/documentation/uikit/uitextcontenttype) | null |
 | `keyboardAppearance` | Brightness          | The appearance of the keyboard (https://api.flutter.dev/flutter/material/TextField/keyboardAppearance.html) | null |
