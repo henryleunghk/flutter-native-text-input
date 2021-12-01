@@ -1,6 +1,6 @@
 # Native Text Input for Flutter
 
-A text input widget built using the native `UITextView` on iOS (this package only supports iOS for now).
+A text input widget built using the native `UITextView` on iOS (this package only supports iOS for now). For text view, please refer to [flutter-native-text-view](https://github.com/henryleunghk/flutter-native-text-view).
 
 ## Installation
 
@@ -57,7 +57,7 @@ Contributors are welcome. Just create a PR and it would be reviewed and merged A
 
 If you enjoy using this package or it helps you or your team, you could also buy me a cup of coffee to show support :)
 
-https://PayPal.Me/hkhenryleung
+https://PayPal.Me/hkhenryleung/50
 
 ## License
 
