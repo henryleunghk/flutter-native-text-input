@@ -36,6 +36,11 @@
         if (@available(iOS 10.0, *)) {
             _textView.textContentType = [self textContentTypeFromString:args[@"textContentType"]];
         }
+        if (args[@"cursorColor"] && ![args[@"cursorColor"] isKindOfClass:[NSNull class]]) {
+            NSDictionary* fontColor = args[@"cursorColor"];
+            _textView.tintColor = [UIColor colorWithRed:[fontColor[@"red"] floatValue]/255.0 green:[fontColor[@"green"] floatValue]/255.0 blue:[fontColor[@"blue"] floatValue]/255.0 alpha:[fontColor[@"alpha"] floatValue]/255.0];
+        }
+        
         
         _delegate = [[NativeTextInputDelegate alloc] initWithChannel:_channel arguments:args ];
         _textView.delegate = _delegate;
