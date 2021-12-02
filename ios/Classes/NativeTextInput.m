@@ -27,6 +27,7 @@
         _textView.backgroundColor = UIColor.clearColor;
         _textView.keyboardAppearance = [self keyboardAppearanceFromString:args[@"keyboardAppearance"]];
         _textView.keyboardType = [self keyboardTypeFromString:args[@"keyboardType"]];
+        _textView.returnKeyType = [self returnKeyTypeFromString:args[@"returnKeyType"]];
         _textView.textAlignment = [self textAlignmentFromString:args[@"textAlign"]];
         _textView.autocapitalizationType = [self textAutocapitalizationTypeFromString:args[@"textCapitalization"]];
         _textView.textContainer.lineBreakMode = NSLineBreakByCharWrapping;
@@ -160,6 +161,40 @@
     }
     
     return UIKeyboardTypeDefault;
+}
+
+- (UIReturnKeyType)returnKeyTypeFromString:(NSString *)returnKeyType {
+    if (!returnKeyType || [returnKeyType isKindOfClass:[NSNull class]]) {
+        return UIReturnKeyDefault;
+    }
+    
+    if ([returnKeyType isEqualToString:@"ReturnKeyType.defaultAction"]) {
+        return UIReturnKeyDefault;
+    } else if ([returnKeyType isEqualToString:@"ReturnKeyType.go"]) {
+        return UIReturnKeyGo;
+    } else if ([returnKeyType isEqualToString:@"ReturnKeyType.google"]) {
+        return UIReturnKeyGoogle;
+    } else if ([returnKeyType isEqualToString:@"ReturnKeyType.join"]) {
+        return UIReturnKeyJoin;
+    } else if ([returnKeyType isEqualToString:@"ReturnKeyType.next"]) {
+        return UIReturnKeyNext;
+    } else if ([returnKeyType isEqualToString:@"ReturnKeyType.route"]) {
+        return UIReturnKeyRoute;
+    } else if ([returnKeyType isEqualToString:@"ReturnKeyType.search"]) {
+        return UIReturnKeySearch;
+    } else if ([returnKeyType isEqualToString:@"ReturnKeyType.send"]) {
+        return UIReturnKeySend;
+    } else if ([returnKeyType isEqualToString:@"ReturnKeyType.yahoo"]) {
+        return UIReturnKeyYahoo;
+    } else if ([returnKeyType isEqualToString:@"ReturnKeyType.done"]) {
+        return UIReturnKeyDone;
+    } else if ([returnKeyType isEqualToString:@"ReturnKeyType.emergencyCall"]) {
+        return UIReturnKeyEmergencyCall;
+    } else if ([returnKeyType isEqualToString:@"ReturnKeyType.continueAction"]) {
+        return UIReturnKeyContinue;
+    }
+    
+    return UIReturnKeyDefault;
 }
 
 - (UITextAutocapitalizationType)textAutocapitalizationTypeFromString:(NSString *)textCapitalization {
