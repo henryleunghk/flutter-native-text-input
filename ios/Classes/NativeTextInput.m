@@ -28,6 +28,7 @@
         _textView.keyboardAppearance = [self keyboardAppearanceFromString:args[@"keyboardAppearance"]];
         _textView.keyboardType = [self keyboardTypeFromString:args[@"keyboardType"]];
         _textView.textAlignment = [self textAlignmentFromString:args[@"textAlign"]];
+        _textView.autocapitalizationType = [self textAutocapitalizationTypeFromString:args[@"textCapitalization"]];
         _textView.textContainer.lineBreakMode = NSLineBreakByCharWrapping;
         
         if ([args[@"maxLines"] intValue] == 1) {
@@ -161,7 +162,25 @@
     return UIKeyboardTypeDefault;
 }
 
-- (UITextContentType)textContentTypeFromString:(NSString*)contentType {
+- (UITextAutocapitalizationType)textAutocapitalizationTypeFromString:(NSString *)textCapitalization {
+    if (!textCapitalization || [textCapitalization isKindOfClass:[NSNull class]]) {
+        return UITextAutocapitalizationTypeNone;
+    }
+    
+    if ([textCapitalization isEqualToString:@"TextCapitalization.none"]) {
+        return UITextAutocapitalizationTypeNone;
+    } else if ([textCapitalization isEqualToString:@"TextCapitalization.characters"]) {
+        return UITextAutocapitalizationTypeAllCharacters;
+    } else if ([textCapitalization isEqualToString:@"TextCapitalization.sentences"]) {
+        return UITextAutocapitalizationTypeSentences;
+    } else if ([textCapitalization isEqualToString:@"TextCapitalization.words"]) {
+        return UITextAutocapitalizationTypeWords;
+    }
+    
+    return UITextAutocapitalizationTypeNone;
+}
+
+- (UITextContentType)textContentTypeFromString:(NSString *)contentType {
     if (!contentType || [contentType isKindOfClass:[NSNull class]]) {
         return nil;
     }
