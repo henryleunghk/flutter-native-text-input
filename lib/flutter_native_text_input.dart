@@ -73,6 +73,7 @@ class NativeTextInput extends StatefulWidget {
   const NativeTextInput({
     Key? key,
     this.controller,
+    this.cursorColor,
     this.decoration,
     this.style,
     this.placeholderStyle,
@@ -84,14 +85,16 @@ class NativeTextInput extends StatefulWidget {
     this.onSubmitted,
     this.focusNode,
     this.textAlign = TextAlign.start,
-    this.minLines = 1,
     this.maxLines = 1,
+    this.minLines = 1,
   }) : super(key: key);
 
   /// Controls the text being edited.
   ///
   /// If null, this widget will create its own [TextEditingController].
   final TextEditingController? controller;
+
+  final Color? cursorColor;
 
   final BoxDecoration? decoration;
 
@@ -266,6 +269,18 @@ class _NativeTextInputState extends State<NativeTextInput> {
           "green": widget.placeholderStyle?.color?.green,
           "blue": widget.placeholderStyle?.color?.blue,
           "alpha": widget.placeholderStyle?.color?.alpha,
+        },
+      };
+    }
+
+    if (widget.cursorColor != null) {
+      params = {
+        ...params,
+        "cursorColor": {
+          "red": widget.cursorColor?.red,
+          "green": widget.cursorColor?.green,
+          "blue": widget.cursorColor?.blue,
+          "alpha": widget.cursorColor?.alpha,
         },
       };
     }
