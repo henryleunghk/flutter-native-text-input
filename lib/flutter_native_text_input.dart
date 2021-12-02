@@ -75,18 +75,19 @@ class NativeTextInput extends StatefulWidget {
     this.controller,
     this.cursorColor,
     this.decoration,
-    this.style,
-    this.placeholderStyle,
-    this.placeholder,
-    this.textContentType,
+    this.focusNode,
     this.keyboardAppearance,
     this.keyboardType = KeyboardType.defaultType,
-    this.onChanged,
-    this.onSubmitted,
-    this.focusNode,
-    this.textAlign = TextAlign.start,
     this.maxLines = 1,
     this.minLines = 1,
+    this.placeholder,
+    this.placeholderStyle,
+    this.style,
+    this.textAlign = TextAlign.start,
+    this.textCapitalization = TextCapitalization.none,
+    this.textContentType,
+    this.onChanged,
+    this.onSubmitted,
   }) : super(key: key);
 
   /// Controls the text being edited.
@@ -98,36 +99,31 @@ class NativeTextInput extends StatefulWidget {
 
   final BoxDecoration? decoration;
 
-  final TextStyle? style;
-
-  final TextStyle? placeholderStyle;
-
-  /// A lighter colored placeholder hint that appears on the first line of the
-  /// text field when the text entry is empty.
-  ///
-  /// Defaults to having no placeholder text.
-  ///
-  /// The text style of the placeholder text matches that of the text field's
-  /// main text entry except a lighter font weight and a grey font color.
-  final String? placeholder;
-
-  final TextContentType? textContentType;
+  final FocusNode? focusNode;
 
   final Brightness? keyboardAppearance;
 
   final KeyboardType keyboardType;
 
-  final ValueChanged<String>? onChanged;
-
-  final ValueChanged<String?>? onSubmitted;
-
-  final FocusNode? focusNode;
-
-  final TextAlign textAlign;
-
   final int maxLines;
 
   final int minLines;
+
+  final String? placeholder;
+
+  final TextStyle? placeholderStyle;
+
+  final TextStyle? style;
+
+  final TextAlign textAlign;
+
+  final TextCapitalization textCapitalization;
+
+  final TextContentType? textContentType;
+
+  final ValueChanged<String>? onChanged;
+
+  final ValueChanged<String?>? onSubmitted;
 
   @override
   State<StatefulWidget> createState() => _NativeTextInputState();
@@ -211,6 +207,7 @@ class _NativeTextInputState extends State<NativeTextInput> {
       "width": constraints.maxWidth,
       "text": _effectiveController.text,
       "placeholder": widget.placeholder ?? "",
+      "textCapitalization": widget.textCapitalization.toString(),
       "textContentType": widget.textContentType?.toString(),
       "keyboardAppearance": widget.keyboardAppearance.toString(),
       "keyboardType": widget.keyboardType.toString(),

@@ -60,6 +60,7 @@ class HomePage extends StatelessWidget {
                 fontSize: 16,
                 color: Colors.black54,
               ),
+              textCapitalization: TextCapitalization.sentences,
               placeholderStyle: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
@@ -85,6 +86,7 @@ class HomePage extends StatelessWidget {
                       fontSize: 16,
                       color: Colors.black54,
                     ),
+                    textCapitalization: TextCapitalization.sentences,
                     placeholderStyle: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
