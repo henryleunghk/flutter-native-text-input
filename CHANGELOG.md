@@ -1,3 +1,7 @@
+## 1.1.1
+
+* fix maxLines usage and support dynamic content height
+
 ## 1.1.0
 
 * support customizations

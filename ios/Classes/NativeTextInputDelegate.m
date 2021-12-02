@@ -11,9 +11,6 @@
     float _placeholderFontSize;
     UIFontWeight _placeholderFontWeight;
     UIColor* _placeholderFontColor;
-    
-    CGRect _previousRect;
-    int _currentLineIndex;
 }
 
 - (instancetype)initWithChannel:(FlutterMethodChannel*)channel arguments:(id _Nullable)args {
@@ -54,8 +51,6 @@
     if (self) {
         _channel = channel;
         _args = args;
-        _previousRect = CGRectZero;
-        _currentLineIndex = 1;
     }
     return self;
 }
@@ -109,28 +104,20 @@
         textView.textColor = _fontColor;
         textView.font = self.font;
     }
+    
+    if (textView.textContainer.maximumNumberOfLines == 1) {
+        textView.textContainer.lineBreakMode = NSLineBreakByCharWrapping;
+    }
+    
     [_channel invokeMethod:@"inputStarted"
                  arguments:nil];
 }
 
 - (void)textViewDidChange:(UITextView *)textView {
-    UITextPosition *position = [textView endOfDocument];
-    CGRect currentRect = [textView caretRectForPosition:position];
-    
-    if (_previousRect.origin.y == 0.0 ) { _previousRect = currentRect; }
-    
-    if (currentRect.origin.y > _previousRect.origin.y) {
-        _currentLineIndex += 1;
-    } else if (currentRect.origin.y < _previousRect.origin.y) {
-        _currentLineIndex -= 1;
-    }
-    
-    _previousRect = currentRect;
-    
     textView.textColor = textView.text == 0 ? _placeholderFontColor : _fontColor;
     textView.font = textView.text == 0 ? self.placeholderFont : self.font;
     
-    [_channel invokeMethod:@"inputValueChanged" arguments:@{ @"text": textView.text, @"currentLine": [NSNumber numberWithInt: _currentLineIndex] }];
+    [_channel invokeMethod:@"inputValueChanged" arguments:@{ @"text": textView.text }];
 }
 
 - (void)textViewDidEndEditing:(UITextView *)textView {
@@ -139,6 +126,11 @@
         textView.textColor = _placeholderFontColor;
         textView.font = self.placeholderFont;
     }
+    
+    if (textView.textContainer.maximumNumberOfLines == 1) {
+        textView.textContainer.lineBreakMode = NSLineBreakByTruncatingTail;
+    }
+    
     [_channel invokeMethod:@"inputFinished"
                  arguments:@{ @"text": textView.text }];
 }
@@ -150,14 +142,8 @@
      ) {
          [textView resignFirstResponder];
          return false;
-     } else if (textView.textContainer.maximumNumberOfLines == 0) {
-         return true;
-     } else {
-         NSUInteger existingLines = [textView.text componentsSeparatedByString:@"\n"].count;
-         NSUInteger newLines = [text componentsSeparatedByString:@"\n"].count;
-         NSUInteger linesAfterChange = existingLines + newLines - 1;
-         return linesAfterChange <= textView.textContainer.maximumNumberOfLines;
      }
+     return true;
  }
 
 @end

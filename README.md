@@ -36,7 +36,7 @@ Hope you find it useful and happy coding! 🎉🎉🎉
 | `focusNode`       | FocusNode              | Defines the keyboard focus for this widget (https://api.flutter.dev/flutter/material/TextField/focusNode.html) | null |
 | `textAlign`       | TextAlign              | How the text should be aligned horizontally (https://api.flutter.dev/flutter/material/TextField/textAlign.html) | TextAlign.start |
 | `minLines`        | int                    | Minimum number of lines of text input widget | 1 |
-| `maxLines`        | int                    | Maximum number of lines of text input body, 0 for no limit | 1 |
+| `maxLines`        | int                    | The maximum number of lines to show at one time, wrapping if necessary (https://api.flutter.dev/flutter/material/TextField/maxLines.html) | 1 |
 
 ## More examples
 

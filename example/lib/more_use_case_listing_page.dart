@@ -62,7 +62,7 @@ class _MoreUseCaseListingPageState extends State<MoreUseCaseListingPage> {
                   title: "Multiline Text Input",
                   child: NativeTextInput(
                     minLines: 3,
-                    maxLines: 0,
+                    maxLines: 5,
                     onChanged: _onChangeText,
                     onSubmitted: _onSubmittedText,
                   )),

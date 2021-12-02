@@ -142,8 +142,8 @@ class _NativeTextInputState extends State<NativeTextInput> {
       widget.focusNode ?? (_focusNode ??= FocusNode());
 
   bool get _isMultiline => widget.maxLines == 0 || widget.maxLines > 1;
-  int? _currentLineIndex = 1;
   double _lineHeight = 22.0;
+  double _contentHeight = 22.0;
 
   @override
   void initState() {
@@ -169,16 +169,18 @@ class _NativeTextInputState extends State<NativeTextInput> {
   Widget build(BuildContext context) {
     return ConstrainedBox(
       constraints: BoxConstraints(
-        minHeight: _minHeight(),
-        maxHeight: _maxHeight(),
+        minHeight: _minHeight,
+        maxHeight: _maxHeight,
       ),
-      child: Container(
-        decoration: widget.decoration,
-        child: UiKitView(
-          viewType: "flutter_native_text_input",
-          creationParamsCodec: const StandardMessageCodec(),
-          creationParams: _buildCreationParams(),
-          onPlatformViewCreated: _createMethodChannel,
+      child: LayoutBuilder(
+        builder: (context, layout) => Container(
+          decoration: widget.decoration,
+          child: UiKitView(
+            viewType: "flutter_native_text_input",
+            creationParamsCodec: const StandardMessageCodec(),
+            creationParams: _buildCreationParams(layout),
+            onPlatformViewCreated: _createMethodChannel,
+          ),
         ),
       ),
     );
@@ -193,10 +195,17 @@ class _NativeTextInputState extends State<NativeTextInput> {
         setState(() {});
       }
     });
+    _channel.invokeMethod("getContentHeight").then((value) {
+      if (value != null) {
+        _contentHeight = value;
+        setState(() {});
+      }
+    });
   }
 
-  Map<String, dynamic> _buildCreationParams() {
+  Map<String, dynamic> _buildCreationParams(BoxConstraints constraints) {
     Map<String, dynamic> params = {
+      "width": constraints.maxWidth,
       "text": _effectiveController.text,
       "placeholder": widget.placeholder ?? "",
       "textContentType": widget.textContentType?.toString(),
@@ -286,17 +295,16 @@ class _NativeTextInputState extends State<NativeTextInput> {
         "NativeTextInput._onMethodCall: No handler for ${call.method}");
   }
 
-  double _minHeight() {
-    double height = widget.minLines * _lineHeight + 16;
-    return height > 36 ? height : 36;
-  }
+  double get _minHeight => (widget.minLines * _lineHeight) + 18;
 
-  double _maxHeight() {
-    return _isMultiline
-        ? (_lineHeight * _currentLineIndex! > _minHeight()
-            ? _lineHeight * _currentLineIndex!
-            : _minHeight())
-        : _minHeight();
+  double get _maxHeight {
+    if (!_isMultiline) return _minHeight;
+    if (_contentHeight > _minHeight && widget.maxLines > 0) {
+      double maxLineHeight = widget.maxLines * _lineHeight + 14;
+      return _contentHeight > maxLineHeight ? maxLineHeight : _contentHeight;
+    }
+    if (_contentHeight > _minHeight) return _contentHeight;
+    return _minHeight;
   }
 
   // input control methods
@@ -316,17 +324,14 @@ class _NativeTextInputState extends State<NativeTextInput> {
   void _inputValueChanged(String? text, int? lineIndex) {
     if (text != null) {
       _effectiveController.text = text;
-      if (_isMultiline &&
-          _currentLineIndex != lineIndex &&
-          lineIndex! <= widget.maxLines) {
-        setState(() {
-          _currentLineIndex = lineIndex;
-        });
-      } else {
-        _currentLineIndex = 0;
-      }
-
       if (widget.onChanged != null) widget.onChanged!(text);
+
+      _channel.invokeMethod("getContentHeight").then((value) {
+        if (value != null && value != _contentHeight) {
+          _contentHeight = value;
+          setState(() {});
+        }
+      });
     }
   }
 

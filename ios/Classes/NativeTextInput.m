@@ -7,6 +7,8 @@
     int64_t _viewId;
     FlutterMethodChannel* _channel;
     NativeTextInputDelegate* _delegate;
+    
+    float _containerWidth;
 }
 
 
@@ -26,9 +28,11 @@
         _textView.keyboardAppearance = [self keyboardAppearanceFromString:args[@"keyboardAppearance"]];
         _textView.keyboardType = [self keyboardTypeFromString:args[@"keyboardType"]];
         _textView.textAlignment = [self textAlignmentFromString:args[@"textAlign"]];
-        _textView.textContainer.maximumNumberOfLines = [args[@"maxLines"] intValue];
         _textView.textContainer.lineBreakMode = NSLineBreakByCharWrapping;
         
+        if ([args[@"maxLines"] intValue] == 1) {
+            _textView.textContainer.maximumNumberOfLines = 1;
+        }
         if (@available(iOS 10.0, *)) {
             _textView.textContentType = [self textContentTypeFromString:args[@"textContentType"]];
         }
@@ -46,6 +50,8 @@
             _textView.font = _delegate.font;
         }
         
+        _containerWidth = [args[@"width"] floatValue];
+        
         __weak __typeof__(self) weakSelf = self;
         [_channel setMethodCallHandler:^(FlutterMethodCall* call, FlutterResult result) {
             [weakSelf onMethodCall:call result:result];
@@ -55,7 +61,11 @@
 }
 
 - (void)onMethodCall:(FlutterMethodCall*)call result:(FlutterResult)result {
-    if ([[call method] isEqualToString:@"getLineHeight"]) {
+    if ([[call method] isEqualToString:@"getContentHeight"]) {
+        CGSize boundSize = CGSizeMake(_containerWidth, MAXFLOAT);
+        CGSize size = [_textView sizeThatFits: boundSize];
+        result([NSNumber numberWithFloat: size.height]);
+    } else if ([[call method] isEqualToString:@"getLineHeight"]) {
         result([NSNumber numberWithFloat: _textView.font.lineHeight]);
     } else if ([[call method] isEqualToString:@"unfocus"]) {
         [self onUnFocus:call result:result];
