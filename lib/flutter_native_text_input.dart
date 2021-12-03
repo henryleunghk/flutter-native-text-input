@@ -2,6 +2,21 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 
+enum ReturnKeyType {
+  defaultAction,
+  go,
+  google,
+  join,
+  next,
+  route,
+  search,
+  send,
+  yahoo,
+  done,
+  emergencyCall,
+  continueAction,
+}
+
 enum TextContentType {
   name,
   namePrefix,
@@ -82,6 +97,7 @@ class NativeTextInput extends StatefulWidget {
     this.minLines = 1,
     this.placeholder,
     this.placeholderStyle,
+    this.returnKeyType = ReturnKeyType.defaultAction,
     this.style,
     this.textAlign = TextAlign.start,
     this.textCapitalization = TextCapitalization.none,
@@ -108,6 +124,8 @@ class NativeTextInput extends StatefulWidget {
   final int maxLines;
 
   final int minLines;
+
+  final ReturnKeyType returnKeyType;
 
   final String? placeholder;
 
@@ -204,15 +222,16 @@ class _NativeTextInputState extends State<NativeTextInput> {
 
   Map<String, dynamic> _buildCreationParams(BoxConstraints constraints) {
     Map<String, dynamic> params = {
-      "width": constraints.maxWidth,
-      "text": _effectiveController.text,
+      "maxLines": widget.maxLines,
       "placeholder": widget.placeholder ?? "",
+      "returnKeyType": widget.returnKeyType.toString(),
+      "text": _effectiveController.text,
+      "textAlign": widget.textAlign.toString(),
       "textCapitalization": widget.textCapitalization.toString(),
       "textContentType": widget.textContentType?.toString(),
       "keyboardAppearance": widget.keyboardAppearance.toString(),
       "keyboardType": widget.keyboardType.toString(),
-      "textAlign": widget.textAlign.toString(),
-      "maxLines": widget.maxLines,
+      "width": constraints.maxWidth,
     };
 
     if (widget.style != null && widget.style?.fontSize != null) {
