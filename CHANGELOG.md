@@ -1,3 +1,7 @@
+## 1.2.0
+
+* add supoort of cursorColor, returnKeyType and textCapitalization
+
 ## 1.1.1
 
 * fix maxLines usage and support dynamic content height

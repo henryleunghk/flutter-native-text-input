@@ -3,7 +3,7 @@
 #
 Pod::Spec.new do |s|
   s.name             = 'flutter_native_text_input'
-  s.version          = '1.1.1'
+  s.version          = '1.2.0'
   s.summary          = 'Native text input for Flutter'
   s.description      = <<-DESC
   Native text input for Flutter
