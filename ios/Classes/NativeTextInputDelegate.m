@@ -136,8 +136,8 @@
 }
 
  - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {
-     if (
-         textView.textContainer.maximumNumberOfLines == 1 &&
+     if ((textView.returnKeyType != UIReturnKeyDefault ||
+         textView.textContainer.maximumNumberOfLines == 1) &&
          [text isEqualToString:@"\n"]
      ) {
          [textView resignFirstResponder];

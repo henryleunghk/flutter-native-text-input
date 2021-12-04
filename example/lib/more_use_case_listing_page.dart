@@ -63,6 +63,7 @@ class _MoreUseCaseListingPageState extends State<MoreUseCaseListingPage> {
                   child: NativeTextInput(
                     minLines: 3,
                     maxLines: 5,
+                    returnKeyType: ReturnKeyType.done,
                     onChanged: _onChangeText,
                     onSubmitted: _onSubmittedText,
                   )),
