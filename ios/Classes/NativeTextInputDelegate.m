@@ -130,9 +130,6 @@
     if (textView.textContainer.maximumNumberOfLines == 1) {
         textView.textContainer.lineBreakMode = NSLineBreakByTruncatingTail;
     }
-    
-    [_channel invokeMethod:@"inputFinished"
-                 arguments:@{ @"text": textView.text }];
 }
 
  - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {
@@ -140,6 +137,9 @@
          textView.textContainer.maximumNumberOfLines == 1) &&
          [text isEqualToString:@"\n"]
      ) {
+         [_channel invokeMethod:@"inputFinished"
+                      arguments:@{ @"text": textView.text }];
+         
          [textView resignFirstResponder];
          return false;
      }

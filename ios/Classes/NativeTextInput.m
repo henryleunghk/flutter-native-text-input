@@ -7,6 +7,7 @@
     int64_t _viewId;
     FlutterMethodChannel* _channel;
     NativeTextInputDelegate* _delegate;
+    id _Nullable _args;
     
     float _containerWidth;
 }
@@ -22,6 +23,7 @@
         _channel = [FlutterMethodChannel methodChannelWithName:channelName binaryMessenger:messenger];
         
         _viewId = viewId;
+        _args = args;
         
         _textView = [[UITextView alloc] initWithFrame:frame];
         _textView.backgroundColor = UIColor.clearColor;
@@ -97,6 +99,18 @@
 
 - (void)onSetText:(FlutterMethodCall*)call result:(FlutterResult)result {
     _textView.text = call.arguments[@"text"];
+    _textView.textColor = _delegate.fontColor;
+    _textView.font = _delegate.font;
+    
+    if (_textView.text.length == 0) {
+        _textView.text = _args[@"placeholder"];
+        _textView.textColor = _delegate.placeholderFontColor;
+        _textView.font = _delegate.placeholderFont;
+    }
+    
+    if (_textView.textContainer.maximumNumberOfLines == 1) {
+        _textView.textContainer.lineBreakMode = NSLineBreakByTruncatingTail;
+    }
     result(nil);
 }
 
