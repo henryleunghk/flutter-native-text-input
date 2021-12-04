@@ -1,6 +1,10 @@
+## 1.2.1
+
+* fix returnKeyType and onSubmitted usage
+
 ## 1.2.0
 
-* add supoort of cursorColor, returnKeyType and textCapitalization
+* add support of cursorColor, returnKeyType and textCapitalization
 
 ## 1.1.1
 

@@ -25,7 +25,7 @@ Hope you find it useful and happy coding! 🎉🎉🎉
 |:----------------|:--------------|:-------------------------------|:-------------------------|
 | `controller`      | TextEditingController  | Controlling the text being edited (https://api.flutter.dev/flutter/material/TextField/controller.html) | null |
 | `cursorColor`     | Color                  | The color of the cursor (https://api.flutter.dev/flutter/material/TextField/cursorColor.html) | null |
-| `decoration`      | BoxDecoration          | Controls the BoxDecoration of the box behind the text input. (https://api.flutter.dev/flutter/cupertino/CupertinoTextField/decoration.html) | null |
+| `decoration`      | BoxDecoration          | Controls the BoxDecoration of the box behind the text input (https://api.flutter.dev/flutter/cupertino/CupertinoTextField/decoration.html) | null |
 | `focusNode`       | FocusNode              | Defines the keyboard focus for this widget (https://api.flutter.dev/flutter/material/TextField/focusNode.html) | null |
 | `keyboardAppearance` | Brightness          | The appearance of the keyboard (https://api.flutter.dev/flutter/material/TextField/keyboardAppearance.html) | null |
 | `keyboardType`    | KeyboardType           | Type of keyboard to display for a given text-based view (https://developer.apple.com/documentation/uikit/uikeyboardtype) | KeyboardType.defaultType |
@@ -33,6 +33,7 @@ Hope you find it useful and happy coding! 🎉🎉🎉
 | `minLines`        | int                    | Minimum number of lines of text input widget | 1 |
 | `placeholder`     | String                 | Placeholder text when text entry is empty (https://api.flutter.dev/flutter/cupertino/CupertinoTextField/placeholder.html) | null |
 | `placeholderStyle`| TextStyle              | The style to use for the placeholder text. [Only `fontSize`, `fontWeight`, `color` are supported] (https://api.flutter.dev/flutter/cupertino/CupertinoTextField/placeholderStyle.html) | null |
+| `returnKeyType`   | ReturnKeyType          | Constants that specify the text string that displays in the Return key of a keyboard (https://developer.apple.com/documentation/uikit/uireturnkeytype) | ReturnKeyType.defaultAction |
 | `style`           | TextStyle              | The style to use for the text being edited [Only `fontSize`, `fontWeight`, `color` are supported] (https://api.flutter.dev/flutter/material/TextField/style.html) | null |
 | `textAlign`       | TextAlign              | How the text should be aligned horizontally (https://api.flutter.dev/flutter/material/TextField/textAlign.html) | TextAlign.start |
 | `textCapitalization` | TextCapitalization  | Configures how the platform keyboard will select an uppercase or lowercase keyboard (https://api.flutter.dev/flutter/material/TextField/textCapitalization.html) | TextCapitalization.none |
