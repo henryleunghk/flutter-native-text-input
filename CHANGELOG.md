@@ -1,3 +1,7 @@
+## 1.2.2
+
+* fix focusNode usage
+
 ## 1.2.1
 
 * fix returnKeyType and onSubmitted usage

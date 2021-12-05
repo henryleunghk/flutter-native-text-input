@@ -106,104 +106,104 @@ class NativeTextInput extends StatefulWidget {
     this.onSubmitted,
   }) : super(key: key);
 
-  /// Controlling the text being edited 
-  /// (https://api.flutter.dev/flutter/material/TextField/controller.html) 
-  /// 
+  /// Controlling the text being edited
+  /// (https://api.flutter.dev/flutter/material/TextField/controller.html)
+  ///
   /// Default: null, this widget will create its own [TextEditingController].
   final TextEditingController? controller;
 
-  /// The color of the cursor 
+  /// The color of the cursor
   /// (https://api.flutter.dev/flutter/material/TextField/cursorColor.html)
-  /// 
+  ///
   /// Default: null
   final Color? cursorColor;
 
   /// Controls the BoxDecoration of the box behind the text input
   /// (https://api.flutter.dev/flutter/cupertino/CupertinoTextField/decoration.html)
-  /// 
+  ///
   /// Default: null
   final BoxDecoration? decoration;
 
-  /// Defines the keyboard focus for this widget 
+  /// Defines the keyboard focus for this widget
   /// (https://api.flutter.dev/flutter/material/TextField/focusNode.html)
-  /// 
+  ///
   /// Default: null
   final FocusNode? focusNode;
 
-  /// The appearance of the keyboard 
+  /// The appearance of the keyboard
   /// (https://api.flutter.dev/flutter/material/TextField/keyboardAppearance.html)
-  /// 
+  ///
   /// Default: null
   final Brightness? keyboardAppearance;
 
   /// Type of keyboard to display for a given text-based view
   /// (https://developer.apple.com/documentation/uikit/uikeyboardtype)
-  /// 
+  ///
   /// Default: KeyboardType.defaultType
   final KeyboardType keyboardType;
 
   /// The maximum number of lines to show at one time, wrapping if necessary
   /// (https://api.flutter.dev/flutter/material/TextField/maxLines.html)
-  /// 
+  ///
   /// Default: 1
   final int maxLines;
 
   /// Minimum number of lines of text input widget
-  /// 
+  ///
   /// Default: 1
   final int minLines;
 
-  /// Placeholder text when text entry is empty 
-  /// (https://api.flutter.dev/flutter/cupertino/CupertinoTextField/placeholder.html) 
-  /// 
+  /// Placeholder text when text entry is empty
+  /// (https://api.flutter.dev/flutter/cupertino/CupertinoTextField/placeholder.html)
+  ///
   /// Default: null
   final String? placeholder;
 
-  /// The style to use for the placeholder text. [Only `fontSize`, `fontWeight`, `color` are supported] 
-  /// (https://api.flutter.dev/flutter/cupertino/CupertinoTextField/placeholderStyle.html) 
-  /// 
+  /// The style to use for the placeholder text. [Only `fontSize`, `fontWeight`, `color` are supported]
+  /// (https://api.flutter.dev/flutter/cupertino/CupertinoTextField/placeholderStyle.html)
+  ///
   /// Default: null
   final TextStyle? placeholderStyle;
 
-  /// Constants that specify the text string that displays in the Return key of a keyboard 
-  /// (https://developer.apple.com/documentation/uikit/uireturnkeytype) 
-  /// 
+  /// Constants that specify the text string that displays in the Return key of a keyboard
+  /// (https://developer.apple.com/documentation/uikit/uireturnkeytype)
+  ///
   /// Default: ReturnKeyType.defaultAction
   final ReturnKeyType returnKeyType;
 
-  /// The style to use for the text being edited [Only `fontSize`, `fontWeight`, `color` are supported] 
-  /// (https://api.flutter.dev/flutter/material/TextField/style.html) 
-  /// 
+  /// The style to use for the text being edited [Only `fontSize`, `fontWeight`, `color` are supported]
+  /// (https://api.flutter.dev/flutter/material/TextField/style.html)
+  ///
   /// Default: null
   final TextStyle? style;
 
-  /// How the text should be aligned horizontally 
-  /// (https://api.flutter.dev/flutter/material/TextField/textAlign.html) 
-  /// 
+  /// How the text should be aligned horizontally
+  /// (https://api.flutter.dev/flutter/material/TextField/textAlign.html)
+  ///
   /// Default: TextAlign.start
   final TextAlign textAlign;
 
-  /// Configures how the platform keyboard will select an uppercase or lowercase keyboard 
-  /// (https://api.flutter.dev/flutter/material/TextField/textCapitalization.html) 
-  /// 
+  /// Configures how the platform keyboard will select an uppercase or lowercase keyboard
+  /// (https://api.flutter.dev/flutter/material/TextField/textCapitalization.html)
+  ///
   /// Default: TextCapitalization.none
   final TextCapitalization textCapitalization;
 
-  /// To identify the semantic meaning expected for a text-entry area 
-  /// (https://developer.apple.com/documentation/uikit/uitextcontenttype) 
-  /// 
+  /// To identify the semantic meaning expected for a text-entry area
+  /// (https://developer.apple.com/documentation/uikit/uitextcontenttype)
+  ///
   /// Default: null
   final TextContentType? textContentType;
 
-  /// Called when the user initiates a change to text entry 
-  /// (https://api.flutter.dev/flutter/material/TextField/onChanged.html) 
-  /// 
+  /// Called when the user initiates a change to text entry
+  /// (https://api.flutter.dev/flutter/material/TextField/onChanged.html)
+  ///
   /// Default: null
   final ValueChanged<String>? onChanged;
 
-  /// Called when the user indicates that they are done editing the text in the field 
-  /// (https://api.flutter.dev/flutter/material/TextField/onSubmitted.html) 
-  /// 
+  /// Called when the user indicates that they are done editing the text in the field
+  /// (https://api.flutter.dev/flutter/material/TextField/onSubmitted.html)
+  ///
   /// Default: null
   final ValueChanged<String?>? onSubmitted;
 
@@ -218,9 +218,7 @@ class _NativeTextInputState extends State<NativeTextInput> {
   TextEditingController get _effectiveController =>
       widget.controller ?? (_controller ??= TextEditingController());
 
-  FocusNode? _focusNode;
-  FocusNode get _effectiveFocusNode =>
-      widget.focusNode ?? (_focusNode ??= FocusNode());
+  FocusNode get _effectiveFocusNode => widget.focusNode ?? FocusNode();
 
   bool get _isMultiline => widget.maxLines == 0 || widget.maxLines > 1;
   double _lineHeight = 22.0;
@@ -411,8 +409,14 @@ class _NativeTextInputState extends State<NativeTextInput> {
   }
 
   void _inputFinished(String? text) {
+    _channel.invokeMethod("unfocus");
+    if (_effectiveFocusNode.hasFocus) {
+      FocusScope.of(context).unfocus();
+    }
     if (widget.onSubmitted != null) {
-      widget.onSubmitted!(text);
+      Future.delayed(Duration(milliseconds: 100), () {
+        widget.onSubmitted!(text);
+      });
     }
   }
 
