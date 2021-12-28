@@ -1,3 +1,7 @@
+## 1.2.3
+
+* fix placeholder re-appeared upon widget rebuilt
+
 ## 1.2.2
 
 * fix focusNode usage
