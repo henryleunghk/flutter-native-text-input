@@ -94,6 +94,12 @@
 
 - (void)onUnFocus:(FlutterMethodCall*)call result:(FlutterResult)result {
     [_textView resignFirstResponder];
+    if (_textView.text.length == 0) {
+        _textView.text = _args[@"placeholder"];
+        _textView.textColor = _delegate.placeholderFontColor;
+        _textView.font = _delegate.placeholderFont;
+    }
+    
     result(nil);
 }
 
@@ -101,12 +107,6 @@
     _textView.text = call.arguments[@"text"];
     _textView.textColor = _delegate.fontColor;
     _textView.font = _delegate.font;
-    
-    if (_textView.text.length == 0) {
-        _textView.text = _args[@"placeholder"];
-        _textView.textColor = _delegate.placeholderFontColor;
-        _textView.font = _delegate.placeholderFont;
-    }
     
     if (_textView.textContainer.maximumNumberOfLines == 1) {
         _textView.textContainer.lineBreakMode = NSLineBreakByTruncatingTail;

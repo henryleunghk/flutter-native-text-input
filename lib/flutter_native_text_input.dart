@@ -238,8 +238,16 @@ class _NativeTextInputState extends State<NativeTextInput> {
 
     if (widget.controller != null) {
       widget.controller!.addListener(() {
-        _channel
-            .invokeMethod("setText", {"text": widget.controller?.text ?? ''});
+        _channel.invokeMethod(
+          "setText",
+          {"text": widget.controller?.text ?? ''},
+        );
+        _channel.invokeMethod("getContentHeight").then((value) {
+          if (value != null && value != _contentHeight) {
+            _contentHeight = value;
+            setState(() {});
+          }
+        });
       });
     }
   }
