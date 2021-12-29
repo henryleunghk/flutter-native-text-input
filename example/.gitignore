@@ -49,6 +49,7 @@
 **/ios/**/DerivedData/
 **/ios/**/Icon?
 **/ios/**/Pods/
+**/ios/**/*.podspec
 **/ios/**/.symlinks/
 **/ios/**/profile
 **/ios/**/xcuserdata

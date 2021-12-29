@@ -1,6 +1,10 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
 
 enum ReturnKeyType {
   defaultAction,
@@ -85,6 +89,8 @@ enum KeyboardType {
 }
 
 class NativeTextInput extends StatefulWidget {
+  static const viewType = 'flutter_native_text_input';
+
   const NativeTextInput({
     Key? key,
     this.controller,
@@ -262,6 +268,56 @@ class _NativeTextInputState extends State<NativeTextInput> {
     }
   }
 
+  Widget _platformView(BoxConstraints layout) {
+    switch (defaultTargetPlatform) {
+      case TargetPlatform.android:
+        return PlatformViewLink(
+          surfaceFactory: (context, controller) => AndroidViewSurface(
+            controller: controller as AndroidViewController,
+            hitTestBehavior: PlatformViewHitTestBehavior.opaque,
+            gestureRecognizers: const <Factory<OneSequenceGestureRecognizer>>{},
+          ),
+          onCreatePlatformView: (PlatformViewCreationParams params) {
+            return PlatformViewsService.initSurfaceAndroidView(
+              id: params.id,
+              viewType: NativeTextInput.viewType,
+              layoutDirection: TextDirection.ltr,
+              creationParams: _buildCreationParams(layout),
+              creationParamsCodec: const StandardMessageCodec(),
+            )
+              ..addOnPlatformViewCreatedListener(params.onPlatformViewCreated)
+              ..create();
+          },
+          viewType: NativeTextInput.viewType,
+        );
+      case TargetPlatform.iOS:
+        return UiKitView(
+          viewType: NativeTextInput.viewType,
+          creationParamsCodec: const StandardMessageCodec(),
+          creationParams: _buildCreationParams(layout),
+          onPlatformViewCreated: _createMethodChannel,
+        );
+      default:
+        return CupertinoTextField(
+          controller: widget.controller,
+          cursorColor: widget.cursorColor,
+          decoration: BoxDecoration(
+            border: Border.all(width: 0, color: Colors.transparent),
+          ),
+          focusNode: widget.focusNode,
+          keyboardAppearance: widget.keyboardAppearance,
+          maxLines: widget.maxLines,
+          minLines: widget.minLines,
+          placeholder: widget.placeholder,
+          placeholderStyle: widget.placeholderStyle,
+          textAlign: widget.textAlign,
+          textCapitalization: widget.textCapitalization,
+          onChanged: widget.onChanged,
+          onSubmitted: widget.onSubmitted,
+        );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return ConstrainedBox(
@@ -272,12 +328,7 @@ class _NativeTextInputState extends State<NativeTextInput> {
       child: LayoutBuilder(
         builder: (context, layout) => Container(
           decoration: widget.decoration,
-          child: UiKitView(
-            viewType: "flutter_native_text_input",
-            creationParamsCodec: const StandardMessageCodec(),
-            creationParams: _buildCreationParams(layout),
-            onPlatformViewCreated: _createMethodChannel,
-          ),
+          child: _platformView(layout),
         ),
       ),
     );

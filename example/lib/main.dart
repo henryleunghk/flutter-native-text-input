@@ -73,40 +73,31 @@ class HomePage extends StatelessWidget {
           ),
           DemoItem(
             title: 'NativeTextInput Example Usage',
-            child: Platform.isIOS
-                ? NativeTextInput(
-                    cursorColor: Colors.black87,
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: Colors.black87,
-                        width: 2,
-                      ),
-                    ),
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.black54,
-                    ),
-                    textCapitalization: TextCapitalization.sentences,
-                    placeholderStyle: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black12,
-                    ),
-                    placeholder: "placeholder",
-                    keyboardAppearance: Brightness.dark,
-                    keyboardType: KeyboardType.defaultType,
-                    onChanged: _onChangeText,
-                    onSubmitted: _onSubmittedText,
-                    focusNode: _focusNode,
-                  )
-                : TextField(
-                    onChanged: _onChangeText,
-                    onSubmitted: _onSubmittedText,
-                    decoration: InputDecoration(
-                      hintText: 'placeholder',
-                      border: InputBorder.none,
-                    ),
-                  ),
+            child: NativeTextInput(
+              cursorColor: Colors.black87,
+              decoration: BoxDecoration(
+                border: Border.all(
+                  color: Colors.black87,
+                  width: 2,
+                ),
+              ),
+              style: TextStyle(
+                fontSize: 16,
+                color: Colors.black54,
+              ),
+              textCapitalization: TextCapitalization.sentences,
+              placeholderStyle: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color: Colors.black12,
+              ),
+              placeholder: "placeholder",
+              keyboardAppearance: Brightness.dark,
+              keyboardType: KeyboardType.defaultType,
+              onChanged: _onChangeText,
+              onSubmitted: _onSubmittedText,
+              focusNode: _focusNode,
+            ),
           ),
           Center(
             child: FlatButton(
