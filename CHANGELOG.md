@@ -1,3 +1,7 @@
+## 1.2.4
+
+* fix focus action not working sometimes
+
 ## 1.2.3
 
 * fix placeholder re-appeared upon widget rebuilt

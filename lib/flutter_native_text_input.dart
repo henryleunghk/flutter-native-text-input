@@ -229,11 +229,7 @@ class _NativeTextInputState extends State<NativeTextInput> {
     super.initState();
 
     _effectiveFocusNode.addListener(() {
-      if (_effectiveFocusNode.hasFocus) {
-        _channel.invokeMethod("focus");
-      } else {
-        _channel.invokeMethod("unfocus");
-      }
+      _channel.invokeMethod(_effectiveFocusNode.hasFocus ? "focus" : "unfocus");
     });
 
     if (widget.controller != null) {
@@ -411,16 +407,13 @@ class _NativeTextInputState extends State<NativeTextInput> {
   // input control methods
   void _inputStarted() {
     _scrollIntoView();
-    Future.delayed(const Duration(milliseconds: 1000)).then((value) {
+    if (!_effectiveFocusNode.hasFocus)
       FocusScope.of(context).requestFocus(_effectiveFocusNode);
-    });
   }
 
   void _inputFinished(String? text) {
     _channel.invokeMethod("unfocus");
-    if (_effectiveFocusNode.hasFocus) {
-      FocusScope.of(context).unfocus();
-    }
+    if (_effectiveFocusNode.hasFocus) FocusScope.of(context).unfocus();
     if (widget.onSubmitted != null) {
       Future.delayed(Duration(milliseconds: 100), () {
         widget.onSubmitted!(text);
