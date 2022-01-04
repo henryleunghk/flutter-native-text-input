@@ -39,6 +39,7 @@ Hope you find it useful and happy coding! 🎉🎉🎉
 | `textCapitalization` | TextCapitalization  | Configures how the platform keyboard will select an uppercase or lowercase keyboard (https://api.flutter.dev/flutter/material/TextField/textCapitalization.html) | TextCapitalization.none |
 | `textContentType` | TextContentType        | To identify the semantic meaning expected for a text-entry area (https://developer.apple.com/documentation/uikit/uitextcontenttype) | null |
 | `onChanged`       | ValueChanged\<String>  | Called when the user initiates a change to text entry (https://api.flutter.dev/flutter/material/TextField/onChanged.html) | null |
+| `onEditingComplete` | VoidCallback?        | Called when the user submits editable content (e.g., user presses the "done" button on the keyboard) (https://api.flutter.dev/flutter/material/TextField/onEditingComplete.html) | null |
 | `onSubmitted`     | ValueChanged\<String>  | Called when the user indicates that they are done editing the text in the field (https://api.flutter.dev/flutter/material/TextField/onSubmitted.html) | null |
 
 ## More examples

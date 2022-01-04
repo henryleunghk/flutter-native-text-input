@@ -97,12 +97,13 @@ class NativeTextInput extends StatefulWidget {
     this.minLines = 1,
     this.placeholder,
     this.placeholderStyle,
-    this.returnKeyType = ReturnKeyType.defaultAction,
+    this.returnKeyType = ReturnKeyType.done,
     this.style,
     this.textAlign = TextAlign.start,
     this.textCapitalization = TextCapitalization.none,
     this.textContentType,
     this.onChanged,
+    this.onEditingComplete,
     this.onSubmitted,
   }) : super(key: key);
 
@@ -200,6 +201,12 @@ class NativeTextInput extends StatefulWidget {
   ///
   /// Default: null
   final ValueChanged<String>? onChanged;
+
+  /// Called when the user submits editable content (e.g., user presses the "done" button on the keyboard).
+  /// (https://api.flutter.dev/flutter/material/TextField/onEditingComplete.html)
+  ///
+  /// Default: null
+  final VoidCallback? onEditingComplete;
 
   /// Called when the user indicates that they are done editing the text in the field
   /// (https://api.flutter.dev/flutter/material/TextField/onSubmitted.html)
@@ -412,8 +419,12 @@ class _NativeTextInputState extends State<NativeTextInput> {
   }
 
   void _inputFinished(String? text) {
-    _channel.invokeMethod("unfocus");
-    if (_effectiveFocusNode.hasFocus) FocusScope.of(context).unfocus();
+    if (widget.onEditingComplete != null) {
+      widget.onEditingComplete!();
+    } else {
+      _channel.invokeMethod("unfocus");
+      if (_effectiveFocusNode.hasFocus) FocusScope.of(context).unfocus();
+    }
     if (widget.onSubmitted != null) {
       Future.delayed(Duration(milliseconds: 100), () {
         widget.onSubmitted!(text);

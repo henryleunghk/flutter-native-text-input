@@ -1,3 +1,7 @@
+## 1.3.0
+
+* add support of onEditingComplete
+
 ## 1.2.4
 
 * fix focus action not working sometimes

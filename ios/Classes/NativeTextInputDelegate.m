@@ -139,8 +139,6 @@
      ) {
          [_channel invokeMethod:@"inputFinished"
                       arguments:@{ @"text": textView.text }];
-         
-         [textView resignFirstResponder];
          return false;
      }
      return true;
