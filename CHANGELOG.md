@@ -1,3 +1,7 @@
+## 1.3.1
+
+* add minHeightPadding configuration
+
 ## 1.3.0
 
 * add support of onEditingComplete

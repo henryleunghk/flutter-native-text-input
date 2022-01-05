@@ -30,6 +30,7 @@ Hope you find it useful and happy coding! 🎉🎉🎉
 | `keyboardAppearance` | Brightness          | The appearance of the keyboard (https://api.flutter.dev/flutter/material/TextField/keyboardAppearance.html) | null |
 | `keyboardType`    | KeyboardType           | Type of keyboard to display for a given text-based view (https://developer.apple.com/documentation/uikit/uikeyboardtype) | KeyboardType.defaultType |
 | `maxLines`        | int                    | The maximum number of lines to show at one time, wrapping if necessary (https://api.flutter.dev/flutter/material/TextField/maxLines.html) | 1 |
+| `minHeightPadding` | double                 | Extra vertical spacing added in addition to line height for iOS UITextView to fit well in single line mode | 18.0 |
 | `minLines`        | int                    | Minimum number of lines of text input widget | 1 |
 | `placeholder`     | String                 | Placeholder text when text entry is empty (https://api.flutter.dev/flutter/cupertino/CupertinoTextField/placeholder.html) | null |
 | `placeholderStyle`| TextStyle              | The style to use for the placeholder text. [Only `fontSize`, `fontWeight`, `color` are supported] (https://api.flutter.dev/flutter/cupertino/CupertinoTextField/placeholderStyle.html) | null |

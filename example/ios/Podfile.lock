@@ -1,6 +1,6 @@
 PODS:
   - Flutter (1.0.0)
-  - flutter_native_text_input (1.3.0):
+  - flutter_native_text_input (1.3.1):
     - Flutter
 
 DEPENDENCIES:
@@ -15,7 +15,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   Flutter: 50d75fe2f02b26cc09d224853bb45737f8b3214a
-  flutter_native_text_input: 820911157ee8bcd5be450dc7e36226dad0108e0b
+  flutter_native_text_input: 4637d5c9c90cdc124da19c1479f3811ad2aef624
 
 PODFILE CHECKSUM: 8e679eca47255a8ca8067c4c67aab20e64cb974d
 

@@ -94,6 +94,7 @@ class NativeTextInput extends StatefulWidget {
     this.keyboardAppearance,
     this.keyboardType = KeyboardType.defaultType,
     this.maxLines = 1,
+    this.minHeightPadding = 18,
     this.minLines = 1,
     this.placeholder,
     this.placeholderStyle,
@@ -142,6 +143,12 @@ class NativeTextInput extends StatefulWidget {
   ///
   /// Default: KeyboardType.defaultType
   final KeyboardType keyboardType;
+
+  /// Extra vertical spacing added in addition to line height for iOS UITextView to fit well in single line mode
+  /// Note: Text content height would be used instead if it is greater than this value
+  ///
+  /// Default: 18.0
+  final double minHeightPadding;
 
   /// The maximum number of lines to show at one time, wrapping if necessary
   /// (https://api.flutter.dev/flutter/material/TextField/maxLines.html)
@@ -296,6 +303,7 @@ class _NativeTextInputState extends State<NativeTextInput> {
   Map<String, dynamic> _buildCreationParams(BoxConstraints constraints) {
     Map<String, dynamic> params = {
       "maxLines": widget.maxLines,
+      "minHeightPadding": widget.minHeightPadding,
       "placeholder": widget.placeholder ?? "",
       "returnKeyType": widget.returnKeyType.toString(),
       "text": _effectiveController.text,
@@ -399,12 +407,13 @@ class _NativeTextInputState extends State<NativeTextInput> {
         "NativeTextInput._onMethodCall: No handler for ${call.method}");
   }
 
-  double get _minHeight => (widget.minLines * _lineHeight) + 18;
+  double get _minHeight =>
+      (widget.minLines * _lineHeight) + widget.minHeightPadding;
 
   double get _maxHeight {
     if (!_isMultiline) return _minHeight;
     if (_contentHeight > _minHeight && widget.maxLines > 0) {
-      double maxLineHeight = widget.maxLines * _lineHeight + 14;
+      double maxLineHeight = widget.maxLines * _lineHeight;
       return _contentHeight > maxLineHeight ? maxLineHeight : _contentHeight;
     }
     if (_contentHeight > _minHeight) return _contentHeight;

@@ -37,6 +37,8 @@
         if ([args[@"maxLines"] intValue] == 1) {
             _textView.textContainer.maximumNumberOfLines = 1;
         }
+        float minHeightPadding = [args[@"minHeightPadding"] floatValue];
+        [_textView setTextContainerInset: UIEdgeInsetsMake(minHeightPadding / 2, 0, minHeightPadding / 2, 0)];
         if (@available(iOS 10.0, *)) {
             _textView.textContentType = [self textContentTypeFromString:args[@"textContentType"]];
         }
