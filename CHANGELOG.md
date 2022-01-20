@@ -1,3 +1,9 @@
+## 2.0.0
+
+* add Android support
+* wrap `cursorColor` and `keyboardAppearance` in `iosOptions`
+* replace `placeholderStyle` with `placeholderColor`
+
 ## 1.3.1
 
 * add minHeightPadding configuration

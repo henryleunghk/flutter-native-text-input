@@ -6,9 +6,11 @@ import 'package:flutter_native_text_input/flutter_native_text_input.dart';
 import 'package:flutter_native_text_input_example/demo_item.dart';
 import 'package:flutter_native_text_input_example/more_use_case_listing_page.dart';
 
-void main() => runApp(MyApp());
+void main() => runApp(const MyApp());
 
 class MyApp extends StatefulWidget {
+  const MyApp({Key? key}) : super(key: key);
+
   @override
   _MyAppState createState() => _MyAppState();
 }
@@ -40,7 +42,7 @@ class HomePage extends StatelessWidget {
               onChanged: _onChangeText,
               onSubmitted: _onSubmittedText,
               autocorrect: true,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 hintText: 'placeholder',
                 border: InputBorder.none,
               ),
@@ -56,12 +58,12 @@ class HomePage extends StatelessWidget {
                   width: 2,
                 ),
               ),
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 16,
                 color: Colors.black54,
               ),
               textCapitalization: TextCapitalization.sentences,
-              placeholderStyle: TextStyle(
+              placeholderStyle: const TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
                 color: Colors.black12,
@@ -73,46 +75,35 @@ class HomePage extends StatelessWidget {
           ),
           DemoItem(
             title: 'NativeTextInput Example Usage',
-            child: Platform.isIOS
-                ? NativeTextInput(
-                    cursorColor: Colors.black87,
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: Colors.black87,
-                        width: 2,
-                      ),
-                    ),
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.black54,
-                    ),
-                    textCapitalization: TextCapitalization.sentences,
-                    placeholderStyle: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black12,
-                    ),
-                    placeholder: "placeholder",
-                    keyboardAppearance: Brightness.dark,
-                    keyboardType: KeyboardType.defaultType,
-                    onChanged: _onChangeText,
-                    onSubmitted: _onSubmittedText,
-                    focusNode: _focusNode,
-                  )
-                : TextField(
-                    onChanged: _onChangeText,
-                    onSubmitted: _onSubmittedText,
-                    decoration: InputDecoration(
-                      hintText: 'placeholder',
-                      border: InputBorder.none,
-                    ),
-                  ),
+            child: NativeTextInput(
+              decoration: BoxDecoration(
+                border: Border.all(
+                  color: Colors.black87,
+                  width: 2,
+                ),
+              ),
+              style: const TextStyle(
+                fontSize: 16,
+                color: Colors.black54,
+              ),
+              textCapitalization: TextCapitalization.sentences,
+              placeholder: "placeholder",
+              placeholderColor: Colors.black12,
+              iosOptions: IosOptions(
+                cursorColor: Colors.black87,
+                keyboardAppearance: Brightness.dark,
+              ),
+              keyboardType: KeyboardType.defaultType,
+              onChanged: _onChangeText,
+              onSubmitted: _onSubmittedText,
+              focusNode: _focusNode,
+            ),
           ),
           Center(
             child: FlatButton(
                 color: Colors.blue,
                 colorBrightness: Brightness.dark,
-                child: Text("View More Use Cases"),
+                child: const Text("View More Use Cases"),
                 onPressed: () {
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (_) => MoreUseCaseListingPage()));
