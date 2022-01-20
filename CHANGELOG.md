@@ -1,3 +1,7 @@
+## 2.0.0
+
+* add Android support
+
 ## 1.3.1
 
 * add minHeightPadding configuration

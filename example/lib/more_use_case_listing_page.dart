@@ -3,6 +3,8 @@ import 'package:flutter_native_text_input/flutter_native_text_input.dart';
 import 'package:flutter_native_text_input_example/demo_item.dart';
 
 class MoreUseCaseListingPage extends StatefulWidget {
+  const MoreUseCaseListingPage({Key? key}) : super(key: key);
+
   @override
   State<StatefulWidget> createState() => _MoreUseCaseListingPageState();
 }
@@ -20,7 +22,7 @@ class _MoreUseCaseListingPageState extends State<MoreUseCaseListingPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text("More Use Cases"),
+          title: const Text("More Use Cases"),
         ),
         body: SingleChildScrollView(
           child: Column(
@@ -83,7 +85,7 @@ class _MoreUseCaseListingPageState extends State<MoreUseCaseListingPage> {
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Current Input: '),
+                      const Text('Current Input: '),
                       Expanded(child: Text(_currentTextInput)),
                     ],
                   )
@@ -96,7 +98,7 @@ class _MoreUseCaseListingPageState extends State<MoreUseCaseListingPage> {
                       FlatButton(
                           color: Colors.blue,
                           colorBrightness: Brightness.dark,
-                          child: Text("Tap Me!"),
+                          child: const Text("Tap Me!"),
                           onPressed: () {
                             if (_focusNode.hasFocus) {
                               FocusScope.of(context).unfocus();
@@ -118,7 +120,7 @@ class _MoreUseCaseListingPageState extends State<MoreUseCaseListingPage> {
                       FlatButton(
                         color: Colors.blue,
                         colorBrightness: Brightness.dark,
-                        child: Text("Tap Me!"),
+                        child: const Text("Tap Me!"),
                         onPressed: () => _changeTextController.text =
                             DateTime.now().toString(),
                       ),
@@ -130,9 +132,9 @@ class _MoreUseCaseListingPageState extends State<MoreUseCaseListingPage> {
                     ],
                   )),
               Padding(
-                padding: EdgeInsets.all(100),
+                padding: const EdgeInsets.all(100),
                 child: Center(
-                    child: Column(children: [
+                    child: Column(children: const [
                   Text(
                     'All done!',
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),

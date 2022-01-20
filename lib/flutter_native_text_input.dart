@@ -84,6 +84,7 @@ enum KeyboardType {
 
   /// A default keyboard type with URL-oriented addition (shows space . prominently).
   webSearch,
+
   // A number pad (0-9) that will always be ASCII digits. Falls back to KeyboardType.numberPad below iOS 10.
   asciiCapableNumberPad
 }
@@ -94,16 +95,15 @@ class NativeTextInput extends StatefulWidget {
   const NativeTextInput({
     Key? key,
     this.controller,
-    this.cursorColor,
     this.decoration,
     this.focusNode,
-    this.keyboardAppearance,
+    this.iosOptions,
     this.keyboardType = KeyboardType.defaultType,
     this.maxLines = 1,
     this.minHeightPadding = 18,
     this.minLines = 1,
     this.placeholder,
-    this.placeholderStyle,
+    this.placeholderColor,
     this.returnKeyType = ReturnKeyType.done,
     this.style,
     this.textAlign = TextAlign.start,
@@ -120,12 +120,6 @@ class NativeTextInput extends StatefulWidget {
   /// Default: null, this widget will create its own [TextEditingController].
   final TextEditingController? controller;
 
-  /// The color of the cursor
-  /// (https://api.flutter.dev/flutter/material/TextField/cursorColor.html)
-  ///
-  /// Default: null
-  final Color? cursorColor;
-
   /// Controls the BoxDecoration of the box behind the text input
   /// (https://api.flutter.dev/flutter/cupertino/CupertinoTextField/decoration.html)
   ///
@@ -138,11 +132,10 @@ class NativeTextInput extends StatefulWidget {
   /// Default: null
   final FocusNode? focusNode;
 
-  /// The appearance of the keyboard
-  /// (https://api.flutter.dev/flutter/material/TextField/keyboardAppearance.html)
+  /// iOS only options (cursorColor, keyboardAppearance)
   ///
   /// Default: null
-  final Brightness? keyboardAppearance;
+  final IosOptions? iosOptions;
 
   /// Type of keyboard to display for a given text-based view
   /// (https://developer.apple.com/documentation/uikit/uikeyboardtype)
@@ -173,11 +166,10 @@ class NativeTextInput extends StatefulWidget {
   /// Default: null
   final String? placeholder;
 
-  /// The style to use for the placeholder text. [Only `fontSize`, `fontWeight`, `color` are supported]
-  /// (https://api.flutter.dev/flutter/cupertino/CupertinoTextField/placeholderStyle.html)
+  /// The text color to use for the placeholder text
   ///
   /// Default: null
-  final TextStyle? placeholderStyle;
+  final Color? placeholderColor;
 
   /// Constants that specify the text string that displays in the Return key of a keyboard
   /// (https://developer.apple.com/documentation/uikit/uireturnkeytype)
@@ -231,6 +223,22 @@ class NativeTextInput extends StatefulWidget {
   State<StatefulWidget> createState() => _NativeTextInputState();
 }
 
+class IosOptions {
+  /// The color of the cursor
+  /// (https://api.flutter.dev/flutter/material/TextField/cursorColor.html)
+  ///
+  /// Default: null
+  final Color? cursorColor;
+
+  /// The appearance of the keyboard
+  /// (https://api.flutter.dev/flutter/material/TextField/keyboardAppearance.html)
+  ///
+  /// Default: null
+  final Brightness? keyboardAppearance;
+
+  IosOptions({this.cursorColor, this.keyboardAppearance});
+}
+
 class _NativeTextInputState extends State<NativeTextInput> {
   late MethodChannel _channel;
 
@@ -272,6 +280,7 @@ class _NativeTextInputState extends State<NativeTextInput> {
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
         return PlatformViewLink(
+          viewType: NativeTextInput.viewType,
           surfaceFactory: (context, controller) => AndroidViewSurface(
             controller: controller as AndroidViewController,
             hitTestBehavior: PlatformViewHitTestBehavior.opaque,
@@ -285,10 +294,12 @@ class _NativeTextInputState extends State<NativeTextInput> {
               creationParams: _buildCreationParams(layout),
               creationParamsCodec: const StandardMessageCodec(),
             )
-              ..addOnPlatformViewCreatedListener(params.onPlatformViewCreated)
+              ..addOnPlatformViewCreatedListener((_) {
+                params.onPlatformViewCreated(_);
+                _createMethodChannel(_);
+              })
               ..create();
           },
-          viewType: NativeTextInput.viewType,
         );
       case TargetPlatform.iOS:
         return UiKitView(
@@ -300,16 +311,16 @@ class _NativeTextInputState extends State<NativeTextInput> {
       default:
         return CupertinoTextField(
           controller: widget.controller,
-          cursorColor: widget.cursorColor,
+          cursorColor: widget.iosOptions?.cursorColor,
           decoration: BoxDecoration(
             border: Border.all(width: 0, color: Colors.transparent),
           ),
           focusNode: widget.focusNode,
-          keyboardAppearance: widget.keyboardAppearance,
+          keyboardAppearance: widget.iosOptions?.keyboardAppearance,
           maxLines: widget.maxLines,
           minLines: widget.minLines,
           placeholder: widget.placeholder,
-          placeholderStyle: widget.placeholderStyle,
+          placeholderStyle: TextStyle(color: widget.placeholderColor),
           textAlign: widget.textAlign,
           textCapitalization: widget.textCapitalization,
           onChanged: widget.onChanged,
@@ -355,13 +366,14 @@ class _NativeTextInputState extends State<NativeTextInput> {
     Map<String, dynamic> params = {
       "maxLines": widget.maxLines,
       "minHeightPadding": widget.minHeightPadding,
+      "minLines": widget.minLines,
       "placeholder": widget.placeholder ?? "",
       "returnKeyType": widget.returnKeyType.toString(),
       "text": _effectiveController.text,
       "textAlign": widget.textAlign.toString(),
       "textCapitalization": widget.textCapitalization.toString(),
       "textContentType": widget.textContentType?.toString(),
-      "keyboardAppearance": widget.keyboardAppearance.toString(),
+      "keyboardAppearance": widget.iosOptions?.keyboardAppearance.toString(),
       "keyboardType": widget.keyboardType.toString(),
       "width": constraints.maxWidth,
     };
@@ -392,43 +404,26 @@ class _NativeTextInputState extends State<NativeTextInput> {
       };
     }
 
-    if (widget.placeholderStyle != null &&
-        widget.placeholderStyle?.fontSize != null) {
-      params = {
-        ...params,
-        "placeholderFontSize": widget.placeholderStyle?.fontSize,
-      };
-    }
-
-    if (widget.placeholderStyle != null &&
-        widget.placeholderStyle?.fontWeight != null) {
-      params = {
-        ...params,
-        "placeholderFontWeight": widget.placeholderStyle?.fontWeight.toString(),
-      };
-    }
-
-    if (widget.placeholderStyle != null &&
-        widget.placeholderStyle?.color != null) {
+    if (widget.placeholderColor != null) {
       params = {
         ...params,
         "placeholderFontColor": {
-          "red": widget.placeholderStyle?.color?.red,
-          "green": widget.placeholderStyle?.color?.green,
-          "blue": widget.placeholderStyle?.color?.blue,
-          "alpha": widget.placeholderStyle?.color?.alpha,
+          "red": widget.placeholderColor?.red,
+          "green": widget.placeholderColor?.green,
+          "blue": widget.placeholderColor?.blue,
+          "alpha": widget.placeholderColor?.alpha,
         },
       };
     }
 
-    if (widget.cursorColor != null) {
+    if (widget.iosOptions?.cursorColor != null) {
       params = {
         ...params,
         "cursorColor": {
-          "red": widget.cursorColor?.red,
-          "green": widget.cursorColor?.green,
-          "blue": widget.cursorColor?.blue,
-          "alpha": widget.cursorColor?.alpha,
+          "red": widget.iosOptions!.cursorColor?.red,
+          "green": widget.iosOptions!.cursorColor?.green,
+          "blue": widget.iosOptions!.cursorColor?.blue,
+          "alpha": widget.iosOptions!.cursorColor?.alpha,
         },
       };
     }
@@ -465,6 +460,9 @@ class _NativeTextInputState extends State<NativeTextInput> {
     if (!_isMultiline) return _minHeight;
     if (_contentHeight > _minHeight && widget.maxLines > 0) {
       double maxLineHeight = widget.maxLines * _lineHeight;
+      if (defaultTargetPlatform == TargetPlatform.android) {
+        maxLineHeight += widget.minHeightPadding;
+      }
       return _contentHeight > maxLineHeight ? maxLineHeight : _contentHeight;
     }
     if (_contentHeight > _minHeight) return _contentHeight;
@@ -474,8 +472,9 @@ class _NativeTextInputState extends State<NativeTextInput> {
   // input control methods
   void _inputStarted() {
     _scrollIntoView();
-    if (!_effectiveFocusNode.hasFocus)
+    if (!_effectiveFocusNode.hasFocus) {
       FocusScope.of(context).requestFocus(_effectiveFocusNode);
+    }
   }
 
   void _inputFinished(String? text) {
@@ -486,7 +485,7 @@ class _NativeTextInputState extends State<NativeTextInput> {
       if (_effectiveFocusNode.hasFocus) FocusScope.of(context).unfocus();
     }
     if (widget.onSubmitted != null) {
-      Future.delayed(Duration(milliseconds: 100), () {
+      Future.delayed(const Duration(milliseconds: 100), () {
         widget.onSubmitted!(text);
       });
     }

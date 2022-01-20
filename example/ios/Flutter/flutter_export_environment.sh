@@ -1,6 +1,6 @@
 #!/bin/sh
 # This is a generated file; do not edit or check into version control.
-export "FLUTTER_ROOT=/Users/henryleung/development/flutter"
+export "FLUTTER_ROOT=/Users/henryleung/fvm/versions/stable"
 export "FLUTTER_APPLICATION_PATH=/Users/henryleung/flutter-native-text-input/example"
 export "COCOAPODS_PARALLEL_CODE_SIGN=true"
 export "FLUTTER_TARGET=/Users/henryleung/flutter-native-text-input/example/lib/main.dart"
