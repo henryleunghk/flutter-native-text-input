@@ -19,11 +19,18 @@ NativeTextInput(
 )
 ```
 
-2. If you are using `placeholderStyles`, it is restricted to `placeholderColor` only now
+2. If you are using `placeholderStyle`, `placeholderColor` is extracted and the rest are moved inside `iosOptions`
 ```
 NativeTextInput(
   ..._otherConfigs,
   placeholderColor: _placeholderColor,
+  iosOptions: IosOptions(
+    ..._otherOptions,
+    placeholderStyle: TextStyle(
+      fontSize: _placeholderFontSize,
+      fontWeight: _placeholderFontWeight,
+    ),
+  ),
 )
 ```
 

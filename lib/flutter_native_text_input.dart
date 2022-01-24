@@ -236,7 +236,17 @@ class IosOptions {
   /// Default: null
   final Brightness? keyboardAppearance;
 
-  IosOptions({this.cursorColor, this.keyboardAppearance});
+  /// The style to use for the placeholder text. [Only `fontSize`, `fontWeight` are supported]
+  /// (https://api.flutter.dev/flutter/cupertino/CupertinoTextField/placeholderStyle.html)
+  ///
+  /// Default: null
+  final TextStyle? placeholderStyle;
+
+  IosOptions({
+    this.cursorColor,
+    this.keyboardAppearance,
+    this.placeholderStyle,
+  });
 }
 
 class _NativeTextInputState extends State<NativeTextInput> {
@@ -404,6 +414,22 @@ class _NativeTextInputState extends State<NativeTextInput> {
       };
     }
 
+    if (widget.iosOptions?.placeholderStyle != null &&
+        widget.iosOptions?.placeholderStyle?.fontSize != null) {
+      params = {
+        ...params,
+        "placeholderFontSize": widget.iosOptions?.placeholderStyle?.fontSize,
+      };
+    }
+
+    if (widget.iosOptions?.placeholderStyle != null &&
+        widget.iosOptions?.placeholderStyle?.fontWeight != null) {
+      params = {
+        ...params,
+        "placeholderFontWeight":
+            widget.iosOptions?.placeholderStyle?.fontWeight.toString(),
+      };
+    }
     if (widget.placeholderColor != null) {
       params = {
         ...params,

@@ -36,6 +36,13 @@
         NSDictionary* fontColor = args[@"fontColor"];
         _fontColor = [UIColor colorWithRed:[fontColor[@"red"] floatValue]/255.0 green:[fontColor[@"green"] floatValue]/255.0 blue:[fontColor[@"blue"] floatValue]/255.0 alpha:[fontColor[@"alpha"] floatValue]/255.0];
     }
+    if (args[@"placeholderFontSize"] && ![args[@"placeholderFontSize"] isKindOfClass:[NSNull class]]) {
+        NSNumber* placeholderFontSize = args[@"placeholderFontSize"];
+        _placeholderFontSize = [placeholderFontSize floatValue];
+    }
+    if (args[@"placeholderFontWeight"] && ![args[@"placeholderFontWeight"] isKindOfClass:[NSNull class]]) {
+        _placeholderFontWeight = [self fontWeightFromString:args[@"placeholderFontWeight"]];
+    }
     if (args[@"placeholderFontColor"] && ![args[@"placeholderFontColor"] isKindOfClass:[NSNull class]]) {
         NSDictionary* placeholderFontColor = args[@"placeholderFontColor"];
         _placeholderFontColor = [UIColor colorWithRed:[placeholderFontColor[@"red"] floatValue]/255.0 green:[placeholderFontColor[@"green"] floatValue]/255.0 blue:[placeholderFontColor[@"blue"] floatValue]/255.0 alpha:[placeholderFontColor[@"alpha"] floatValue]/255.0];

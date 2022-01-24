@@ -1,3 +1,7 @@
+## 2.1.0
+
+* add back `placeholderStyle` in `iosOptions`
+
 ## 2.0.0
 
 * add Android support
