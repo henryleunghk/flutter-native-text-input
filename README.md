@@ -52,6 +52,7 @@ Hope you find it useful and happy coding! 🎉🎉🎉
 |:----------------|:--------------|:-------------------------------|:-------------------------|
 | `cursorColor`        | Color               | The color of the cursor (https://api.flutter.dev/flutter/material/TextField/cursorColor.html) | null |
 | `keyboardAppearance` | Brightness          | The appearance of the keyboard (https://api.flutter.dev/flutter/material/TextField/keyboardAppearance.html) | null |
+| `placeholderStyle`| TextStyle              | The style to use for the placeholder text. [Only `fontSize`, `fontWeight` are supported] (https://api.flutter.dev/flutter/cupertino/CupertinoTextField/placeholderStyle.html) | null |
 
 
 ## More examples

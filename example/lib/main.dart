@@ -92,6 +92,9 @@ class HomePage extends StatelessWidget {
               iosOptions: IosOptions(
                 cursorColor: Colors.black87,
                 keyboardAppearance: Brightness.dark,
+                placeholderStyle: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                ),
               ),
               keyboardType: KeyboardType.defaultType,
               onChanged: _onChangeText,
