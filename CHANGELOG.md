@@ -1,3 +1,7 @@
+## 2.1.1
+
+* fix android text input background not transparent
+
 ## 2.1.0
 
 * add back `placeholderStyle` in `iosOptions`
