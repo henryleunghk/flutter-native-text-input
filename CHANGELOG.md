@@ -1,6 +1,6 @@
 ## 2.1.2
 
-* Fix a race condition that would cause errors when autofocusing
+* fix a race condition that would cause errors when autofocusing
 
 ## 2.1.1
 
