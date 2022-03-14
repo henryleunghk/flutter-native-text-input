@@ -90,6 +90,7 @@ class HomePage extends StatelessWidget {
               placeholder: "placeholder",
               placeholderColor: Colors.black12,
               iosOptions: IosOptions(
+                autocorrect: true,
                 cursorColor: Colors.black87,
                 keyboardAppearance: Brightness.dark,
                 placeholderStyle: const TextStyle(
