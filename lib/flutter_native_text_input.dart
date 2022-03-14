@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
@@ -250,7 +251,7 @@ class IosOptions {
 }
 
 class _NativeTextInputState extends State<NativeTextInput> {
-  late MethodChannel _channel;
+  final Completer<MethodChannel> _channel = Completer();
 
   TextEditingController? _controller;
   TextEditingController get _effectiveController =>
@@ -266,17 +267,22 @@ class _NativeTextInputState extends State<NativeTextInput> {
   void initState() {
     super.initState();
 
-    _effectiveFocusNode.addListener(() {
-      _channel.invokeMethod(_effectiveFocusNode.hasFocus ? "focus" : "unfocus");
+    _effectiveFocusNode.addListener(() async {
+      MethodChannel channel = await _channel.future;
+      if (mounted) {
+        channel.invokeMethod(
+            _effectiveFocusNode.hasFocus ? "focus" : "unfocus");
+      }
     });
 
     if (widget.controller != null) {
-      widget.controller!.addListener(() {
-        _channel.invokeMethod(
+      widget.controller!.addListener(() async {
+        MethodChannel channel = await _channel.future;
+        channel.invokeMethod(
           "setText",
           {"text": widget.controller?.text ?? ''},
         );
-        _channel.invokeMethod("getContentHeight").then((value) {
+        channel.invokeMethod("getContentHeight").then((value) {
           if (value != null && value != _contentHeight) {
             _contentHeight = value;
             setState(() {});
@@ -356,20 +362,21 @@ class _NativeTextInputState extends State<NativeTextInput> {
   }
 
   void _createMethodChannel(int nativeViewId) {
-    _channel = MethodChannel("flutter_native_text_input$nativeViewId")
+    MethodChannel channel = MethodChannel("flutter_native_text_input$nativeViewId")
       ..setMethodCallHandler(_onMethodCall);
-    _channel.invokeMethod("getLineHeight").then((value) {
+    channel.invokeMethod("getLineHeight").then((value) {
       if (value != null) {
         _lineHeight = value;
         setState(() {});
       }
     });
-    _channel.invokeMethod("getContentHeight").then((value) {
+    channel.invokeMethod("getContentHeight").then((value) {
       if (value != null) {
         _contentHeight = value;
         setState(() {});
       }
     });
+    _channel.complete(channel);
   }
 
   Map<String, dynamic> _buildCreationParams(BoxConstraints constraints) {
@@ -503,31 +510,31 @@ class _NativeTextInputState extends State<NativeTextInput> {
     }
   }
 
-  void _inputFinished(String? text) {
+  void _inputFinished(String? text) async {
     if (widget.onEditingComplete != null) {
       widget.onEditingComplete!();
     } else {
-      _channel.invokeMethod("unfocus");
+      final channel = await _channel.future;
+      channel.invokeMethod("unfocus");
       if (_effectiveFocusNode.hasFocus) FocusScope.of(context).unfocus();
     }
     if (widget.onSubmitted != null) {
-      Future.delayed(const Duration(milliseconds: 100), () {
-        widget.onSubmitted!(text);
-      });
+      await Future.delayed(const Duration(milliseconds: 100));
+      widget.onSubmitted!(text);
     }
   }
 
-  void _inputValueChanged(String? text, int? lineIndex) {
+  void _inputValueChanged(String? text, int? lineIndex) async {
     if (text != null) {
       _effectiveController.text = text;
       if (widget.onChanged != null) widget.onChanged!(text);
 
-      _channel.invokeMethod("getContentHeight").then((value) {
-        if (value != null && value != _contentHeight) {
-          _contentHeight = value;
-          setState(() {});
-        }
-      });
+      final channel = await _channel.future;
+      final value = await channel.invokeMethod("getContentHeight");
+      if (mounted && value != null && value != _contentHeight) {
+        _contentHeight = value;
+        setState(() {});
+      }
     }
   }
 

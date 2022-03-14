@@ -1,3 +1,7 @@
+## 2.1.2
+
+* fix a race condition that would cause errors when autofocusing
+
 ## 2.1.1
 
 * fix android text input background not transparent
