@@ -471,7 +471,7 @@ class _NativeTextInputState extends State<NativeTextInput> {
       params = {
         ...params,
         "autocorrect": widget.iosOptions!.autocorrect,
-      }
+      };
     }
 
     return params;
