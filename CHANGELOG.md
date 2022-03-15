@@ -1,6 +1,7 @@
-## 2.1.2
+## 2.2.0
 
-* fix a race condition that would cause errors when autofocusing
+* fix an iOS race condition that would cause errors when autofocusing
+* implement autocorrect for iOS
 
 ## 2.1.1
 

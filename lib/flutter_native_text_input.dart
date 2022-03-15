@@ -225,6 +225,11 @@ class NativeTextInput extends StatefulWidget {
 }
 
 class IosOptions {
+  /// Whether autocorrect is enabled.
+  ///
+  /// Default: null
+  final bool? autocorrect;
+
   /// The color of the cursor
   /// (https://api.flutter.dev/flutter/material/TextField/cursorColor.html)
   ///
@@ -244,6 +249,7 @@ class IosOptions {
   final TextStyle? placeholderStyle;
 
   IosOptions({
+    this.autocorrect,
     this.cursorColor,
     this.keyboardAppearance,
     this.placeholderStyle,
@@ -458,6 +464,13 @@ class _NativeTextInputState extends State<NativeTextInput> {
           "blue": widget.iosOptions!.cursorColor?.blue,
           "alpha": widget.iosOptions!.cursorColor?.alpha,
         },
+      };
+    }
+
+    if (widget.iosOptions?.autocorrect != null) {
+      params = {
+        ...params,
+        "autocorrect": widget.iosOptions!.autocorrect,
       };
     }
 
