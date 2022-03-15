@@ -51,6 +51,7 @@ class HomePage extends StatelessWidget {
           DemoItem(
             title: 'Flutter CupertinoTextField Example Usage',
             child: CupertinoTextField(
+              autocorrect: true,
               cursorColor: Colors.black87,
               decoration: BoxDecoration(
                 border: Border.all(
