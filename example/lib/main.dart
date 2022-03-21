@@ -83,20 +83,9 @@ class HomePage extends StatelessWidget {
                     width: 2,
                   ),
                 ),
-              ),
-              style: const TextStyle(
-                fontSize: 16,
-                color: Colors.black54,
-              ),
-              textCapitalization: TextCapitalization.sentences,
-              placeholder: "placeholder",
-              placeholderColor: Colors.black12,
-              iosOptions: IosOptions(
-                autocorrect: true,
-                cursorColor: Colors.black87,
-                keyboardAppearance: Brightness.dark,
-                placeholderStyle: const TextStyle(
-                  fontWeight: FontWeight.bold,
+                style: const TextStyle(
+                  fontSize: 16,
+                  color: Colors.black54,
                 ),
                 minHeightPadding: 4,
                 textCapitalization: TextCapitalization.sentences,
