@@ -51,6 +51,7 @@ class HomePage extends StatelessWidget {
           DemoItem(
             title: 'Flutter CupertinoTextField Example Usage',
             child: CupertinoTextField(
+              autocorrect: true,
               cursorColor: Colors.black87,
               decoration: BoxDecoration(
                 border: Border.all(
@@ -90,6 +91,7 @@ class HomePage extends StatelessWidget {
               placeholder: "placeholder",
               placeholderColor: Colors.black12,
               iosOptions: IosOptions(
+                autocorrect: true,
                 cursorColor: Colors.black87,
                 keyboardAppearance: Brightness.dark,
                 placeholderStyle: const TextStyle(

@@ -46,8 +46,12 @@
             NSDictionary* fontColor = args[@"cursorColor"];
             _textView.tintColor = [UIColor colorWithRed:[fontColor[@"red"] floatValue]/255.0 green:[fontColor[@"green"] floatValue]/255.0 blue:[fontColor[@"blue"] floatValue]/255.0 alpha:[fontColor[@"alpha"] floatValue]/255.0];
         }
-        
-        
+        if (args[@"autocorrect"] && ![args[@"autocorrect"] isKindOfClass:[NSNull class]]) {
+            _textView.autocorrectionType = [args[@"autocorrect"] boolValue]
+              ? UITextAutocorrectionTypeYes
+              : UITextAutocorrectionTypeNo;
+        }
+
         _delegate = [[NativeTextInputDelegate alloc] initWithChannel:_channel arguments:args ];
         _textView.delegate = _delegate;
         

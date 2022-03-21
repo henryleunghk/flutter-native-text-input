@@ -1,3 +1,8 @@
+## 2.2.0
+
+* fix an iOS race condition that would cause errors when autofocusing
+* implement autocorrect for iOS
+
 ## 2.1.1
 
 * fix android text input background not transparent
