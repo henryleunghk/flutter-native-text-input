@@ -99,12 +99,6 @@
 }
 
 - (void)textViewDidBeginEditing:(UITextView *)textView {
-    if ([textView.text isEqualToString:_args[@"placeholder"]]) {
-        textView.text = @"";
-        textView.textColor = _fontColor;
-        textView.font = self.font;
-    }
-    
     if (textView.textContainer.maximumNumberOfLines == 1) {
         textView.textContainer.lineBreakMode = NSLineBreakByCharWrapping;
     }
@@ -114,19 +108,10 @@
 }
 
 - (void)textViewDidChange:(UITextView *)textView {
-    textView.textColor = textView.text == 0 ? _placeholderFontColor : _fontColor;
-    textView.font = textView.text == 0 ? self.placeholderFont : self.font;
-    
     [_channel invokeMethod:@"inputValueChanged" arguments:@{ @"text": textView.text }];
 }
 
 - (void)textViewDidEndEditing:(UITextView *)textView {
-    if (textView.text.length == 0) {
-        textView.text = _args[@"placeholder"];
-        textView.textColor = _placeholderFontColor;
-        textView.font = self.placeholderFont;
-    }
-    
     if (textView.textContainer.maximumNumberOfLines == 1) {
         textView.textContainer.lineBreakMode = NSLineBreakByTruncatingTail;
     }

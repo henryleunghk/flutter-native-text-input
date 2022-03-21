@@ -290,8 +290,9 @@ class _NativeTextInputState extends State<NativeTextInput> {
         );
         channel.invokeMethod("getContentHeight").then((value) {
           if (value != null && value != _contentHeight) {
-            _contentHeight = value;
-            setState(() {});
+            setState(() {
+              _contentHeight = value;
+            });
           }
         });
       });
@@ -356,7 +357,7 @@ class _NativeTextInputState extends State<NativeTextInput> {
     return ConstrainedBox(
       constraints: BoxConstraints(
         minHeight: _minHeight,
-        maxHeight: _maxHeight,
+        maxHeight: _maxHeight > _minHeight ? _maxHeight : _minHeight,
       ),
       child: LayoutBuilder(
         builder: (context, layout) => Container(
@@ -372,14 +373,16 @@ class _NativeTextInputState extends State<NativeTextInput> {
       ..setMethodCallHandler(_onMethodCall);
     channel.invokeMethod("getLineHeight").then((value) {
       if (value != null) {
-        _lineHeight = value;
-        setState(() {});
+        setState(() {
+          _lineHeight = value;
+        });
       }
     });
     channel.invokeMethod("getContentHeight").then((value) {
       if (value != null) {
-        _contentHeight = value;
-        setState(() {});
+        setState(() {
+          _contentHeight = value;
+        });
       }
     });
     _channel.complete(channel);
