@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_text_input/flutter_native_text_input.dart';
@@ -76,32 +74,36 @@ class HomePage extends StatelessWidget {
           ),
           DemoItem(
             title: 'NativeTextInput Example Usage',
-            child: NativeTextInput(
-              decoration: BoxDecoration(
-                border: Border.all(
-                  color: Colors.black87,
-                  width: 2,
+            child: Container(
+              height: 30,
+              child: NativeTextInput(
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    color: Colors.black87,
+                    width: 2,
+                  ),
                 ),
-              ),
-              style: const TextStyle(
-                fontSize: 16,
-                color: Colors.black54,
-              ),
-              textCapitalization: TextCapitalization.sentences,
-              placeholder: "placeholder",
-              placeholderColor: Colors.black12,
-              iosOptions: IosOptions(
-                autocorrect: true,
-                cursorColor: Colors.black87,
-                keyboardAppearance: Brightness.dark,
-                placeholderStyle: const TextStyle(
-                  fontWeight: FontWeight.bold,
+                style: const TextStyle(
+                  fontSize: 16,
+                  color: Colors.black54,
                 ),
+                minHeightPadding: 4,
+                textCapitalization: TextCapitalization.sentences,
+                placeholder: "placeholder",
+                placeholderColor: Colors.black12,
+                iosOptions: IosOptions(
+                  autocorrect: true,
+                  cursorColor: Colors.black87,
+                  keyboardAppearance: Brightness.dark,
+                  placeholderStyle: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                keyboardType: KeyboardType.defaultType,
+                onChanged: _onChangeText,
+                onSubmitted: _onSubmittedText,
+                focusNode: _focusNode,
               ),
-              keyboardType: KeyboardType.defaultType,
-              onChanged: _onChangeText,
-              onSubmitted: _onSubmittedText,
-              focusNode: _focusNode,
             ),
           ),
           Center(

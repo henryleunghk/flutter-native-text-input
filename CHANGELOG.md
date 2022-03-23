@@ -2,6 +2,8 @@
 
 * fix an iOS race condition that would cause errors when autofocusing
 * implement autocorrect for iOS
+* use `UITextView.attributedPlaceholder` to draw the iOS placeholder
+* ensure that `BoxConstraints` are valid
 
 ## 2.1.1
 

@@ -1,6 +1,10 @@
 #import "NativeTextInput.h"
 #import "NativeTextInputDelegate.h"
 
+@interface UITextView(Placeholder)
+@property(nullable, nonatomic, copy) NSAttributedString *attributedPlaceholder;
+@end
+
 @implementation NativeInputField {
     UITextView* _textView;
     
@@ -55,16 +59,21 @@
         _delegate = [[NativeTextInputDelegate alloc] initWithChannel:_channel arguments:args ];
         _textView.delegate = _delegate;
         
-        _textView.text = args[@"placeholder"];
-        _textView.textColor = _delegate.placeholderFontColor;
-        _textView.font = _delegate.placeholderFont;
-        
-        if (![args[@"text"] isEqualToString:@""]) {
-            _textView.text = args[@"text"];
-            _textView.textColor = _delegate.fontColor;
-            _textView.font = _delegate.font;
+        _textView.text = args[@"text"];
+        _textView.textColor = _delegate.fontColor;
+        _textView.font = _delegate.font;
+        NSMutableDictionary *attributes = [NSMutableDictionary dictionary];
+        if (args[@"placeholder"] && ![args[@"placeholder"] isKindOfClass:[NSNull class]]) {
+            if (_delegate.placeholderFont) {
+                [attributes setObject:_delegate.placeholderFont forKey:NSFontAttributeName];
+            }
+            if (_delegate.placeholderFontColor) {
+                [attributes setObject:_delegate.placeholderFontColor forKey:NSForegroundColorAttributeName];
+            }
+            _textView.attributedPlaceholder = [[NSAttributedString alloc] initWithString:args[@"placeholder"]
+                                                                              attributes:attributes];
         }
-        
+
         _containerWidth = [args[@"width"] floatValue];
         
         __weak __typeof__(self) weakSelf = self;
@@ -100,12 +109,7 @@
 
 - (void)onUnFocus:(FlutterMethodCall*)call result:(FlutterResult)result {
     [_textView resignFirstResponder];
-    if (_textView.text.length == 0) {
-        _textView.text = _args[@"placeholder"];
-        _textView.textColor = _delegate.placeholderFontColor;
-        _textView.font = _delegate.placeholderFont;
-    }
-    
+
     result(nil);
 }
 
