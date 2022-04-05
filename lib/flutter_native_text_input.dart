@@ -263,7 +263,9 @@ class _NativeTextInputState extends State<NativeTextInput> {
   TextEditingController get _effectiveController =>
       widget.controller ?? (_controller ??= TextEditingController());
 
-  FocusNode get _effectiveFocusNode => widget.focusNode ?? FocusNode();
+  FocusNode? _focusNode;
+  FocusNode get _effectiveFocusNode =>
+      widget.focusNode ?? (_focusNode ??= FocusNode());
 
   bool get _isMultiline => widget.maxLines == 0 || widget.maxLines > 1;
   double _lineHeight = 22.0;
@@ -273,30 +275,41 @@ class _NativeTextInputState extends State<NativeTextInput> {
   void initState() {
     super.initState();
 
-    _effectiveFocusNode.addListener(() async {
-      MethodChannel channel = await _channel.future;
-      if (mounted) {
-        channel.invokeMethod(
-            _effectiveFocusNode.hasFocus ? "focus" : "unfocus");
+    _effectiveFocusNode.addListener(_focusNodeListener);
+    widget.controller?.addListener(_controllerListener);
+  }
+
+  @override
+  void dispose() {
+    _effectiveFocusNode.removeListener(_focusNodeListener);
+    widget.controller?.removeListener(_controllerListener);
+
+    _controller?.dispose();
+    _focusNode?.dispose();
+
+    super.dispose();
+  }
+
+  Future<void> _focusNodeListener() async {
+    final MethodChannel channel = await _channel.future;
+    if (mounted) {
+      channel.invokeMethod(_effectiveFocusNode.hasFocus ? "focus" : "unfocus");
+    }
+  }
+
+  Future<void> _controllerListener() async {
+    final MethodChannel channel = await _channel.future;
+    channel.invokeMethod(
+      "setText",
+      {"text": widget.controller?.text ?? ''},
+    );
+    channel.invokeMethod("getContentHeight").then((value) {
+      if (value != null && value != _contentHeight) {
+        setState(() {
+          _contentHeight = value;
+        });
       }
     });
-
-    if (widget.controller != null) {
-      widget.controller!.addListener(() async {
-        MethodChannel channel = await _channel.future;
-        channel.invokeMethod(
-          "setText",
-          {"text": widget.controller?.text ?? ''},
-        );
-        channel.invokeMethod("getContentHeight").then((value) {
-          if (value != null && value != _contentHeight) {
-            setState(() {
-              _contentHeight = value;
-            });
-          }
-        });
-      });
-    }
   }
 
   Widget _platformView(BoxConstraints layout) {
@@ -369,8 +382,9 @@ class _NativeTextInputState extends State<NativeTextInput> {
   }
 
   void _createMethodChannel(int nativeViewId) {
-    MethodChannel channel = MethodChannel("flutter_native_text_input$nativeViewId")
-      ..setMethodCallHandler(_onMethodCall);
+    MethodChannel channel =
+        MethodChannel("flutter_native_text_input$nativeViewId")
+          ..setMethodCallHandler(_onMethodCall);
     channel.invokeMethod("getLineHeight").then((value) {
       if (value != null) {
         setState(() {
