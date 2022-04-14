@@ -113,6 +113,7 @@ class NativeTextInput extends StatefulWidget {
     this.onChanged,
     this.onEditingComplete,
     this.onSubmitted,
+    this.onTap,
   }) : super(key: key);
 
   /// Controlling the text being edited
@@ -219,6 +220,13 @@ class NativeTextInput extends StatefulWidget {
   ///
   /// Default: null
   final ValueChanged<String?>? onSubmitted;
+
+  /// Called when the user taps the field.
+  ///
+  /// Not implemented yet on Android.
+  ///
+  /// Default: null
+  final VoidCallback? onTap;
 
   @override
   State<StatefulWidget> createState() => _NativeTextInputState();
@@ -491,6 +499,13 @@ class _NativeTextInputState extends State<NativeTextInput> {
       };
     }
 
+    if (widget.onTap != null) {
+      params = {
+        ...params,
+        "onTap": true,
+      };
+    }
+
     return params;
   }
 
@@ -510,6 +525,9 @@ class _NativeTextInputState extends State<NativeTextInput> {
         final String? text = call.arguments["text"];
         _inputFinished(text);
         return null;
+
+      case "singleTapRecognized":
+        _singleTapRecognized();
     }
 
     throw MissingPluginException(
@@ -567,6 +585,8 @@ class _NativeTextInputState extends State<NativeTextInput> {
       }
     }
   }
+
+  void _singleTapRecognized() => widget.onTap?.call();
 
   static const Duration _caretAnimationDuration = Duration(milliseconds: 100);
   static const Curve _caretAnimationCurve = Curves.fastOutSlowIn;

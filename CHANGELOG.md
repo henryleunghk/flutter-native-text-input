@@ -1,3 +1,8 @@
+## 2.3.0
+
+* dispose `TextEditingController` and `FocusNode`, preventing memory leaks
+* support for detecting tap gestures on iOS
+
 ## 2.2.0
 
 * fix an iOS race condition that would cause errors when autofocusing

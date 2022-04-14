@@ -74,6 +74,14 @@
                                                                               attributes:attributes];
         }
 
+        if ([args[@"onTap"] boolValue]) {
+            UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:_delegate
+                                                                                        action:@selector(singleTapRecognized:)];
+            singleTap.delegate = _delegate;
+            singleTap.numberOfTapsRequired = 1;
+            [_textView addGestureRecognizer:singleTap];
+        }
+
         _containerWidth = [args[@"width"] floatValue];
         
         __weak __typeof__(self) weakSelf = self;

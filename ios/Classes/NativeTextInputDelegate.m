@@ -129,4 +129,14 @@
      return true;
  }
 
+- (void)singleTapRecognized:(UIGestureRecognizer *)gestureRecognizer {
+     [_channel invokeMethod:@"singleTapRecognized" arguments:@{}];
+}
+
+#pragma mark - Gesture recognizer delegate
+
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
+    return YES;
+}
+
 @end
