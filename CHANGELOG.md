@@ -1,3 +1,7 @@
+## 2.4.0
+
+* support custom font families on iOS
+
 ## 2.3.0
 
 * dispose `TextEditingController` and `FocusNode`, preventing memory leaks

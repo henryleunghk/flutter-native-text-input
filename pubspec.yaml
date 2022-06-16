@@ -1,7 +1,7 @@
 name: flutter_native_text_input
 description: Native text input for Flutter. Currently iOS-only with the use of UITextView.
 
-version: 2.3.0
+version: 2.4.0
 homepage: https://github.com/henryleunghk/flutter-native-text-input
 
 environment:
