@@ -5,10 +5,12 @@
     id _Nullable _args;
     
     float _fontSize;
+    NSString *_fontFamily;
     UIFontWeight _fontWeight;
     UIColor* _fontColor;
     
     float _placeholderFontSize;
+    NSString *_placeholderFontFamily;
     UIFontWeight _placeholderFontWeight;
     UIColor* _placeholderFontColor;
 }
@@ -29,6 +31,9 @@
         _fontSize = [fontSize floatValue];
         _placeholderFontSize = _fontSize;
     }
+    if (args[@"fontFamily"] && ![args[@"fontFamily"] isKindOfClass:[NSNull class]]) {
+        _fontFamily = args[@"fontFamily"];
+    }
     if (args[@"fontWeight"] && ![args[@"fontWeight"] isKindOfClass:[NSNull class]]) {
         _fontWeight = [self fontWeightFromString:args[@"fontWeight"]];
     }
@@ -39,6 +44,9 @@
     if (args[@"placeholderFontSize"] && ![args[@"placeholderFontSize"] isKindOfClass:[NSNull class]]) {
         NSNumber* placeholderFontSize = args[@"placeholderFontSize"];
         _placeholderFontSize = [placeholderFontSize floatValue];
+    }
+    if (args[@"placeholderFontFamily"] && ![args[@"placeholderFontFamily"] isKindOfClass:[NSNull class]]) {
+        _placeholderFontFamily = args[@"placeholderFontFamily"];
     }
     if (args[@"placeholderFontWeight"] && ![args[@"placeholderFontWeight"] isKindOfClass:[NSNull class]]) {
         _placeholderFontWeight = [self fontWeightFromString:args[@"placeholderFontWeight"]];
@@ -60,7 +68,11 @@
 }
 
 - (UIFont *)font {
-    return [UIFont systemFontOfSize:_fontSize weight:_fontWeight];
+    if (_fontFamily) {
+        return [UIFont fontWithName:_fontFamily size:_fontSize];
+    } else {
+        return [UIFont systemFontOfSize:_fontSize weight:_fontWeight];
+    }
 }
 
 - (UIColor *)placeholderFontColor {
@@ -68,7 +80,11 @@
 }
 
 - (UIFont *)placeholderFont {
-    return [UIFont systemFontOfSize:_placeholderFontSize weight:_placeholderFontWeight];
+    if (_placeholderFontFamily) {
+        return [UIFont fontWithName:_placeholderFontFamily size:_placeholderFontSize];
+    } else {
+        return [UIFont systemFontOfSize:_placeholderFontSize weight:_placeholderFontWeight];
+    }
 }
 
 - (UIFontWeight)fontWeightFromString:(NSString*)fontWeight {

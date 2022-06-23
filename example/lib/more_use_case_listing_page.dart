@@ -38,6 +38,19 @@ class _MoreUseCaseListingPageState extends State<MoreUseCaseListingPage> {
                     onSubmitted: _onSubmittedText,
                   )),
               DemoItem(
+                  title: "Custom font",
+                  child: NativeTextInput(
+                    style: const TextStyle(
+                      fontFamily: 'Noteworthy',
+                    ),
+                    placeholder: 'Noteworthy',
+                    iosOptions: IosOptions(
+                      placeholderStyle: const TextStyle(
+                        fontFamily: 'Noteworthy',
+                      ),
+                    ),
+                  )),
+              DemoItem(
                   title: "Numeric Keyboard",
                   child: Column(
                     children: <Widget>[
