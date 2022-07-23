@@ -61,6 +61,9 @@ You may find more usage examples [here][2].
 
 ![](demo/more-examples.gif)
 
+## Using with form engines
+- **[ReactiveFlutterNativeTextInput](https://pub.dev/packages/reactive_flutter_native_text_input)** wrapper to use with [`reactive_forms`](https://pub.dev/packages/reactive_forms)
+
 ## Contributing
 
 ### Found a bug?
