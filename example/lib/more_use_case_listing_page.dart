@@ -16,7 +16,9 @@ class _MoreUseCaseListingPageState extends State<MoreUseCaseListingPage> {
   String _currentTextInput = '';
 
   _onChangeText(value) => debugPrint("_onChangeText: $value");
+
   _onSubmittedText(value) => debugPrint("_onSubmittedText: $value");
+
   _onTap(BuildContext context) {
     const snackBar = SnackBar(content: Text('Tapped!'));
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
@@ -112,17 +114,6 @@ class _MoreUseCaseListingPageState extends State<MoreUseCaseListingPage> {
                   title: "Focusing or Unfocusing Text Input",
                   child: Column(
                     children: [
-                      FlatButton(
-                          color: Colors.blue,
-                          colorBrightness: Brightness.dark,
-                          child: const Text("Tap Me!"),
-                          onPressed: () {
-                            if (_focusNode.hasFocus) {
-                              FocusScope.of(context).unfocus();
-                            } else {
-                              FocusScope.of(context).requestFocus(_focusNode);
-                            }
-                          }),
                       NativeTextInput(
                         focusNode: _focusNode,
                         onChanged: _onChangeText,
@@ -134,13 +125,6 @@ class _MoreUseCaseListingPageState extends State<MoreUseCaseListingPage> {
                   title: "Filling Text Programmatically",
                   child: Column(
                     children: [
-                      FlatButton(
-                        color: Colors.blue,
-                        colorBrightness: Brightness.dark,
-                        child: const Text("Tap Me!"),
-                        onPressed: () => _changeTextController.text =
-                            DateTime.now().toString(),
-                      ),
                       NativeTextInput(
                         controller: _changeTextController,
                         onChanged: _onChangeText,
@@ -149,10 +133,10 @@ class _MoreUseCaseListingPageState extends State<MoreUseCaseListingPage> {
                     ],
                   )),
               DemoItem(
-                  title: "Recognizing Tap",
-                  child: NativeTextInput(
-                    onTap: () => _onTap(context),
-                  ),
+                title: "Recognizing Tap",
+                child: NativeTextInput(
+                  onTap: () => _onTap(context),
+                ),
               ),
               Padding(
                 padding: const EdgeInsets.all(100),
