@@ -100,9 +100,9 @@ internal class NativeTextInput(context: Context, id: Int, creationParams: Map<St
         val paddingLeft = creationParams.get("paddingLeft") as Double
         val paddingRight = creationParams.get("paddingRight") as Double
         editText.setPadding(
-            paddingLeft,
+            paddingLeft.toInt(),
             minHeightPadding.toInt() / 2,
-            paddingRight,
+            paddingRight.toInt(),
             minHeightPadding.toInt() / 2)
 
         editText.hint = creationParams.get("placeholder") as String
