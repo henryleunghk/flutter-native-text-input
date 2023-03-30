@@ -103,6 +103,8 @@ class NativeTextInput extends StatefulWidget {
     this.keyboardType = KeyboardType.defaultType,
     this.maxLines = 1,
     this.minHeightPadding = 18,
+    this.paddingLeft = 0,
+    this.paddingRight = 0,
     this.minLines = 1,
     this.placeholder,
     this.placeholderColor,
@@ -151,6 +153,10 @@ class NativeTextInput extends StatefulWidget {
   ///
   /// Default: 18.0
   final double minHeightPadding;
+
+  final double paddingLeft;
+
+  final double paddingRight;
 
   /// The maximum number of lines to show at one time, wrapping if necessary
   /// (https://api.flutter.dev/flutter/material/TextField/maxLines.html)
@@ -269,12 +275,12 @@ class _NativeTextInputState extends State<NativeTextInput> {
   final Completer<MethodChannel> _channel = Completer();
 
   TextEditingController? _controller;
-  TextEditingController get _effectiveController =>
-      widget.controller ?? (_controller ??= TextEditingController());
+
+  TextEditingController get _effectiveController => widget.controller ?? (_controller ??= TextEditingController());
 
   FocusNode? _focusNode;
-  FocusNode get _effectiveFocusNode =>
-      widget.focusNode ?? (_focusNode ??= FocusNode());
+
+  FocusNode get _effectiveFocusNode => widget.focusNode ?? (_focusNode ??= FocusNode());
 
   bool get _isMultiline => widget.maxLines == 0 || widget.maxLines > 1;
   double _lineHeight = 22.0;
@@ -391,9 +397,7 @@ class _NativeTextInputState extends State<NativeTextInput> {
   }
 
   void _createMethodChannel(int nativeViewId) {
-    MethodChannel channel =
-        MethodChannel("flutter_native_text_input$nativeViewId")
-          ..setMethodCallHandler(_onMethodCall);
+    MethodChannel channel = MethodChannel("flutter_native_text_input$nativeViewId")..setMethodCallHandler(_onMethodCall);
     channel.invokeMethod("getLineHeight").then((value) {
       if (value != null) {
         setState(() {
@@ -415,6 +419,8 @@ class _NativeTextInputState extends State<NativeTextInput> {
     Map<String, dynamic> params = {
       "maxLines": widget.maxLines,
       "minHeightPadding": widget.minHeightPadding,
+      "paddingLeft": widget.paddingLeft,
+      "paddingRight": widget.paddingRight,
       "minLines": widget.minLines,
       "placeholder": widget.placeholder ?? "",
       "returnKeyType": widget.returnKeyType.toString(),
@@ -460,29 +466,24 @@ class _NativeTextInputState extends State<NativeTextInput> {
       };
     }
 
-    if (widget.iosOptions?.placeholderStyle != null &&
-        widget.iosOptions?.placeholderStyle?.fontSize != null) {
+    if (widget.iosOptions?.placeholderStyle != null && widget.iosOptions?.placeholderStyle?.fontSize != null) {
       params = {
         ...params,
         "placeholderFontSize": widget.iosOptions?.placeholderStyle?.fontSize,
       };
     }
 
-    if (widget.iosOptions?.placeholderStyle != null &&
-        widget.iosOptions?.placeholderStyle?.fontWeight != null) {
+    if (widget.iosOptions?.placeholderStyle != null && widget.iosOptions?.placeholderStyle?.fontWeight != null) {
       params = {
         ...params,
-        "placeholderFontWeight":
-            widget.iosOptions?.placeholderStyle?.fontWeight.toString(),
+        "placeholderFontWeight": widget.iosOptions?.placeholderStyle?.fontWeight.toString(),
       };
     }
 
-    if (widget.iosOptions?.placeholderStyle != null &&
-        widget.iosOptions?.placeholderStyle?.fontFamily != null) {
+    if (widget.iosOptions?.placeholderStyle != null && widget.iosOptions?.placeholderStyle?.fontFamily != null) {
       params = {
         ...params,
-        "placeholderFontFamily":
-        widget.iosOptions?.placeholderStyle?.fontFamily.toString(),
+        "placeholderFontFamily": widget.iosOptions?.placeholderStyle?.fontFamily.toString(),
       };
     }
 
@@ -548,12 +549,10 @@ class _NativeTextInputState extends State<NativeTextInput> {
         _singleTapRecognized();
     }
 
-    throw MissingPluginException(
-        "NativeTextInput._onMethodCall: No handler for ${call.method}");
+    throw MissingPluginException("NativeTextInput._onMethodCall: No handler for ${call.method}");
   }
 
-  double get _minHeight =>
-      (widget.minLines * _lineHeight) + widget.minHeightPadding;
+  double get _minHeight => (widget.minLines * _lineHeight) + widget.minHeightPadding;
 
   double get _maxHeight {
     if (!_isMultiline) return _minHeight;
