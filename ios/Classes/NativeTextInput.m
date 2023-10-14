@@ -7,12 +7,12 @@
 
 @implementation NativeInputField {
     UITextView* _textView;
-    
+
     int64_t _viewId;
     FlutterMethodChannel* _channel;
     NativeTextInputDelegate* _delegate;
     id _Nullable _args;
-    
+
     float _containerWidth;
 }
 
@@ -21,14 +21,14 @@
                viewIdentifier:(int64_t)viewId
                     arguments:(id _Nullable)args
               binaryMessenger:(NSObject<FlutterBinaryMessenger>*)messenger {
-    
+
     if ([super init]) {
         NSString* channelName = [NSString stringWithFormat:@"flutter_native_text_input%lld", viewId];
         _channel = [FlutterMethodChannel methodChannelWithName:channelName binaryMessenger:messenger];
-        
+
         _viewId = viewId;
         _args = args;
-        
+
         _textView = [[UITextView alloc] initWithFrame:frame];
         _textView.backgroundColor = UIColor.clearColor;
         _textView.keyboardAppearance = [self keyboardAppearanceFromString:args[@"keyboardAppearance"]];
@@ -37,12 +37,14 @@
         _textView.textAlignment = [self textAlignmentFromString:args[@"textAlign"]];
         _textView.autocapitalizationType = [self textAutocapitalizationTypeFromString:args[@"textCapitalization"]];
         _textView.textContainer.lineBreakMode = NSLineBreakByCharWrapping;
-        
+
         if ([args[@"maxLines"] intValue] == 1) {
             _textView.textContainer.maximumNumberOfLines = 1;
         }
         float minHeightPadding = [args[@"minHeightPadding"] floatValue];
-        [_textView setTextContainerInset: UIEdgeInsetsMake(minHeightPadding / 2, 0, minHeightPadding / 2, 0)];
+        float paddingLeft = [args[@"paddingLeft"] floatValue];
+        float paddingRight = [args[@"paddingRight"] floatValue];
+        [_textView setTextContainerInset: UIEdgeInsetsMake(minHeightPadding / 2, paddingRight, minHeightPadding / 2, paddingLeft)];
         if (@available(iOS 10.0, *)) {
             _textView.textContentType = [self textContentTypeFromString:args[@"textContentType"]];
         }
@@ -58,7 +60,7 @@
 
         _delegate = [[NativeTextInputDelegate alloc] initWithChannel:_channel arguments:args ];
         _textView.delegate = _delegate;
-        
+
         _textView.text = args[@"text"];
         _textView.textColor = _delegate.fontColor;
         _textView.font = _delegate.font;
@@ -83,7 +85,7 @@
         }
 
         _containerWidth = [args[@"width"] floatValue];
-        
+
         __weak __typeof__(self) weakSelf = self;
         [_channel setMethodCallHandler:^(FlutterMethodCall* call, FlutterResult result) {
             [weakSelf onMethodCall:call result:result];
@@ -125,7 +127,7 @@
     _textView.text = call.arguments[@"text"];
     _textView.textColor = _delegate.fontColor;
     _textView.font = _delegate.font;
-    
+
     if (_textView.textContainer.maximumNumberOfLines == 1) {
         _textView.textContainer.lineBreakMode = NSLineBreakByTruncatingTail;
     }
@@ -153,7 +155,7 @@
     if (!keyboardType || [keyboardType isKindOfClass:[NSNull class]]) {
         return UIKeyboardTypeDefault;
     }
-    
+
     if ([keyboardType isEqualToString:@"KeyboardType.asciiCapable"]) {
         return UIKeyboardTypeASCIICapable;
     }
@@ -191,7 +193,7 @@
             return UIKeyboardTypeNumberPad;
         }
     }
-    
+
     return UIKeyboardTypeDefault;
 }
 
@@ -199,7 +201,7 @@
     if (!returnKeyType || [returnKeyType isKindOfClass:[NSNull class]]) {
         return UIReturnKeyDefault;
     }
-    
+
     if ([returnKeyType isEqualToString:@"ReturnKeyType.defaultAction"]) {
         return UIReturnKeyDefault;
     } else if ([returnKeyType isEqualToString:@"ReturnKeyType.go"]) {
@@ -225,7 +227,7 @@
     } else if ([returnKeyType isEqualToString:@"ReturnKeyType.continueAction"]) {
         return UIReturnKeyContinue;
     }
-    
+
     return UIReturnKeyDefault;
 }
 
@@ -233,7 +235,7 @@
     if (!textCapitalization || [textCapitalization isKindOfClass:[NSNull class]]) {
         return UITextAutocapitalizationTypeNone;
     }
-    
+
     if ([textCapitalization isEqualToString:@"TextCapitalization.none"]) {
         return UITextAutocapitalizationTypeNone;
     } else if ([textCapitalization isEqualToString:@"TextCapitalization.characters"]) {
@@ -243,7 +245,7 @@
     } else if ([textCapitalization isEqualToString:@"TextCapitalization.words"]) {
         return UITextAutocapitalizationTypeWords;
     }
-    
+
     return UITextAutocapitalizationTypeNone;
 }
 
@@ -251,9 +253,9 @@
     if (!contentType || [contentType isKindOfClass:[NSNull class]]) {
         return nil;
     }
-    
+
     if (@available(iOS 10.0, *)) {
-        
+
         if ([contentType isEqualToString:@"TextContentType.username"]) {
             if (@available(iOS 11.0, *)) {
                 return UITextContentTypeUsername;
@@ -261,7 +263,7 @@
                 return nil;
             }
         }
-        
+
         if ([contentType isEqualToString:@"TextContentType.password"]) {
             if (@available(iOS 11.0, *)) {
                 return UITextContentTypePassword;
@@ -269,7 +271,7 @@
                 return nil;
             }
         }
-        
+
         if ([contentType isEqualToString:@"TextContentType.newPassword"]) {
             if (@available(iOS 12.0, *)) {
                 return UITextContentTypeNewPassword;
@@ -279,7 +281,7 @@
                 return nil;
             }
         }
-        
+
         if ([contentType isEqualToString:@"TextContentType.oneTimeCode"]) {
             if (@available(iOS 12.0, *)) {
                 return UITextContentTypeOneTimeCode;
@@ -287,7 +289,7 @@
                 return nil;
             }
         }
-        
+
         NSDictionary *dict =
         @{
           @"TextContentType.name":                  UITextContentTypeName,
@@ -314,7 +316,7 @@
           @"TextContentType.url":                   UITextContentTypeURL,
           @"TextContentType.creditCardNumber":      UITextContentTypeCreditCardNumber
           };
-        
+
         return dict[contentType];
     } else {
         return nil;
@@ -325,7 +327,7 @@
     if (!textAlignment || [textAlignment isKindOfClass:[NSNull class]]) {
         return NSTextAlignmentNatural;
     }
-    
+
     if ([textAlignment isEqualToString:@"TextAlign.left"]) {
         return NSTextAlignmentLeft;
     } else if ([textAlignment isEqualToString:@"TextAlign.right"]) {
@@ -339,7 +341,7 @@
             ? NSTextAlignmentRight
             : NSTextAlignmentLeft;
     }
-    
+
     // TextAlign.start
     return NSTextAlignmentNatural;
 }
@@ -348,7 +350,7 @@
     if (@available(iOS 9.0, *)) {
         return [UIView userInterfaceLayoutDirectionForSemanticContentAttribute:_textView.semanticContentAttribute];
     }
-    
+
     return UIApplication.sharedApplication.userInterfaceLayoutDirection;
 }
 

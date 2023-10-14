@@ -24,6 +24,7 @@ class HomePage extends StatelessWidget {
   final FocusNode _focusNode = FocusNode();
 
   _onChangeText(value) => debugPrint("_onChangeText: $value");
+
   _onSubmittedText(value) => debugPrint("_onSubmittedText: $value");
 
   @override
@@ -107,13 +108,10 @@ class HomePage extends StatelessWidget {
             ),
           ),
           Center(
-            child: FlatButton(
-                color: Colors.blue,
-                colorBrightness: Brightness.dark,
+            child: InkWell(
                 child: const Text("View More Use Cases"),
-                onPressed: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (_) => MoreUseCaseListingPage()));
+                onTap: () {
+                  Navigator.of(context).push(MaterialPageRoute(builder: (_) => MoreUseCaseListingPage()));
                 }),
           ),
         ],
